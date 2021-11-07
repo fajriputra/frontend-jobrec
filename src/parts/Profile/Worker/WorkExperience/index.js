@@ -1,5 +1,5 @@
 import React from "react";
-import work from "../../../../assets/images/icons/icon-suitcase.svg";
+import work from "../../../../assets/images/workexperience.png";
 
 import "./index.scss";
 
@@ -25,7 +25,7 @@ export default function WorkExperience(props) {
         </div>
       </div>
       <div class="col-2 work__image">
-        <img src="assets/img/workexperience.png" alt="" />
+        <img src={work} alt="" />
       </div>
       <div class="col-10 work__desc">
         <h2>Web Developer</h2>

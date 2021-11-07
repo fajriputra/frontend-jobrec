@@ -1,0 +1,103 @@
+.edit__perusahaan {
+  background-color: #e5e5e5;
+  padding: 20px 0;
+}
+
+.perusahaan {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.edit__perusahaan--image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit__perusahaan--input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.edit__perusahaan--input p {
+  margin: 0 0 0 8px;
+}
+
+.edit__perusahaan--desc h2 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.edit__perusahaan--desc h6 {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.edit__perusahaan--desc p {
+  color: #9ea0a5;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.edit__perusahaan--button button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 12px 0;
+  padding: 8px;
+  background-color: #5e50a1;
+  border-radius: 4px;
+  color: #fff;
+  border: 1px solid #5e50a1;
+}
+
+.edit__perusahaan--button button:nth-child(2) {
+  color: #5e50a1;
+  background-color: #fff;
+}
+
+.perusahaan--form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.edit__perusahaan--header {
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.edit__perusahaan--form {
+  display: flex;
+  flex-direction: column;
+  margin: 12px 0;
+}
+
+.edit__perusahaan--form span {
+  color: #9ea0a5;
+  font-size: 12px;
+}
+
+.edit__perusahaan--form input {
+  padding: 8px;
+  width: 100%;
+}
+
+.edit__perusahaan--form textarea {
+  padding: 8px;
+  width: 100%;
+}
+
+@media (max-width: 991.98px) {
+  .edit__perusahaan--desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+}
