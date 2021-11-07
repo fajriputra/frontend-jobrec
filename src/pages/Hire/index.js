@@ -1,4 +1,8 @@
 import React from "react";
+import Header from "components/Header";
+import profile from "../../assets/images/profile-example.png";
+import map from "../../assets/images/icons/icon-location.svg";
+import call from "../../assets/images/icons/icon-phone.svg";
 
 import "./index.scss";
 
@@ -7,25 +11,26 @@ export default function Hire(props) {
 
   return (
     <section className="hire">
+      <Header />
       <div class="profile__bg">
         <div class="container">
           <div class="row profile">
             <div class="col-xl-4 col-lg-12 profile__user">
               <div class="profile__user--image">
-                <img src="assets/img/profile.png" alt="profile" />
+                <img src={profile} alt="profile" />
               </div>
               <div class="profile__user--content">
                 <h2>Louis Tomlinson</h2>
                 <h6>Web Developer</h6>
                 <div class="row">
                   <div class="col vector">
-                    <img src="assets/img/map.svg" alt="map" />
+                    <img src={map} alt="map" />
                     <p>Purwokerto, Jawa Tengah</p>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col vector">
-                    <img src="assets/img/call.svg" alt="call" />
+                    <img src={call} alt="call" />
                     <p>0812-3546-789</p>
                   </div>
                 </div>
