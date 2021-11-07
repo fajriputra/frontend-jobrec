@@ -3,6 +3,7 @@ import Header from "components/Header";
 import profile from "../../assets/images/profile-example.png";
 import map from "../../assets/images/icons/icon-location.svg";
 import call from "../../assets/images/icons/icon-phone.svg";
+import Button from "components/UI/Button";
 
 import "./index.scss";
 
@@ -12,14 +13,14 @@ export default function Hire(props) {
   return (
     <section className="hire">
       <Header />
-      <div class="profile__bg">
+      <div class="hire__bg">
         <div class="container">
-          <div class="row profile">
-            <div class="col-xl-4 col-lg-12 profile__user">
-              <div class="profile__user--image">
+          <div class="row hire">
+            <div class="col-xl-4 col-lg-12 hire__user">
+              <div class="hire__user--image">
                 <img src={profile} alt="profile" />
               </div>
-              <div class="profile__user--content">
+              <div class="hire__user--content">
                 <h2>Louis Tomlinson</h2>
                 <h6>Web Developer</h6>
                 <div class="row">
@@ -42,7 +43,7 @@ export default function Hire(props) {
                   architecto?
                 </p>
               </div>
-              <div class="profile__user--skill">
+              <div class="hire__user--skill">
                 <h2>Skill</h2>
                 <button type="button" class="btn btn-warning">
                   Phyton
@@ -73,25 +74,25 @@ export default function Hire(props) {
                 </button>
               </div>
             </div>
-            <div class="col-xl-8 col-lg-12 profile__desc">
-              <div class="profile__desc--content">
+            <div class="col-xl-8 col-lg-12 hire__desc">
+              <div class="hire__desc--content">
                 <h1>Hubungi Lous Tomlinson</h1>
                 <h6>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
                   euismod ipsum et dui rhoncus auctor.
                 </h6>
               </div>
-              <div class="profile__desc--form">
+              <div class="hire__desc--form">
                 <form>
-                  <div class="profile__desc--form--detail">
+                  <div class="hire__desc--form--detail">
                     <span>Tujuan tentang pesan ini</span>
-                    <div class="profile__desc--form--select">
+                    <div class="hire__desc--form--select">
                       <select>
                         <option>Projek</option>
                       </select>
                     </div>
                     <span>Pesan</span>
-                    <div class="profile__desc--form--textarea">
+                    <div class="hire__desc--form--textarea">
                       <textarea
                         cols="50"
                         rows="8"
@@ -99,8 +100,8 @@ export default function Hire(props) {
                       ></textarea>
                     </div>
                   </div>
-                  <div class="profile__desc--form--button">
-                    <button>Kirim</button>
+                  <div class="hire__desc--form--button">
+                    <Button>Kirim</Button>
                   </div>
                 </form>
               </div>
