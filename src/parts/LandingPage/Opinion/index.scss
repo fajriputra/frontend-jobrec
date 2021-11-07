@@ -1,0 +1,107 @@
+.opinion {
+  background-color: #e5e5e5;
+  padding: 4.375rem 0;
+
+  @media (min-width: 768px) {
+    padding: 4.375rem;
+  }
+
+  &__content {
+    &--heading {
+      font-size: 1.75rem;
+      color: #1f2a36;
+      font-weight: 600;
+      margin-bottom: 3.125rem;
+      line-height: 2.8125rem;
+
+      @media (min-width: 768px) {
+        text-align: center;
+        font-size: 2.375rem;
+      }
+    }
+
+    .opinion__wrapper--list {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      flex-flow: column;
+
+      @media (min-width: 768px) {
+        flex-flow: row;
+      }
+
+      .slider {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #1f2a36;
+        width: 2.5rem;
+        height: 2.5rem;
+
+        &.left {
+          position: absolute;
+          top: 45%;
+          left: 90px;
+        }
+
+        &.right {
+          position: absolute;
+          top: 45%;
+          right: 90px;
+        }
+      }
+
+      .card__opinion {
+        background-color: #fff;
+        box-shadow: 0px 8px 16px rgba(197, 197, 197, 0.25);
+        width: 70%;
+        border-radius: 4px;
+        padding: 1.875rem;
+        margin-bottom: 1.875rem !important;
+        margin: auto;
+
+        @media (min-width: 768px) {
+          padding: 1.875rem 3.125rem;
+          width: 25%;
+          margin: 0 1.875rem 0 0;
+        }
+
+        &:nth-child(4) {
+          @media (min-width: 768px) {
+            margin-bottom: 0;
+            margin-right: 0;
+          }
+        }
+
+        &--image {
+          width: 100px;
+          height: 100px;
+
+          > img {
+            border: 0.375rem solid rgba(251, 176, 23, 0.37);
+          }
+        }
+
+        .meta__wrapper {
+          &--title {
+            font-size: 1.5rem;
+            color: #1f2a36;
+            font-weight: 600;
+          }
+
+          &--jobs {
+            font-size: 0.875rem;
+            color: #9ea0a5;
+            margin-bottom: 0.625rem;
+          }
+
+          &--desc {
+            font-size: 0.875rem;
+            color: #46505c;
+            line-height: 1.5rem;
+          }
+        }
+      }
+    }
+  }
+}

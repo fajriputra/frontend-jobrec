@@ -1,0 +1,10 @@
+.register {
+  position: relative;
+  background-color: #e5e5e5;
+  max-width: 100%;
+  padding: 3.125rem 1.25rem;
+
+  @media (min-width: 768px) {
+    padding: 2.5rem 4.675rem 4.0625rem;
+  }
+}

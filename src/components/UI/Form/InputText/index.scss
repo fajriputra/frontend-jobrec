@@ -1,0 +1,13 @@
+.form-control {
+  padding: 0.9375rem;
+  border-radius: 0.25rem;
+
+  &::placeholder {
+    font-size: 0.875rem;
+    color: #858d96;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+}

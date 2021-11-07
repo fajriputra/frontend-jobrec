@@ -1,0 +1,48 @@
+.header {
+  margin-bottom: 3.125rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 4.375rem;
+  }
+
+  .navbar {
+    padding: 1.25rem 0;
+
+    &-toggler {
+      padding: 0 !important;
+      border: none;
+      outline: none;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+
+  ul.navbar-nav {
+    align-items: center;
+
+    .btn__action {
+      padding: 0.625rem 1.25rem;
+      font-weight: bold;
+      color: #5e50a1;
+      letter-spacing: 1px;
+      font-size: 0.875rem;
+
+      &.signin {
+        border: 1px solid #5e50a1;
+      }
+
+      &.signup {
+        border: none;
+        outline: none;
+        background-color: #5e50a1;
+        color: #fff;
+      }
+    }
+
+    .nav-item:nth-child(4) {
+      margin: 0 2.5rem;
+    }
+  }
+}

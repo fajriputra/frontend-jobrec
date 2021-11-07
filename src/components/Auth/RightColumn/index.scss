@@ -1,0 +1,21 @@
+.right__column {
+  @media (min-width: 768px) {
+    padding: 6.25rem 0 0 3.125rem;
+  }
+
+  .content__heading {
+    &--title {
+      color: #1f2a36;
+      font-weight: 600;
+    }
+
+    &--subtitle {
+      color: #46505c;
+      font-size: 0.875rem;
+
+      @media (min-width: 768px) {
+        font-size: 1.125rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+.drop_nav {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  position: relative;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  .user__profile {
+    width: 3.125rem;
+    height: 3.125rem;
+    margin-bottom: 0;
+  }
+
+  .dropdown {
+    position: absolute;
+    background-color: #f4f5f8;
+    min-width: max-content;
+    display: none;
+    right: 0;
+    top: 3.75rem;
+    text-align: right;
+    border-radius: 0.375rem;
+    z-index: 1;
+
+    li {
+      display: block;
+    }
+
+    .arrow {
+      &.clicked {
+        transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+      }
+
+      &.not-clicked {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+      }
+    }
+
+    &.clicked {
+      display: block;
+      box-shadow: -8px 8px 58px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-item {
+      list-style: none;
+
+      .nav-link {
+        color: #9ea0a5;
+      }
+    }
+  }
+}

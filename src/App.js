@@ -1,5 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Register from "pages/Register";
+import LandingPage from "pages/LandingPage";
+
 function App() {
-  return <div className="App">hiring app</div>;
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/register" exact element={<Register />} />
+          <Route path="/" exact element={<LandingPage />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;

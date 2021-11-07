@@ -1,0 +1,47 @@
+.left__column {
+  position: relative;
+
+  .signup__overlay {
+    background-color: #5e50a1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.85;
+
+    &--content {
+      padding: 2.8125rem;
+      height: 100%;
+
+      .brand__logo {
+        width: 150px;
+      }
+
+      .text {
+        position: absolute;
+        top: 50%;
+        left: 41%;
+        transform: translate(-50%, -50%);
+
+        .content__heading {
+          font-size: 2.75rem;
+          color: #fff;
+        }
+      }
+    }
+
+    .left__wave {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    .right__wave {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+}

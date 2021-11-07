@@ -50,3 +50,103 @@
 // Utilities
 @import "utilities/api";
 // scss-docs-end import-stack
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.img-cover {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.img-contain {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 1.875rem;
+  }
+
+  &:last-of-type {
+    margin-bottom: 1.875rem;
+
+    @media (min-width: 768px) {
+      margin-bottom: 2.5rem;
+    }
+  }
+
+  label {
+    font-size: 0.75rem;
+    color: #9ea0a5;
+  }
+}
+
+.btn__started {
+  padding: 0.625rem 1.25rem;
+  background-color: #5e50a1;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+    padding: 0.9375rem 1.5625rem;
+  }
+}
+
+.btn__auth {
+  background-color: #fbb017;
+  width: 100%;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 1.875rem;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    padding-top: 0.9375rem;
+    padding-bottom: 0.9375rem;
+  }
+
+  &--link {
+    width: 100%;
+    color: #1f2a36;
+    font-size: 0.875rem;
+
+    @media (min-width: 768px) {
+      font-size: 1rem;
+    }
+
+    span {
+      color: #fbb017;
+    }
+  }
+}
+
+section {
+  margin-bottom: 3.125rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 4.375rem;
+  }
+}
