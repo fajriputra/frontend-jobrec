@@ -9,6 +9,7 @@ import Hire from "pages/Hire";
 import ProfilePekerja from "pages/main/ProfilPekerja";
 import ProfilePerusahaan from "pages/main/ProfilPerusahaan";
 import EditProfileRecruiter from "pages/EditProfile/Recruiter";
+import EditProfileWorker from "pages/EditProfile/Worker";
 
 function App() {
   return (
@@ -32,6 +33,11 @@ function App() {
             path="/editProfileRecruiter"
             exact
             element={<EditProfileRecruiter />}
+          />
+          <Route
+            path="/edit-profile-worker"
+            exact
+            element={<EditProfileWorker />}
           />
         </Routes>
       </BrowserRouter>

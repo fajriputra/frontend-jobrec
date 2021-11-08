@@ -5,12 +5,15 @@ import profile from "../../../assets/images/profile-example.png";
 import map from "../../../assets/images/icons/icon-location.svg";
 
 import "./index.scss";
+import PurpleBackground from "components/PurpleBackground";
 
 export default function profilePerusahaan(props) {
   // const urlParams = qs.parse(props.location.search);
 
   return (
     <section className="profilePekerja">
+      <Header className="mb-0" />
+      <PurpleBackground />
       <Header />
       <div class="profile__bg">
         <div class="container">
