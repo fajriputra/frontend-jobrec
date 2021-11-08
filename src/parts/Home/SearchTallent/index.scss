@@ -58,6 +58,18 @@
           }
         }
 
+        .polygon {
+          &.clicked {
+            transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+          }
+
+          &.not-clicked {
+            transform: rotate(0deg);
+            -webkit-transform: rotate(0deg);
+          }
+        }
+
         .btn__search {
           background-color: #5e50a1;
           color: #fff;

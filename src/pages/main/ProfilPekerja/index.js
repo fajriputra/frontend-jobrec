@@ -11,8 +11,10 @@ import PurpleBackground from "components/PurpleBackground";
 import Footer from "components/SiteInfo";
 
 import "./index.scss";
+import useScrollTop from "hooks/useScrollTop";
 
-export default function profilePekerja(props) {
+export default function ProfilePekerja(props) {
+  useScrollTop();
   return (
     <section className="profilePekerja">
       <Header className="mb-0" />

@@ -7,10 +7,10 @@ import profile from "../../../assets/images/profile-example.png";
 import map from "../../../assets/images/icons/icon-location.svg";
 
 import "./index.scss";
-// import PurpleBackground from "components/PurpleBackground";
+import useScrollTop from "hooks/useScrollTop";
 
-export default function profilePerusahaan(props) {
-  // const urlParams = qs.parse(props.location.search);
+export default function ProfilePerusahaan(props) {
+  useScrollTop();
 
   return (
     <section className="profilePekerja">

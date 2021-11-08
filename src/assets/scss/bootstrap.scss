@@ -139,6 +139,11 @@ body {
       color: #fbb017;
     }
   }
+
+  &.text__only {
+    background-color: transparent;
+    color: #1f2a36;
+  }
 }
 
 section {

@@ -7,8 +7,11 @@ import FormWorker from "components/Auth/RightColumn/FormWorker";
 import Button from "components/UI/Button";
 
 import "./index.scss";
+import useScrollTop from "hooks/useScrollTop";
 
 export default function Login(props) {
+  useScrollTop();
+
   const [showRecruiter, setShowRecruiter] = useState(false);
 
   const handeShowClick = () => setShowRecruiter(!showRecruiter);
@@ -41,8 +44,11 @@ export default function Login(props) {
               )}
 
               <hr />
-              <Button className="btn__auth mb-4" onClick={handeShowClick}>
-                Masuk Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}
+              <Button
+                className="btn__auth text__only mb-4"
+                onClick={handeShowClick}
+              >
+                Masuk Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}?
               </Button>
 
               <Button

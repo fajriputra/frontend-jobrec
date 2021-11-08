@@ -1,21 +1,19 @@
 import React from "react";
 
-// import { ReactComponent as IconMail } from "assets/images/icons/icon-mail.svg";
-// import { ReactComponent as IconBell } from "assets/images/icons/icon-bell.svg";
+import { ReactComponent as IconMail } from "assets/images/icons/icon-mail.svg";
+import { ReactComponent as IconBell } from "assets/images/icons/icon-bell.svg";
 import { ReactComponent as IconClose } from "assets/images/icons/icon-close.svg";
 import { ReactComponent as IconToggle } from "assets/images/icons/icon-toggler.svg";
 
 import Button from "components/UI/Button";
 import BrandLogo from "components/BrandLogo";
-// import UserProfile from "components/UserProfile";
+import UserProfile from "components/UserProfile";
 import useClickout from "hooks/useClickout";
 
 import "./index.scss";
 
 export default function Header(props) {
   const { handleClick, click, refClick } = useClickout();
-
-  // const isLoggedin = true
 
   return (
     <header className={["header", props.className].join(" ")} ref={refClick}>
@@ -38,7 +36,7 @@ export default function Header(props) {
           <div className={`${!click ? "collapse" : ""} navbar-collapse`}>
             <ul className="navbar-nav ms-auto">
               <Button
-                className="btn btn__action signin"
+                className="btn btn__action signin me-md-4"
                 type="link"
                 href="/login"
               >
@@ -53,16 +51,16 @@ export default function Header(props) {
               </Button>
 
               {/* <li className="nav-item">
-                <Button className="btn px-0">
+                <Button className="btn">
                   <IconBell />
                 </Button>
               </li>
               <li className="nav-item">
-                <Button className="btn px-0">
+                <Button className="btn px-md-5">
                   <IconMail />
                 </Button>
-              </li> */}
-              {/* <UserProfile /> */}
+              </li>
+              <UserProfile /> */}
             </ul>
           </div>
         </div>

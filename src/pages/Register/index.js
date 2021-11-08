@@ -7,8 +7,10 @@ import "./index.scss";
 import Button from "components/UI/Button";
 import FormWorker from "components/Auth/RightColumn/FormWorker";
 import FormRecruiter from "components/Auth/RightColumn/FormRecruiter";
+import useScrollTop from "hooks/useScrollTop";
 
 export default function Register(props) {
+  useScrollTop();
   const [showRecruiter, setShowRecruiter] = useState(false);
 
   const handeShowClick = () => setShowRecruiter(!showRecruiter);
@@ -29,8 +31,11 @@ export default function Register(props) {
               {showRecruiter ? <FormRecruiter /> : <FormWorker />}
 
               <hr />
-              <Button className="btn__auth mb-4" onClick={handeShowClick}>
-                Daftar Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}
+              <Button
+                className="btn__auth text__only mb-4"
+                onClick={handeShowClick}
+              >
+                Daftar Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}?
               </Button>
 
               <Button className="btn btn__auth--link" type="link" href="/login">

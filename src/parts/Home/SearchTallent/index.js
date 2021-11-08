@@ -34,7 +34,12 @@ export default function SearchTallent(props) {
                     </Button>
                     <Button className="btn px-md-4 btn__sort d-none d-md-block">
                       Sort
-                      <IconPolygon width={20} />
+                      <IconPolygon
+                        width={20}
+                        className={
+                          click ? "polygon clicked" : "polygon not-clicked"
+                        }
+                      />
                     </Button>
                     <ul className={click ? "dropdown clicked" : "dropdown"}>
                       <li className="nav-item">

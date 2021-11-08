@@ -7,9 +7,11 @@ import PurpleBackground from "components/PurpleBackground";
 import Footer from "components/SiteInfo";
 
 import "./index.scss";
+import useScrollTop from "hooks/useScrollTop";
 
-export default function editProfileRecruiter(props) {
-  // const urlParams = qs.parse(props.location.search);
+export default function EditProfileRecruiter(props) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useScrollTop();
 
   return (
     <section className="position-relative editProfileRecruiter">

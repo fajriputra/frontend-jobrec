@@ -6,8 +6,8 @@ import ProfileImage from "assets/images/profile-img.png";
 import Button from "components/UI/Button";
 import Image from "components/Image";
 
-import "./index.scss";
 import useClickout from "hooks/useClickout";
+import "./index.scss";
 
 export default function UserProfile(props) {
   const { handleClick, click, refClick } = useClickout();

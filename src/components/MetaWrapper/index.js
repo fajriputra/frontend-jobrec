@@ -19,7 +19,7 @@ MetaWrapper.propTypes = {
   classTitle: propTypes.string,
   title: propTypes.string,
   classJobs: propTypes.string,
-  jobs: propTypes.shape([propTypes.string, propTypes.object]),
+  jobs: propTypes.oneOfType([propTypes.string, propTypes.object]),
   classDesc: propTypes.string,
   desc: propTypes.string,
 };

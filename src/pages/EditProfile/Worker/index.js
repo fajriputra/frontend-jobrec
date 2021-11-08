@@ -17,8 +17,10 @@ import MetaWrapper from "components/MetaWrapper";
 import InputText from "components/UI/Form/InputText";
 
 import "./index.scss";
+import useScrollTop from "hooks/useScrollTop";
 
 export default function EditProfileWorker(props) {
+  useScrollTop();
   return (
     <>
       <Header className="mb-0" />

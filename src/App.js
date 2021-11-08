@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Register from "pages/Register";
 import LandingPage from "pages/LandingPage";
 import Login from "pages/Login";
@@ -14,33 +14,33 @@ import EditProfileWorker from "pages/EditProfile/Worker";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/register" exact element={<Register />} />
-          <Route path="/login" exact element={<Login />} />
-          <Route path="/reset-password" exact element={<ResetPassword />} />
-          <Route path="/confirm-password" exact element={<ConfirmPassword />} />
-          <Route path="/" exact element={<LandingPage />} />
-          <Route path="/home" exact element={<Home />} />
-          <Route path="/hire" exact element={<Hire />} />
-          <Route path="/profilePekerja" exact element={<ProfilePekerja />} />
+      <Router>
+        <Switch>
+          <Route path="/register" exact component={Register} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/reset-password" exact component={ResetPassword} />
+          <Route path="/confirm-password" exact component={ConfirmPassword} />
+          <Route path="/" exact component={LandingPage} />
+          <Route path="/home" exact component={Home} />
+          <Route path="/hire" exact component={Hire} />
+          <Route path="/profilePekerja" exact component={ProfilePekerja} />
           <Route
             path="/profilePerusahaan"
             exact
-            element={<ProfilePerusahaan />}
+            component={ProfilePerusahaan}
           />
           <Route
             path="/editProfileRecruiter"
             exact
-            element={<EditProfileRecruiter />}
+            component={EditProfileRecruiter}
           />
           <Route
             path="/edit-profile-worker"
             exact
-            element={<EditProfileWorker />}
+            component={EditProfileWorker}
           />
-        </Routes>
-      </BrowserRouter>
+        </Switch>
+      </Router>
     </div>
   );
 }

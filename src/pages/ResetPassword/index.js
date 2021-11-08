@@ -5,8 +5,10 @@ import RightColumn from "components/Auth/RightColumn";
 import FormResetPassword from "components/Auth/RightColumn/FormResetPassword";
 
 import "./index.scss";
+import useScrollTop from "hooks/useScrollTop";
 
 export default function ResetPassword(props) {
+  useScrollTop();
   return (
     <section className="reset__password">
       <div className="container-fluid">
