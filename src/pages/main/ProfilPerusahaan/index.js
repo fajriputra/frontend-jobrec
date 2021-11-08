@@ -1,6 +1,8 @@
 import React from "react";
 import Header from "components/Header";
 import SosialMedia from "components/SocialMedia";
+import PurpleBackground from "components/PurpleBackground";
+import Footer from "components/SiteInfo";
 import profile from "../../../assets/images/profile-example.png";
 import map from "../../../assets/images/icons/icon-location.svg";
 
@@ -16,9 +18,11 @@ export default function profilePerusahaan(props) {
       <PurpleBackground />
       <Header />
       <div class="profile__bg">
+        <PurpleBackground className="purple" />
+
         <div class="container">
           <div class="row profile">
-            <div class="profile__user">
+            <div class="profile__perusahaan">
               <div class="profile__user--image">
                 <img src={profile} alt="profile" />
               </div>
@@ -49,6 +53,7 @@ export default function profilePerusahaan(props) {
           </div>
         </div>
       </div>
+      <Footer />
     </section>
   );
 }

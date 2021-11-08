@@ -1,12 +1,19 @@
 .edit__perusahaan {
   background-color: #e5e5e5;
-  padding: 20px 0;
+  // margin: 100px 0;
+}
+
+.purple {
+  height: 300px;
+  position: absolute;
 }
 
 .perusahaan {
   background-color: #fff;
   padding: 12px;
   border-radius: 8px;
+  position: relative;
+  margin-top: 100px;
 }
 
 .edit__perusahaan--image {
@@ -22,8 +29,13 @@
   margin: 12px 0;
 }
 
-.edit__perusahaan--input p {
+.edit__perusahaan--input button {
   margin: 0 0 0 8px;
+  border: none;
+  color: #9ea0a5;
+  font-weight: 600;
+  font-size: 20px;
+  background-color: #fff;
 }
 
 .edit__perusahaan--desc h2 {
@@ -65,6 +77,8 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
+  position: relative;
+  margin: 100px 0;
 }
 
 .edit__perusahaan--header {
@@ -85,11 +99,14 @@
 .edit__perusahaan--form input {
   padding: 8px;
   width: 100%;
+  border-radius: 4px;
+  border: 1px solid #9ea0a5;
 }
 
 .edit__perusahaan--form textarea {
   padding: 8px;
   width: 100%;
+  border-radius: 4px;
 }
 
 @media (max-width: 991.98px) {

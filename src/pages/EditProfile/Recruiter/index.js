@@ -3,6 +3,8 @@ import Header from "components/Header";
 import profile from "../../../assets/images/profile-example.png";
 import pencil from "../../../assets/images/icons/icon-pencil-gray.svg";
 import map from "../../../assets/images/icons/icon-location.svg";
+import PurpleBackground from "components/PurpleBackground";
+import Footer from "components/SiteInfo";
 
 import "./index.scss";
 
@@ -10,9 +12,12 @@ export default function editProfileRecruiter(props) {
   // const urlParams = qs.parse(props.location.search);
 
   return (
-    <section className="editProfileRecruiter">
-      <Header />
+    <section className="position-relative editProfileRecruiter">
+      <Header className="mb-0" />
+
       <div className="edit__perusahaan">
+        <PurpleBackground className="purple" />
+
         <div className="container">
           <div className="row">
             <div className="col-xl-4 col-lg-12 edit__perusahaan--profile">
@@ -22,7 +27,7 @@ export default function editProfileRecruiter(props) {
                 </div>
                 <div className="edit__perusahaan--input">
                   <img src={pencil} alt="profile" />
-                  <p>Edit</p>
+                  <button>Edit</button>
                 </div>
                 <div className="edit__perusahaan--desc">
                   <h2>PT. Martabat Jaya Abadi</h2>
@@ -115,6 +120,7 @@ export default function editProfileRecruiter(props) {
           </div>
         </div>
       </div>
+      <Footer />
     </section>
   );
 }
