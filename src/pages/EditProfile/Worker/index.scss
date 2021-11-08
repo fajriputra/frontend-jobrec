@@ -1,0 +1,228 @@
+.edit__profile {
+  background-color: #e5e5e5;
+
+  &--worker {
+    height: 400px;
+    position: absolute;
+    left: 0;
+  }
+
+  .card__padding {
+    padding: 50px 0;
+
+    @media (min-width: 768px) {
+      padding: 100px 0;
+    }
+
+    .edit__card--profile {
+      position: relative;
+      background-color: #fff;
+      border-radius: 0.5rem;
+      padding: 1.875rem;
+      margin-bottom: 1.25rem;
+
+      .card__image--wrapper {
+        margin-bottom: 1.875rem;
+        .edit__profile--image {
+          width: 120px;
+          height: 120px;
+        }
+
+        .username {
+          font-size: 0.875rem;
+          color: #9ea0a5;
+          margin-bottom: 0.5rem;
+        }
+
+        .btn__edit__text {
+          display: flex;
+          align-items: center;
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #9ea0a5;
+        }
+      }
+
+      .meta__data--profile {
+        font-size: 0.875rem;
+
+        .text__jobs--wrapper {
+          .text__infodata {
+            display: flex;
+            flex-flow: column;
+
+            &--title {
+              color: #1f2a36;
+            }
+
+            &--gray {
+              color: #9ea0a5;
+
+              .icon {
+                margin-right: 0.8125rem;
+              }
+            }
+          }
+        }
+
+        .text__title {
+          font-size: 1.375rem;
+          color: #1f2a36;
+          font-weight: 600;
+        }
+
+        .text__desc {
+          font-size: 0.875rem;
+          color: #9ea0a5;
+          line-height: 1.5rem;
+        }
+      }
+
+      .content__head {
+        padding-bottom: 1.875rem;
+
+        &--heading {
+          margin-bottom: 0;
+          font-size: 1.375rem;
+          font-weight: 600;
+        }
+      }
+
+      .content__form {
+        padding-top: 1.875rem;
+
+        .form__socialmedia {
+          display: grid;
+          grid-template-columns: repeat(1, 1fr);
+
+          @media (min-width: 768px) {
+            column-gap: 1.25rem;
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        .form__experience {
+          display: grid;
+          grid-template-columns: repeat(1, 1fr);
+          @media (min-width: 768px) {
+            column-gap: 1.875rem;
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        &.skills {
+          @media (min-width: 768px) {
+            display: flex;
+            align-items: center;
+          }
+
+          .form-group {
+            min-width: 80%;
+          }
+        }
+
+        textarea.form__description {
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          padding: 0.9375rem;
+          height: 140px;
+
+          &:focus {
+            outline: none;
+          }
+
+          &::placeholder {
+            font-size: 0.875rem;
+          }
+        }
+
+        .save {
+          width: 100%;
+          padding: 0.9375rem;
+
+          @media (min-width: 768px) {
+            width: auto;
+          }
+
+          &.experience,
+          &.portfolio {
+            width: 100%;
+            background-color: transparent;
+            border: 1px solid #fbb017;
+            color: #fbb017;
+
+            &:hover {
+              background-color: #fbb017;
+              color: #fff;
+              transition: ease-in-out 200ms;
+            }
+          }
+
+          &.skill {
+            width: 100%;
+            @media (min-width: 768px) {
+              width: auto;
+            }
+          }
+        }
+      }
+
+      @media (max-width: 767.9px) {
+        .wrapper__button {
+          display: flex;
+          overflow-x: scroll;
+
+          .btn__skill--added {
+            display: flex;
+            align-items: center;
+            background-color: rgba($color: #fbb017, $alpha: 0.6);
+            border: 1px solid #fbb017;
+            padding: 0.5rem 0.625rem;
+            font-size: 0.75rem;
+            color: #fff;
+            font-weight: 600;
+            margin-right: 1.25rem;
+          }
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        }
+      }
+
+      @media (min-width: 768px) {
+        .wrapper__button {
+          display: flex;
+          flex-wrap: wrap;
+
+          .btn__skill--added {
+            background-color: rgba($color: #fbb017, $alpha: 0.6);
+            border: 1px solid #fbb017;
+            padding: 0.5rem 0.625rem;
+            font-size: 0.75rem;
+            color: #fff;
+            font-weight: 600;
+            margin-right: 1.25rem;
+            margin-bottom: 1.25rem;
+          }
+        }
+      }
+    }
+  }
+
+  .btn__password {
+    padding: 0.9375rem;
+    font-weight: 600;
+    background-color: #5e50a1;
+    color: #fff;
+    margin: 1.25rem 0;
+  }
+
+  .btn__back {
+    padding: 0.9375rem;
+    font-weight: 600;
+    background-color: transparent;
+    color: #5e50a1;
+    border: 1px solid #5e50a1;
+  }
+}
