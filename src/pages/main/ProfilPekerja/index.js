@@ -13,12 +13,9 @@ import Footer from "components/SiteInfo";
 import "./index.scss";
 
 export default function profilePekerja(props) {
-  // const urlParams = qs.parse(props.location.search);
-  // if (props.SosialMedia)
   return (
     <section className="profilePekerja">
       <Header className="mb-0" />
-      <Header />
       <div class="profile__bg">
         <PurpleBackground className="purple" />
 
