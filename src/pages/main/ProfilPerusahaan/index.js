@@ -1,11 +1,8 @@
 import React from "react";
 import Header from "components/Header";
+import SosialMedia from "components/SocialMedia";
 import profile from "../../../assets/images/profile-example.png";
 import map from "../../../assets/images/icons/icon-location.svg";
-import call from "../../../assets/images/icons/icon-phone2.svg";
-import mail from "../../../assets/images/icons/icon-mail.svg";
-import instagram from "../../../assets/images/icons/icon-instagram.svg";
-import linkin from "../../../assets/images/icons/icon-linkedin.svg";
 
 import "./index.scss";
 
@@ -44,29 +41,7 @@ export default function profilePerusahaan(props) {
                 <button>Edit Profile</button>
               </div>
 
-              <div class="profile__user--sosmed">
-                <div class="kkk">
-                  <div class=" vector">
-                    <img src={mail} alt="map" />
-                    <p>martabatjaya@gmail.com</p>
-                  </div>
-
-                  <div class=" vector">
-                    <img src={instagram} alt="map" />
-                    <p>martabat_jaya</p>
-                  </div>
-
-                  <div class="vector">
-                    <img src={call} alt="map" />
-                    <p>0821-8190-1821</p>
-                  </div>
-
-                  <div class="vector">
-                    <img src={linkin} alt="map" />
-                    <p>Martabat Jaya Abadi</p>
-                  </div>
-                </div>
-              </div>
+              <SosialMedia />
             </div>
           </div>
         </div>

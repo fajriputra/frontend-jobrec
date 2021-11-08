@@ -1,21 +1,18 @@
 import React from "react";
 import Portofolio from "parts/Profile/Worker/Portofolio";
 import WorkExperience from "parts/Profile/Worker/WorkExperience";
+import SosialMedia from "components/SocialMedia";
 import Header from "components/Header";
 import { Tabs, Tab } from "react-bootstrap";
 import profile from "../../../assets/images/profile-example.png";
 import map from "../../../assets/images/icons/icon-location.svg";
 import call from "../../../assets/images/icons/icon-phone.svg";
-import mail from "../../../assets/images/icons/icon-mail.svg";
-import instagram from "../../../assets/images/icons/icon-instagram.svg";
-import github from "../../../assets/images/icons/icon-github.svg";
-import gitlab from "../../../assets/images/icons/icon-gitlab.svg";
 
 import "./index.scss";
 
 export default function profilePekerja(props) {
   // const urlParams = qs.parse(props.location.search);
-
+  // if (props.SosialMedia)
   return (
     <section className="profilePekerja">
       <Header />
@@ -91,29 +88,7 @@ export default function profilePekerja(props) {
                 </div>
               </div>
 
-              <div class="profile__user--sosmed">
-                <div class="kkk">
-                  <div class=" vector">
-                    <img src={mail} alt="map" />
-                    <p>Louistommo@gmail.com</p>
-                  </div>
-
-                  <div class=" vector">
-                    <img src={instagram} alt="map" />
-                    <p>@Louist91</p>
-                  </div>
-
-                  <div class="vector">
-                    <img src={github} alt="map" />
-                    <p>@Louistommo</p>
-                  </div>
-
-                  <div class="vector">
-                    <img src={gitlab} alt="map" />
-                    <p>@Louistommo91</p>
-                  </div>
-                </div>
-              </div>
+              <SosialMedia profilPekerja />
             </div>
 
             <div class="profile__portofolio">
