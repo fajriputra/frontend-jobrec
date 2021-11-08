@@ -8,11 +8,7 @@ import Button from "components/UI/Button";
 import "./index.scss";
 
 export default function Hire(props) {
-  // const urlParams = qs.parse(props.location.search);
-
   return (
-    <section className="hire__tallent">
-      <Header className="mb-0" />
     <section className="hire">
       <Header />
       <div class="hire__bg">
