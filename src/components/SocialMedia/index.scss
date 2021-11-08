@@ -1,0 +1,14 @@
+.vector {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 12px 0;
+}
+
+.vector p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 12px;
+}
