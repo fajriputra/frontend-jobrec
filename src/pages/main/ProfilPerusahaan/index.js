@@ -14,6 +14,7 @@ export default function profilePerusahaan(props) {
     <section className="profilePekerja">
       <Header className="mb-0" />
       <PurpleBackground />
+      <Header />
       <div class="profile__bg">
         <div class="container">
           <div class="row profile">

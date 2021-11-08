@@ -13,6 +13,8 @@ export default function Hire(props) {
   return (
     <section className="hire__tallent">
       <Header className="mb-0" />
+    <section className="hire">
+      <Header />
       <div class="hire__bg">
         <div class="container">
           <div class="row hire">

@@ -1,0 +1,31 @@
+.portofolio {
+  margin-top: 40px !important;
+}
+
+.portofolio__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.portofolio__content p {
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 12px;
+}
+
+.profile__user--sosmed {
+  margin: 12px 0;
+  display: flex;
+  width: 100%;
+  /* justify-content: flex-start; */
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile__user--sosmed .vector p {
+  font-size: 14px;
+  color: #9ea0a5;
+  font-weight: 400;
+}
