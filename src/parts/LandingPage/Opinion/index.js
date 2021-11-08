@@ -17,7 +17,7 @@ export default function Opinion(props) {
         <div className="row">
           <div className="opinion__content">
             <h2 className="opinion__content--heading">
-              Their opinion about peworld
+              Pendapat mereka tentang peworld
             </h2>
 
             <div className="opinion__wrapper--list">

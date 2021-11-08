@@ -1,14 +1,17 @@
-import React from "react";
-import qs from "querystring";
+import React, { useState } from "react";
 
 import LeftColumn from "components/Auth/LeftColumn";
 import RightColumn from "components/Auth/RightColumn";
 
 import "./index.scss";
 import Button from "components/UI/Button";
+import FormWorker from "components/Auth/RightColumn/FormWorker";
+import FormRecruiter from "components/Auth/RightColumn/FormRecruiter";
 
 export default function Register(props) {
-  // const urlParams = qs.parse(props.location.search);
+  const [showRecruiter, setShowRecruiter] = useState(false);
+
+  const handeShowClick = () => setShowRecruiter(!showRecruiter);
 
   return (
     <section className="register">
@@ -19,9 +22,15 @@ export default function Register(props) {
           </div>
 
           <div className="col-md-5 col-lg-5 p-0">
-            <RightColumn>
-              <Button className="btn__auth" type="submit">
-                Daftar sebagai Recruiter
+            <RightColumn
+              greeting={showRecruiter ? "Halo, Recruiter!" : "Halo, Pekerja!"}
+              subTitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor."
+            >
+              {showRecruiter ? <FormRecruiter /> : <FormWorker />}
+
+              <hr />
+              <Button className="btn__auth mb-4" onClick={handeShowClick}>
+                Daftar Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}
               </Button>
 
               <Button className="btn btn__auth--link" type="link" href="/login">

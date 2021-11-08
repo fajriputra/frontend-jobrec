@@ -1,13 +1,24 @@
-.form-control {
-  padding: 0.9375rem;
-  border-radius: 0.25rem;
+.input-text {
+  .input-group {
+    .form-control {
+      padding: 0.9375rem;
+      border-radius: 0.25rem;
 
-  &::placeholder {
-    font-size: 0.875rem;
-    color: #858d96;
-  }
+      &::placeholder {
+        font-size: 0.875rem;
+        color: #858d96;
+      }
 
-  &:focus {
-    box-shadow: none;
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    .input-group-text {
+      background-color: #fff;
+      height: 3.5rem;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
   }
 }

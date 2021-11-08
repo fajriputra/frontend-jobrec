@@ -12,7 +12,9 @@ const InputText = React.forwardRef(
       isDisabled,
       placeholder,
       outerClassName,
+      inputTextClassName,
       prepend,
+      append,
       inputClassName,
       onKeyUp,
       onKeyPress,
@@ -40,6 +42,15 @@ const InputText = React.forwardRef(
             onKeyPress={onKeyPress}
             ref={ref}
           />
+          {append && (
+            <div className="input-group-append">
+              <span
+                className={["input-group-text", inputTextClassName].join(" ")}
+              >
+                {append}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -1,0 +1,15 @@
+.reset__password {
+  position: relative;
+  background-color: #e5e5e5;
+  max-width: 100%;
+  padding: 1.875rem 1.25rem;
+  margin-bottom: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    height: 100%;
+    padding: 2.5rem 4.675rem 4.0625rem;
+  }
+}

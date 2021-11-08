@@ -1,0 +1,44 @@
+.footer {
+  border-top: 1px solid #fff;
+  padding-top: 1.875rem;
+  padding-bottom: 2.625rem;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    flex-flow: column;
+
+    @media (min-width: 768px) {
+      justify-content: space-between;
+      flex-flow: row;
+    }
+
+    &--copyright {
+      font-size: 1rem;
+
+      @media (min-width: 768px) {
+        font-size: 1.125rem;
+        margin-bottom: 0;
+      }
+    }
+
+    &--info {
+      font-size: 1rem;
+
+      @media (min-width: 768px) {
+        font-size: 1.125rem;
+      }
+
+      a {
+        margin-right: 5rem;
+        text-decoration: none;
+        color: #fff;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}

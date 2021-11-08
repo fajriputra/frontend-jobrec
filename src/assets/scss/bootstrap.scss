@@ -115,7 +115,6 @@ body {
   color: #fff;
   font-weight: 600;
   letter-spacing: 1px;
-  margin-bottom: 1.875rem;
   border: none;
   outline: none;
   border-radius: 4px;
@@ -123,7 +122,6 @@ body {
 
   @media (min-width: 768px) {
     font-size: 1rem;
-    margin-bottom: 2.5rem;
     padding-top: 0.9375rem;
     padding-bottom: 0.9375rem;
   }
@@ -148,5 +146,18 @@ section {
 
   @media (min-width: 768px) {
     margin-bottom: 4.375rem;
+  }
+}
+
+.pagination {
+  .page-item {
+    margin-right: 0.5rem;
+
+    .page-link {
+      border-color: #e2e5ed;
+      padding: 15px;
+      padding: 7px 15px;
+      border-radius: 0.25rem;
+    }
   }
 }

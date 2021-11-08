@@ -5,6 +5,7 @@ import FindTallent from "parts/LandingPage/FindTallent";
 import SkillTallent from "parts/LandingPage/SkillTallent";
 import Opinion from "parts/LandingPage/Opinion";
 import Subscribe from "parts/LandingPage/Subscribe";
+import SiteInfo from "components/SiteInfo";
 
 export default function LandingPage(props) {
   return (
@@ -15,6 +16,7 @@ export default function LandingPage(props) {
       <SkillTallent />
       <Opinion />
       <Subscribe />
+      <SiteInfo />
     </>
   );
 }

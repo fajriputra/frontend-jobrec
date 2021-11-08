@@ -12,7 +12,9 @@
   }
 
   .right__column--wrapper {
-    padding-top: 1.875rem;
+    @media (min-width: 768px) {
+      padding-top: 1.875rem;
+    }
 
     .content__info {
       &--heading {

@@ -15,8 +15,10 @@ import "./index.scss";
 export default function Header(props) {
   const { handleClick, click, refClick } = useClickout();
 
+  // const isLoggedin = true
+
   return (
-    <header className="header" ref={refClick}>
+    <header className={["header", props.className].join(" ")} ref={refClick}>
       <nav className="navbar navbar-expand-lg">
         <div className="container">
           <div className="navbar-brand">
@@ -49,8 +51,8 @@ export default function Header(props) {
               >
                 Daftar
               </Button>
-              {/* 
-              <li className="nav-item">
+
+              {/* <li className="nav-item">
                 <Button className="btn px-0">
                   <IconBell />
                 </Button>
@@ -60,8 +62,8 @@ export default function Header(props) {
                   <IconMail />
                 </Button>
               </li> */}
+              {/* <UserProfile /> */}
             </ul>
-            {/* <UserProfile /> */}
           </div>
         </div>
       </nav>

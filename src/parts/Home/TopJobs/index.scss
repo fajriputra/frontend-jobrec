@@ -1,0 +1,12 @@
+.topjobs__content {
+  position: sticky;
+  top: 0;
+  padding: 1.255rem 0;
+  margin-bottom: 3.125rem;
+
+  &--text {
+    font-weight: 600;
+    margin-bottom: 0;
+    color: #fff;
+  }
+}
