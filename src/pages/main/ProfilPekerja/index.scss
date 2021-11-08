@@ -10,13 +10,19 @@ h2 {
   color: #1f2a36;
 }
 
+.profilePekerja {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .profile__bg {
   background-color: #e5e5e5;
 }
 
-.profile {
+.profile__user {
   background-color: #fff;
-  padding: 12px 20px !important;
+  position: relative;
+  margin-top: 100px;
 }
 
 .profile__user--image {
@@ -49,7 +55,8 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  width: 100%;
+  // flex-direction: column;
 }
 
 .profile__user--skill button {
@@ -58,6 +65,10 @@ h2 {
   border: 1px solid #fbb017;
   box-sizing: border-box;
   border-radius: 4px;
+}
+
+.profile__skill {
+  text-align: center;
 }
 
 .profile__user--button {
@@ -74,4 +85,18 @@ h2 {
   border: 1px solid #5e50a1;
   padding: 8px;
   margin-bottom: 12px;
+}
+
+.profile__portofolio {
+  background-color: #fff;
+  margin-bottom: 100px;
+}
+
+@media (max-width: 991.98px) {
+  .profile__user--skill {
+    display: flex;
+    // justify-content: none;
+    // align-items: center;
+    overflow-x: scroll;
+  }
 }
