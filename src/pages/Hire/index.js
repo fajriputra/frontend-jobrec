@@ -4,12 +4,11 @@ import profile from "../../assets/images/profile-example.png";
 import map from "../../assets/images/icons/icon-location.svg";
 import call from "../../assets/images/icons/icon-phone.svg";
 import Button from "components/UI/Button";
+import Footer from "components/SiteInfo";
 
 import "./index.scss";
 
 export default function Hire(props) {
-  // const urlParams = qs.parse(props.location.search);
-
   return (
     <section className="hire">
       <Header />
@@ -43,8 +42,10 @@ export default function Hire(props) {
                   architecto?
                 </p>
               </div>
-              <div class="hire__user--skill">
+              <div className="skill">
                 <h2>Skill</h2>
+              </div>
+              <div class="hire__user--skill">
                 <button type="button" class="btn btn-warning">
                   Phyton
                 </button>
@@ -109,6 +110,7 @@ export default function Hire(props) {
           </div>
         </div>
       </div>
+      <Footer />
     </section>
   );
 }
