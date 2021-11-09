@@ -11,10 +11,20 @@ export default function Footer() {
           2020 Pewworld. All right reserved
         </p>
         <div className="footer__content--info">
-          <Button type="link" href="/">
+          <Button
+            type="link"
+            isExternal
+            target="_blank"
+            href="tel:+622128992988"
+          >
             Telepon
           </Button>
-          <Button type="link" href="/">
+          <Button
+            type="link"
+            isExternal
+            target="_blank"
+            href="mailto:support@lakecoast.com"
+          >
             Email
           </Button>
         </div>

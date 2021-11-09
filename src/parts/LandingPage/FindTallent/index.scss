@@ -18,14 +18,14 @@
 
     .content__info {
       &--heading {
-        font-size: 1.75rem;
+        font-size: 1.75rem !important;
         font-weight: 600;
         color: #1f2a36;
         margin-bottom: 2.1875rem;
         line-height: 2.8125rem;
 
         @media (min-width: 768px) {
-          font-size: 2.375rem;
+          font-size: 2.375rem !important;
         }
       }
 

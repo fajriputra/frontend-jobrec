@@ -1,21 +1,26 @@
 import React from "react";
 import Header from "components/Header";
 import SosialMedia from "components/SocialMedia";
+import PurpleBackground from "components/PurpleBackground";
+import Footer from "components/SiteInfo";
 import profile from "../../../assets/images/profile-example.png";
 import map from "../../../assets/images/icons/icon-location.svg";
 
 import "./index.scss";
+import useScrollTop from "hooks/useScrollTop";
 
-export default function profilePerusahaan(props) {
-  // const urlParams = qs.parse(props.location.search);
+export default function ProfilePerusahaan(props) {
+  useScrollTop();
 
   return (
     <section className="profilePekerja">
-      <Header />
+      <Header className="mb-0" />
       <div class="profile__bg">
+        <PurpleBackground className="purple" />
+
         <div class="container">
           <div class="row profile">
-            <div class="profile__user">
+            <div class="profile__perusahaan">
               <div class="profile__user--image">
                 <img src={profile} alt="profile" />
               </div>
@@ -46,6 +51,7 @@ export default function profilePerusahaan(props) {
           </div>
         </div>
       </div>
+      <Footer />
     </section>
   );
 }

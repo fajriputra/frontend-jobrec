@@ -7,16 +7,20 @@ import { Tabs, Tab } from "react-bootstrap";
 import profile from "../../../assets/images/profile-example.png";
 import map from "../../../assets/images/icons/icon-location.svg";
 import call from "../../../assets/images/icons/icon-phone.svg";
+import PurpleBackground from "components/PurpleBackground";
+import Footer from "components/SiteInfo";
 
 import "./index.scss";
+import useScrollTop from "hooks/useScrollTop";
 
-export default function profilePekerja(props) {
-  // const urlParams = qs.parse(props.location.search);
-  // if (props.SosialMedia)
+export default function ProfilePekerja(props) {
+  useScrollTop();
   return (
     <section className="profilePekerja">
-      <Header />
+      <Header className="mb-0" />
       <div class="profile__bg">
+        <PurpleBackground className="purple" />
+
         <div class="container">
           <div class="row profile">
             <div class="profile__user">
@@ -50,42 +54,43 @@ export default function profilePekerja(props) {
               <div class="profile__user--button">
                 <button>Hire</button>
               </div>
-
-              <div class="profile__user--skill">
+              <div className="profile__skill">
                 <h2>Skill</h2>
-                <div class="col">
-                  <button type="button" class="btn btn-warning">
-                    Phyton
-                  </button>
-                  <button type="button" class="btn btn-warning">
-                    Laravel
-                  </button>
-                  <button type="button" class="btn btn-warning">
-                    Golang
-                  </button>
-                </div>
-                <div class="col">
-                  <button type="button" class="btn btn-warning">
-                    JavaScript
-                  </button>
-                  <button type="button" class="btn btn-warning">
-                    PHP
-                  </button>
-                  <button type="button" class="btn btn-warning">
-                    HTML
-                  </button>
-                </div>
-                <div class="col">
-                  <button type="button" class="btn btn-warning">
-                    C++
-                  </button>
-                  <button type="button" class="btn btn-warning">
-                    Kotlin
-                  </button>
-                  <button type="button" class="btn btn-warning">
-                    Switf
-                  </button>
-                </div>
+              </div>
+              <div class="profile__user--skill">
+                {/* <div class="col"> */}
+                <button type="button" class="btn btn-warning">
+                  Phyton
+                </button>
+                <button type="button" class="btn btn-warning">
+                  Laravel
+                </button>
+                <button type="button" class="btn btn-warning">
+                  Golang
+                </button>
+                {/* </div> */}
+                {/* <div class="col"> */}
+                <button type="button" class="btn btn-warning">
+                  JavaScript
+                </button>
+                <button type="button" class="btn btn-warning">
+                  PHP
+                </button>
+                <button type="button" class="btn btn-warning">
+                  HTML
+                </button>
+                {/* </div> */}
+                {/* <div class="col"> */}
+                <button type="button" class="btn btn-warning">
+                  C++
+                </button>
+                <button type="button" class="btn btn-warning">
+                  Kotlin
+                </button>
+                <button type="button" class="btn btn-warning">
+                  Switf
+                </button>
+                {/* </div> */}
               </div>
 
               <SosialMedia profilPekerja />
@@ -110,6 +115,7 @@ export default function profilePekerja(props) {
           </div>
         </div>
       </div>
+      <Footer />
     </section>
   );
 }

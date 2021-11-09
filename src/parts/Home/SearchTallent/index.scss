@@ -58,6 +58,18 @@
           }
         }
 
+        .polygon {
+          &.clicked {
+            transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+          }
+
+          &.not-clicked {
+            transform: rotate(0deg);
+            -webkit-transform: rotate(0deg);
+          }
+        }
+
         .btn__search {
           background-color: #5e50a1;
           color: #fff;
@@ -87,12 +99,6 @@
     @media (min-width: 768px) {
       border-radius: 8px;
       padding: 2.5rem 4.375rem 2.5rem 1.25rem;
-    }
-
-    .line {
-      position: absolute;
-      left: 0;
-      border-bottom: 2px solid #f2f3f4;
     }
 
     &--profile {

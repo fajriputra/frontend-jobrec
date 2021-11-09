@@ -6,8 +6,10 @@ import SkillTallent from "parts/LandingPage/SkillTallent";
 import Opinion from "parts/LandingPage/Opinion";
 import Subscribe from "parts/LandingPage/Subscribe";
 import SiteInfo from "components/SiteInfo";
+import useScrollTop from "hooks/useScrollTop";
 
 export default function LandingPage(props) {
+  useScrollTop();
   return (
     <>
       <Header />

@@ -139,6 +139,11 @@ body {
       color: #fbb017;
     }
   }
+
+  &.text__only {
+    background-color: transparent;
+    color: #1f2a36;
+  }
 }
 
 section {
@@ -160,4 +165,10 @@ section {
       border-radius: 0.25rem;
     }
   }
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  border-bottom: 2px solid #f2f3f4;
 }

@@ -6,7 +6,7 @@ export default function MetaWrapper(props) {
   return (
     <div className={props.className}>
       <h2 className={props.classTitle}>{props.title}</h2>
-      <p className={props.classJobs}>{props.jobs}</p>
+      <div className={props.classJobs}>{props.jobs}</div>
       <h5 className={props.classDesc}>{props.desc}</h5>
 
       {props.children}
@@ -19,7 +19,7 @@ MetaWrapper.propTypes = {
   classTitle: propTypes.string,
   title: propTypes.string,
   classJobs: propTypes.string,
-  jobs: propTypes.string,
+  jobs: propTypes.oneOfType([propTypes.string, propTypes.object]),
   classDesc: propTypes.string,
   desc: propTypes.string,
 };

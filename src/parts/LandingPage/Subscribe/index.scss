@@ -27,13 +27,13 @@
       }
 
       .content__text {
-        font-size: 1.25rem;
+        font-size: 1.25rem !important;
         color: #fff;
         line-height: 3.5rem;
         margin-bottom: 1.25rem;
 
         @media (min-width: 768px) {
-          font-size: 2.375rem;
+          font-size: 2.375rem !important;
           margin-bottom: 0;
         }
 

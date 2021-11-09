@@ -2,16 +2,58 @@ import React, { useState } from "react";
 
 import LeftColumn from "components/Auth/LeftColumn";
 import RightColumn from "components/Auth/RightColumn";
-
-import "./index.scss";
 import Button from "components/UI/Button";
 import FormWorker from "components/Auth/RightColumn/FormWorker";
 import FormRecruiter from "components/Auth/RightColumn/FormRecruiter";
+import useScrollTop from "hooks/useScrollTop";
+
+import axios from "helpers/axios";
+
+import "./index.scss";
+import { toast } from "react-toastify";
+
+const initialStateWorker = {
+  name: "",
+  username: "",
+  email: "",
+  nohp: "",
+  password: "",
+  confirm_password: "",
+};
 
 export default function Register(props) {
+  useScrollTop();
+
+  const [formWorker, setFormWorker] = useState(initialStateWorker);
   const [showRecruiter, setShowRecruiter] = useState(false);
 
   const handeShowClick = () => setShowRecruiter(!showRecruiter);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormWorker({ ...formWorker, [name]: value });
+  };
+
+  const handleSubmitWorker = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { password, confirm_password } = formWorker;
+
+      if (password !== confirm_password) {
+        return toast.error("Konfirmasi password tidak sama");
+      }
+
+      const res = await axios.post("/auth/register", {
+        ...formWorker,
+      });
+
+      toast.success(res.data.data.msg);
+    } catch (err) {
+      err.response.data.msg && toast.error(err.response.data.msg);
+      setFormWorker(initialStateWorker);
+    }
+  };
 
   return (
     <section className="register">
@@ -26,11 +68,27 @@ export default function Register(props) {
               greeting={showRecruiter ? "Halo, Recruiter!" : "Halo, Pekerja!"}
               subTitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor."
             >
-              {showRecruiter ? <FormRecruiter /> : <FormWorker />}
+              {showRecruiter ? (
+                <FormRecruiter />
+              ) : (
+                <FormWorker
+                  onSubmit={handleSubmitWorker}
+                  onChange={handleChange}
+                  valueName={formWorker.name}
+                  valueUsername={formWorker.username}
+                  valueEmail={formWorker.email}
+                  valueNohp={formWorker.nohp}
+                  valuePassword={formWorker.password}
+                  valueConfirmPassword={formWorker.confirm_password}
+                />
+              )}
 
               <hr />
-              <Button className="btn__auth mb-4" onClick={handeShowClick}>
-                Daftar Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}
+              <Button
+                className="btn__auth text__only mb-4"
+                onClick={handeShowClick}
+              >
+                Daftar Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}?
               </Button>
 
               <Button className="btn btn__auth--link" type="link" href="/login">

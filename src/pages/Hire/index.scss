@@ -15,13 +15,15 @@ h2 {
 }
 
 .hire {
-  padding: 80px 0;
+  // padding: 40px 0;
+  margin: 0;
 }
 
 .hire__user {
   background-color: #fff;
   border-radius: 8px;
   padding: 12px 20px !important;
+  margin: 20px 0;
 }
 
 .hire__user--image {
@@ -67,6 +69,7 @@ h2 {
 
 .hire__desc {
   padding: 0 80px !important ;
+  margin: 20px 0;
 }
 
 .hire__desc--form span {
@@ -109,7 +112,7 @@ h2 {
 
 @media (max-width: 1199.98px) {
   .hire__desc {
-    padding: 80px 0 !important;
+    padding: 40px 20px !important;
   }
 }
 
@@ -122,6 +125,15 @@ h2 {
 
   .hire_desc {
     margin: 40px 0 !important;
-    padding: 0 !important;
+    padding: 0 20px !important;
+  }
+
+  .hire__user {
+    border-radius: 0;
+  }
+
+  .hire__user--skill {
+    display: flex;
+    overflow-x: scroll;
   }
 }

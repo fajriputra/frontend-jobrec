@@ -21,6 +21,13 @@
 
   ul.navbar-nav {
     align-items: center;
+    flex-flow: row;
+    justify-content: space-around;
+    padding: 1.875rem 0;
+
+    @media (min-width: 768px) {
+      padding: 0;
+    }
 
     .btn__action {
       padding: 0.625rem 1.25rem;
@@ -34,15 +41,9 @@
       }
 
       &.signup {
-        border: none;
-        outline: none;
         background-color: #5e50a1;
         color: #fff;
       }
-    }
-
-    .nav-item:nth-child(4) {
-      margin: 0 2.5rem;
     }
   }
 }
