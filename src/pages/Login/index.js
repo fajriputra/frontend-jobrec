@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -22,7 +22,6 @@ export default function Login(props) {
   useScrollTop();
 
   const [form, setForm] = useState(initialState);
-  // const [formRecruiter, setFormRecruiter] = useState(initialState);
   const [showRecruiter, setShowRecruiter] = useState(false);
 
   const dispatch = useDispatch();
@@ -30,10 +29,13 @@ export default function Login(props) {
 
   const handeShowClick = () => setShowRecruiter(!showRecruiter);
 
+  useEffect(() => {
+    document.title = "Peworld | Login";
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    // setFormRecruiter({ ...formRecruiter, [name]: value });
   };
 
   const handleSubmitWorker = (e) => {
@@ -57,8 +59,6 @@ export default function Login(props) {
 
   const handleSubmitRecruiter = (e) => {
     e.preventDefault();
-
-    // console.log(form);
 
     dispatch(userLoginRecruiter(form))
       .then((res) => {

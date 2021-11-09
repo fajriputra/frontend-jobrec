@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import LeftColumn from "components/Auth/LeftColumn";
 import RightColumn from "components/Auth/RightColumn";
@@ -12,47 +12,125 @@ import axios from "helpers/axios";
 import "./index.scss";
 import { toast } from "react-toastify";
 
-const initialStateWorker = {
+const initialState = {
   name: "",
   username: "",
   email: "",
   nohp: "",
   password: "",
   confirm_password: "",
+  companyName: "",
+  filed: "",
+};
+
+const statusList = {
+  idle: "idle",
+  process: "process",
+  success: "success",
+  error: "error",
 };
 
 export default function Register(props) {
   useScrollTop();
 
-  const [formWorker, setFormWorker] = useState(initialStateWorker);
+  const [form, setForm] = useState(initialState);
+  const [status, setStatus] = useState(statusList.idle);
   const [showRecruiter, setShowRecruiter] = useState(false);
 
   const handeShowClick = () => setShowRecruiter(!showRecruiter);
 
+  const {
+    name,
+    username,
+    email,
+    nohp,
+    password,
+    confirm_password,
+    companyName,
+    filed,
+  } = form;
+
+  useEffect(() => {
+    document.title = "Peworld | Register";
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormWorker({ ...formWorker, [name]: value });
+    setForm({ ...form, [name]: value });
   };
 
   const handleSubmitWorker = async (e) => {
     e.preventDefault();
-
+    setStatus(statusList.process);
     try {
-      const { password, confirm_password } = formWorker;
-
       if (password !== confirm_password) {
         return toast.error("Konfirmasi password tidak sama");
       }
+      setStatus(statusList.idle);
 
       const res = await axios.post("/auth/register", {
-        ...formWorker,
+        name,
+        username,
+        email,
+        nohp,
+        password,
+        confirm_password,
       });
 
-      toast.success(res.data.data.msg);
+      toast.success(res.value.data.msg);
+      setStatus(statusList.error);
     } catch (err) {
       err.response.data.msg && toast.error(err.response.data.msg);
-      setFormWorker(initialStateWorker);
+      setStatus(statusList.error);
+      setForm({
+        name,
+        username,
+        email,
+        nohp,
+        password,
+        confirm_password,
+      });
     }
+    setStatus(statusList.success);
+  };
+
+  const handleSubmitRecruiter = async (e) => {
+    e.preventDefault();
+
+    setStatus(statusList.process);
+    try {
+      if (password !== confirm_password) {
+        return toast.error("Konfirmasi password tidak sama");
+      }
+      const res = await axios.post("/auth/register-recruiter", {
+        name,
+        username,
+        email,
+        nohp,
+        password,
+        confirm_password,
+        companyName,
+        filed,
+      });
+
+      setStatus(statusList.idle);
+
+      toast.success(res.value.data.msg);
+      setStatus(statusList.error);
+    } catch (err) {
+      err.response.data.msg && toast.error(err.response.data.msg);
+      setForm({
+        name,
+        username,
+        email,
+        nohp,
+        password,
+        confirm_password,
+        companyName,
+        filed,
+      });
+    }
+    setStatus(statusList.success);
   };
 
   return (
@@ -69,17 +147,29 @@ export default function Register(props) {
               subTitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor."
             >
               {showRecruiter ? (
-                <FormRecruiter />
+                <FormRecruiter
+                  onSubmit={handleSubmitRecruiter}
+                  onChange={handleChange}
+                  valueName={form.name}
+                  valueEmail={form.email}
+                  valueCompany={form.companyName}
+                  valueBidang={form.filed}
+                  valueNohp={form.nohp}
+                  valuePassword={form.password}
+                  valueConfirmPassword={form.confirm_password}
+                  isLoading={status === statusList.process}
+                />
               ) : (
                 <FormWorker
                   onSubmit={handleSubmitWorker}
                   onChange={handleChange}
-                  valueName={formWorker.name}
-                  valueUsername={formWorker.username}
-                  valueEmail={formWorker.email}
-                  valueNohp={formWorker.nohp}
-                  valuePassword={formWorker.password}
-                  valueConfirmPassword={formWorker.confirm_password}
+                  valueName={form.name}
+                  valueUsername={form.username}
+                  valueEmail={form.email}
+                  valueNohp={form.nohp}
+                  valuePassword={form.password}
+                  valueConfirmPassword={form.confirm_password}
+                  isLoading={status === statusList.process}
                 />
               )}
 

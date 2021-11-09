@@ -3,12 +3,14 @@ import { Redirect, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const CompanyRoute = ({ component: Component, ...rest }) => {
-  const { id } = useSelector((state) => state.auth);
+  const { userId } = useSelector((state) => state.auth);
 
   return (
     <Route
       {...rest}
-      render={(props) => (id ? <Component {...props} /> : <Redirect to="/" />)}
+      render={(props) =>
+        userId ? <Component {...props} /> : <Redirect to="/" />
+      }
     />
   );
 };

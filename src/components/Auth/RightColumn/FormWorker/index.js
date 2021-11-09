@@ -108,8 +108,8 @@ export default function FormWorker(props) {
           value={props.valueConfirmPassword}
         />
       </div>
-      <Button className="btn__auth w-100" isLoading={isLoading}>
-        Masuk
+      <Button className="btn btn__auth w-100" isLoading={props.isLoading}>
+        Daftar
       </Button>
     </form>
   );
