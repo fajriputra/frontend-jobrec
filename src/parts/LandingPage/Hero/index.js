@@ -23,7 +23,11 @@ export default function Hero(props) {
                   euismod ipsum et dui rhoncus auctor.
                 </p>
 
-                <Button className="btn btn__started">
+                <Button
+                  className="btn btn__started"
+                  type="link"
+                  href="/register"
+                >
                   Mulai Dari Sekarang
                 </Button>
               </div>

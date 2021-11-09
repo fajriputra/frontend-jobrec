@@ -1,0 +1,21 @@
+.login {
+  position: relative;
+  background-color: #e5e5e5;
+  max-width: 100%;
+  padding: 1.875rem 1.25rem;
+  margin-bottom: 0;
+
+  @media (min-width: 768px) {
+    padding: 2.5rem 4.675rem 4.0625rem;
+  }
+
+  .forgot__password {
+    width: max-content;
+    margin-left: auto;
+    margin-bottom: 1.875rem;
+
+    a {
+      padding: 0;
+    }
+  }
+}

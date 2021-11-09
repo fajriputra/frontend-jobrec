@@ -30,7 +30,7 @@ export default function LeftColumn(props) {
           <IconWaveLeft className="img-cover" />
         </div>
         <div className="right__wave">
-          <IconWaveRight />
+          <IconWaveRight className="img-cover" />
         </div>
       </div>
 

@@ -1,0 +1,77 @@
+h1 {
+  font-size: 32px !important;
+  font-weight: 600 !important;
+  color: #1f2a36;
+}
+
+h2 {
+  font-size: 24px !important ;
+  font-weight: 600 !important;
+  color: #1f2a36;
+}
+
+.profile__bg {
+  background-color: #e5e5e5;
+}
+
+.profile {
+  background-color: #fff;
+  padding: 12px 20px !important;
+}
+
+.profile__user--image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 32px 0;
+}
+
+.profile__user--content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.profile__user--content h6 {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.profile__user--content p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #9ea0a5;
+}
+
+.profile__user--skill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile__user--skill button {
+  margin: 12px 16px;
+  background-color: rgba(251, 176, 23, 0.6);
+  border: 1px solid #fbb017;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.profile__user--button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__user--button button {
+  background-color: #5e50a1;
+  color: #fff;
+  width: 30%;
+  border-radius: 4px;
+  border: 1px solid #5e50a1;
+  padding: 8px;
+  margin-bottom: 12px;
+}

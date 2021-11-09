@@ -1,0 +1,33 @@
+.work {
+  margin-top: 40px !important;
+}
+
+.work__image {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.work__desc h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2a36;
+}
+
+.work__desc h5 {
+  font-size: 18px;
+  font-weight: 400;
+  color: #46505c;
+}
+
+.work__desc h6 {
+  font-size: 16px;
+  font-weight: 400;
+  color: #9ea0a5;
+}
+
+.work__desc p {
+  color: #1f2a36;
+  font-size: 14px;
+  font-weight: 400;
+}

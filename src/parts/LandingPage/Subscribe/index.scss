@@ -1,5 +1,6 @@
 .subscribe {
   &__card {
+    display: flex;
     position: relative;
     background-color: #5e50a1;
     border-radius: 2.5rem 0.5rem;
@@ -7,19 +8,40 @@
 
     &--content {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      flex-flow: column;
       align-items: center;
+      width: 100%;
 
-      &__text {
-        font-size: 2.375rem !important;
-        color: #fff !important;
-        line-height: 3.5rem !important;
+      @media (min-width: 768px) {
+        padding: 0 4.375rem;
+        flex-flow: row;
+        justify-content: space-between;
       }
 
       .btn__started {
         &.white {
           background-color: #fff;
           color: #5e50a1;
+        }
+      }
+
+      .content__text {
+        font-size: 1.25rem;
+        color: #fff;
+        line-height: 3.5rem;
+        margin-bottom: 1.25rem;
+
+        @media (min-width: 768px) {
+          font-size: 2.375rem;
+          margin-bottom: 0;
+        }
+
+        span {
+          @media (min-width: 768px) {
+            display: flex;
+            flex-direction: column;
+          }
         }
       }
     }
