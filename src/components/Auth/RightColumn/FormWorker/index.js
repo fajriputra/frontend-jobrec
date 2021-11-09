@@ -1,13 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import propTypes from "prop-types";
 
 import InputText from "components/UI/Form/InputText";
 import Button from "components/UI/Button";
 
 export default function FormWorker(props) {
+  const { isLoading } = useSelector((state) => state.auth);
+
   if (props.isLoggedin) {
     return (
-      <form className="form__input">
+      <form className="form__input" onSubmit={props.onSubmit}>
         <div className="form-group position-relative">
           <label htmlFor="email">Email</label>
           <InputText
@@ -15,6 +18,7 @@ export default function FormWorker(props) {
             name="email"
             type="email"
             value={props.valueEmail}
+            onChange={props.onChange}
           />
         </div>
         <div className="form-group position-relative">
@@ -24,6 +28,7 @@ export default function FormWorker(props) {
             name="password"
             type="password"
             value={props.valuePassword}
+            onChange={props.onChange}
           />
         </div>
 
@@ -36,7 +41,9 @@ export default function FormWorker(props) {
             Lupa kata sandi?
           </Button>
         </div>
-        <Button className="btn__auth">Masuk</Button>
+        <Button className="btn btn__auth w-100" isLoading={isLoading}>
+          Masuk
+        </Button>
       </form>
     );
   }
@@ -101,7 +108,9 @@ export default function FormWorker(props) {
           value={props.valueConfirmPassword}
         />
       </div>
-      <Button className="btn__auth">Daftar</Button>
+      <Button className="btn__auth w-100" isLoading={isLoading}>
+        Masuk
+      </Button>
     </form>
   );
 }

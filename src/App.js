@@ -11,6 +11,11 @@ import ProfilePerusahaan from "pages/main/ProfilPerusahaan";
 import EditProfileRecruiter from "pages/EditProfile/Recruiter";
 import EditProfileWorker from "pages/EditProfile/Worker";
 
+import { ToastContainer } from "react-toastify";
+import CompanyRoute from "components/Routes/CompanyRoute";
+import PrivateRoute from "components/Routes/PrivateRoute";
+import WorkerRoute from "components/Routes/WorkerRoute";
+
 function App() {
   return (
     <div className="App">
@@ -18,29 +23,42 @@ function App() {
         <Switch>
           <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />
-          <Route path="/reset-password" exact component={ResetPassword} />
-          <Route path="/confirm-password" exact component={ConfirmPassword} />
+          <PrivateRoute
+            path="/reset-password"
+            exact
+            component={ResetPassword}
+          />
+          <PrivateRoute
+            path="/confirm-password"
+            exact
+            component={ConfirmPassword}
+          />
           <Route path="/" exact component={LandingPage} />
-          <Route path="/home" exact component={Home} />
-          <Route path="/hire" exact component={Hire} />
-          <Route path="/profilePekerja" exact component={ProfilePekerja} />
-          <Route
-            path="/profilePerusahaan"
+          <CompanyRoute path="/home" exact component={Home} />
+          <CompanyRoute path="/hire" exact component={Hire} />
+          <PrivateRoute
+            path="/profilePekerja"
             exact
-            component={ProfilePerusahaan}
+            component={ProfilePekerja}
           />
-          <Route
-            path="/editProfileRecruiter"
-            exact
-            component={EditProfileRecruiter}
-          />
-          <Route
+          <WorkerRoute
             path="/edit-profile-worker"
             exact
             component={EditProfileWorker}
           />
+          <CompanyRoute
+            path="/profilePerusahaan"
+            exact
+            component={ProfilePerusahaan}
+          />
+          <CompanyRoute
+            path="/editProfileRecruiter"
+            exact
+            component={EditProfileRecruiter}
+          />
         </Switch>
       </Router>
+      <ToastContainer pauseOnHover={false} autoClose={2000} />
     </div>
   );
 }

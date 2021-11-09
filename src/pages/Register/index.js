@@ -7,7 +7,10 @@ import FormWorker from "components/Auth/RightColumn/FormWorker";
 import FormRecruiter from "components/Auth/RightColumn/FormRecruiter";
 import useScrollTop from "hooks/useScrollTop";
 
+import axios from "helpers/axios";
+
 import "./index.scss";
+import { toast } from "react-toastify";
 
 const initialStateWorker = {
   name: "",
@@ -16,8 +19,6 @@ const initialStateWorker = {
   nohp: "",
   password: "",
   confirm_password: "",
-  error: "",
-  success: "",
 };
 
 export default function Register(props) {
@@ -37,8 +38,20 @@ export default function Register(props) {
     e.preventDefault();
 
     try {
+      const { password, confirm_password } = formWorker;
+
+      if (password !== confirm_password) {
+        return toast.error("Konfirmasi password tidak sama");
+      }
+
+      const res = await axios.post("/auth/register", {
+        ...formWorker,
+      });
+
+      toast.success(res.data.data.msg);
     } catch (err) {
-      // err.response.data.message
+      err.response.data.msg && toast.error(err.response.data.msg);
+      setFormWorker(initialStateWorker);
     }
   };
 
@@ -59,6 +72,7 @@ export default function Register(props) {
                 <FormRecruiter />
               ) : (
                 <FormWorker
+                  onSubmit={handleSubmitWorker}
                   onChange={handleChange}
                   valueName={formWorker.name}
                   valueUsername={formWorker.username}

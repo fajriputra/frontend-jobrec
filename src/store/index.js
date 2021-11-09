@@ -4,14 +4,18 @@ import promiseMiddleware from "redux-promise-middleware";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+import authReducers from "./auth/reducer";
+
 const persistConfig = {
   key: "root",
   storage,
-  // whitelist: ["auth", "user", "movie", "location"],
-  // blacklist: [],
+  whitelist: ["auth"],
+  blacklist: [],
 };
 
-const rootReducers = combineReducers({});
+const rootReducers = combineReducers({
+  auth: authReducers,
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);
 const store = createStore(
