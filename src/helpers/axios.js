@@ -33,22 +33,27 @@ instances.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    // if (error.response.status === 403) {
-    //   if (error.response.data.message === "jwt expired") {
-    //     const refreshToken = localStorage.getItem("refreshToken");
-    //     instances
-    //       .post("/auth/refresh-token", { refreshToken })
-    //       .then((res) => {
-    //         alert("Refresh token is success");
-    //         localStorage.setItem("token", res.value.data.data.token);
-    //         window.location.reload();
-    //       })
-    //       .catch((err) => {
-    //         localStorage.clear();
-    //         window.location.href = "/sign-in";
-    //       });
-    //   }
-    // }
+    if (error.response.status === 403) {
+      if (error.response.data.msg === "jwt expired") {
+        const refreshToken = localStorage.getItem("refreshToken");
+        instances
+          .post("auth/refresh", { refreshToken })
+          .then((res) => {
+            // res.data.data.token
+            alert("token baru sudah berhasil di dapatkan");
+            localStorage.setItem("token", res.data.data.token);
+            localStorage.setItem("refreshToken", res.data.data.refreshToken);
+            window.location.reload();
+          })
+          .catch((err) => {
+            localStorage.clear();
+            window.location.href = "/";
+          });
+      } else {
+        localStorage.clear();
+        window.location.href = "/";
+      }
+    }
     return Promise.reject(error);
   }
 );
