@@ -3,4 +3,51 @@
   margin: 100px 0;
   background-color: #fff;
   border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile__user--perusahaan {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.profile__perusahaan--content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.profile__perusahaan--content h6 {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.profile__perusahaan--content p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #9ea0a5;
+}
+
+.profile__perusahaan--button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__perusahaan--button button {
+  background-color: #5e50a1;
+  color: #fff;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #5e50a1;
+  padding: 8px 20px;
 }
