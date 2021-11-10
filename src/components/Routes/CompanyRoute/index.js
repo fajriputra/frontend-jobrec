@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const CompanyRoute = ({ component: Component, ...rest }) => {
   const { id } = useSelector((state) => state.auth);
-
+  console.log(id);
   return (
     <Route
       {...rest}

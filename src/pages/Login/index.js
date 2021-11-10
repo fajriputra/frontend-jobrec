@@ -57,9 +57,9 @@ export default function Login(props) {
 
   const handleSubmitRecruiter = (e) => {
     e.preventDefault();
-
+    // console.log("NGEKLIGK");
     // console.log(form);
-
+    // console.log(form);
     dispatch(userLoginRecruiter(form))
       .then((res) => {
         toast.success(res.value.data.msg);
