@@ -16,7 +16,6 @@ export default function ConfirmPassword(props) {
     confirmPassword: "",
   });
   const handleChange = (e) => {
-    console.log(form);
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
