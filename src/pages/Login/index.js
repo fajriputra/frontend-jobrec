@@ -18,11 +18,21 @@ const initialState = {
   password: "",
 };
 
+const statusList = {
+  idle: "idle",
+  process: "process",
+  success: "success",
+  error: "error",
+};
+
 export default function Login(props) {
   useScrollTop();
 
   const [form, setForm] = useState(initialState);
   const [showRecruiter, setShowRecruiter] = useState(false);
+  const [status, setStatus] = useState(statusList.idle);
+
+  const { email, password } = form;
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -41,6 +51,15 @@ export default function Login(props) {
   const handleSubmitWorker = (e) => {
     e.preventDefault();
 
+    if (!email || !password) {
+      toast.error("Mohon di isi untuk keseluruhan field");
+      return setStatus(statusList.idle);
+    }
+
+    if (password.length < 6) {
+      toast.error("Password minimal 6 karakter");
+      return setStatus(statusList.idle);
+    }
     dispatch(userLoginWorker(form))
       .then((res) => {
         toast.success(res.value.data.msg);
@@ -60,6 +79,15 @@ export default function Login(props) {
   const handleSubmitRecruiter = (e) => {
     e.preventDefault();
 
+    if (!email || !password) {
+      toast.error("Mohon di isi untuk keseluruhan field");
+      return setStatus(statusList.idle);
+    }
+
+    if (password.length < 6) {
+      toast.error("Password minimal 6 karakter");
+      return setStatus(statusList.idle);
+    }
     dispatch(userLoginRecruiter(form))
       .then((res) => {
         toast.success(res.value.data.msg);

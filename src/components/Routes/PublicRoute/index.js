@@ -5,7 +5,7 @@ import { Route, Redirect } from "react-router-dom";
 const PublicRoute = ({ component: Component, restricted, ...rest }) => {
   const { token } = useSelector((state) => state.auth);
 
-  console.log(restricted, token);
+  // console.log(restricted);
 
   return (
     <Route

@@ -24,32 +24,32 @@ function App() {
         <Switch>
           <PublicRoute
             path="/register"
-            restricted={true}
+            // restricted={true}
             exact
             component={Register}
           />
           <PublicRoute
             path="/login"
-            restricted={true}
+            // restricted={true}
             exact
             component={Login}
           />
           <PublicRoute
             path="/reset-password"
-            restricted={true}
+            // restricted={true}
             exact
             component={ResetPassword}
           />
 
           <PublicRoute
             path="/confirm-password"
-            restricted={true}
+            // restricted={true}
             exact
             component={ConfirmPassword}
           />
           <PublicRoute
             path="/"
-            restricted={true}
+            // restricted={true}
             exact
             component={LandingPage}
           />
