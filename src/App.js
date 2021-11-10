@@ -15,25 +15,44 @@ import { ToastContainer } from "react-toastify";
 import CompanyRoute from "components/Routes/CompanyRoute";
 import PrivateRoute from "components/Routes/PrivateRoute";
 import WorkerRoute from "components/Routes/WorkerRoute";
+import PublicRoute from "components/Routes/PublicRoute";
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route path="/register" exact component={Register} />
-          <Route path="/login" exact component={Login} />
-          <PrivateRoute
+          <PublicRoute
+            path="/register"
+            restricted={true}
+            exact
+            component={Register}
+          />
+          <PublicRoute
+            path="/login"
+            restricted={true}
+            exact
+            component={Login}
+          />
+          <PublicRoute
             path="/reset-password"
+            restricted={true}
             exact
             component={ResetPassword}
           />
-          <PrivateRoute
+
+          <PublicRoute
             path="/confirm-password"
+            restricted={true}
             exact
             component={ConfirmPassword}
           />
-          <Route path="/" exact component={LandingPage} />
+          <PublicRoute
+            path="/"
+            restricted={true}
+            exact
+            component={LandingPage}
+          />
           <CompanyRoute path="/home" exact component={Home} />
           <CompanyRoute path="/hire" exact component={Hire} />
           <PrivateRoute

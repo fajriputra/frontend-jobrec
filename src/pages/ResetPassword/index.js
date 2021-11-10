@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import LeftColumn from "components/Auth/LeftColumn";
 import RightColumn from "components/Auth/RightColumn";
@@ -9,6 +9,11 @@ import useScrollTop from "hooks/useScrollTop";
 
 export default function ResetPassword(props) {
   useScrollTop();
+
+  useEffect(() => {
+    document.title = "Peworld | Reset Password";
+  });
+
   return (
     <section className="reset__password">
       <div className="container-fluid">
