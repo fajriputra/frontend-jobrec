@@ -42,22 +42,22 @@ export default function SosialMedia(props) {
       <div className="kkk">
         <div className=" vector">
           <img src={mail} alt="map" />
-          <p>martabatjaya@gmail.com</p>
+          <p>{props.email || ""}</p>
         </div>
 
         <div className=" vector">
           <img src={instagram} alt="map" />
-          <p>martabat_jaya</p>
+          <p>{props.url_ig || ""}</p>
         </div>
 
         <div className="vector">
           <img src={call} alt="map" />
-          <p>0821-8190-1821</p>
+          <p>{props.nohp || ""}</p>
         </div>
 
         <div className="vector">
           <img src={linkin} alt="map" />
-          <p>Martabat Jaya Abadi</p>
+          <p>{props.url_linkedin}</p>
         </div>
       </div>
     </div>
