@@ -12,28 +12,28 @@ export default function Portofolio(props) {
   // const urlParams = qs.parse(props.location.search);
 
   return (
-    <div class="row portofolio">
-      <div class="col portofolio__content">
+    <div className="row portofolio">
+      <div className="col portofolio__content">
         <img src={porto1} alt="" />
         <p>Remainder app</p>
       </div>
-      <div class="col portofolio__content">
+      <div className="col portofolio__content">
         <img src={porto2} alt="" />
         <p>Social media app</p>
       </div>
-      <div class="col portofolio__content">
+      <div className="col portofolio__content">
         <img src={porto3} alt="" />
         <p>Project management web</p>
       </div>
-      <div class="col portofolio__content">
+      <div className="col portofolio__content">
         <img src={porto4} alt="" />
         <p>Remainder app</p>
       </div>
-      <div class="col portofolio__content">
+      <div className="col portofolio__content">
         <img src={porto5} alt="" />
         <p>Social media app</p>
       </div>
-      <div class="col portofolio__content">
+      <div className="col portofolio__content">
         <img src={porto6} alt="" />
         <p>Project management web</p>
       </div>

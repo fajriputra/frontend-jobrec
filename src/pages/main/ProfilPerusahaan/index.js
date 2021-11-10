@@ -15,20 +15,20 @@ export default function ProfilePerusahaan(props) {
   return (
     <section className="profilePekerja">
       <Header className="mb-0" />
-      <div class="profile__bg">
+      <div className="profile__bg">
         <PurpleBackground className="purple" />
 
-        <div class="container">
-          <div class="row profile">
-            <div class="profile__perusahaan">
-              <div class="profile__user--image">
+        <div className="container">
+          <div className="row profile">
+            <div className="profile__perusahaan">
+              <div className="profile__user--image">
                 <img src={profile} alt="profile" />
               </div>
-              <div class="profile__user--content">
+              <div className="profile__user--content">
                 <h2>PT. Martabat Jaya Abadi</h2>
                 <h6>Financial</h6>
-                <div class="row">
-                  <div class="col vector">
+                <div className="row">
+                  <div className="col vector">
                     <img src={map} alt="map" />
                     <p>Purwokerto, Jawa Tengah</p>
                   </div>
@@ -42,7 +42,7 @@ export default function ProfilePerusahaan(props) {
                 </p>
               </div>
 
-              <div class="profile__user--button">
+              <div className="profile__user--button">
                 <button>Edit Profile</button>
               </div>
 
