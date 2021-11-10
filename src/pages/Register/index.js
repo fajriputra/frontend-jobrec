@@ -63,10 +63,27 @@ export default function Register(props) {
     e.preventDefault();
     setStatus(statusList.process);
     try {
-      if (password !== confirm_password) {
-        return toast.error("Konfirmasi password tidak sama");
+      if (
+        !name ||
+        !username ||
+        !email ||
+        !nohp ||
+        !password ||
+        !confirm_password
+      ) {
+        toast.error("Mohon di isi untuk keseluruhan field");
+        return setStatus(statusList.idle);
       }
-      setStatus(statusList.idle);
+
+      if (password !== confirm_password) {
+        toast.error("Konfirmasi password tidak sama");
+        return setStatus(statusList.idle);
+      }
+
+      if (password.length < 6 && confirm_password.length < 6) {
+        toast.error("Password minimal 6 karakter");
+        return setStatus(statusList.idle);
+      }
 
       const res = await axios.post("/auth/register", {
         name,
@@ -77,18 +94,25 @@ export default function Register(props) {
         confirm_password,
       });
 
-      toast.success(res.value.data.msg);
-      setStatus(statusList.error);
+      setForm({
+        name: "",
+        username: "",
+        email: "",
+        nohp: "",
+        password: "",
+        confirm_password: "",
+      });
+
+      toast.success(res.data.msg);
     } catch (err) {
       err.response.data.msg && toast.error(err.response.data.msg);
-      setStatus(statusList.error);
       setForm({
-        name,
-        username,
-        email,
-        nohp,
-        password,
-        confirm_password,
+        name: "",
+        username: "",
+        email: "",
+        nohp: "",
+        password: "",
+        confirm_password: "",
       });
     }
     setStatus(statusList.success);
@@ -99,9 +123,30 @@ export default function Register(props) {
 
     setStatus(statusList.process);
     try {
-      if (password !== confirm_password) {
-        return toast.error("Konfirmasi password tidak sama");
+      if (
+        !name ||
+        !username ||
+        !email ||
+        !nohp ||
+        !password ||
+        !confirm_password ||
+        !companyName ||
+        !filed
+      ) {
+        toast.error("Mohon di isi untuk keseluruhan field");
+        return setStatus(statusList.idle);
       }
+
+      if (password !== confirm_password) {
+        toast.error("Konfirmasi password tidak sama");
+        return setStatus(statusList.idle);
+      }
+
+      if (password.length < 6 && confirm_password.length < 6) {
+        toast.error("Password minimal 6 karakter");
+        return setStatus(statusList.idle);
+      }
+
       const res = await axios.post("/auth/register-recruiter", {
         name,
         username,
@@ -113,21 +158,29 @@ export default function Register(props) {
         filed,
       });
 
-      setStatus(statusList.idle);
+      setForm({
+        name: "",
+        username: "",
+        email: "",
+        nohp: "",
+        password: "",
+        confirm_password: "",
+        companyName: "",
+        filed: "",
+      });
 
-      toast.success(res.value.data.msg);
-      setStatus(statusList.error);
+      toast.success(res.data.msg);
     } catch (err) {
       err.response.data.msg && toast.error(err.response.data.msg);
       setForm({
-        name,
-        username,
-        email,
-        nohp,
-        password,
-        confirm_password,
-        companyName,
-        filed,
+        name: "",
+        username: "",
+        email: "",
+        nohp: "",
+        password: "",
+        confirm_password: "",
+        companyName: "",
+        filed: "",
       });
     }
     setStatus(statusList.success);

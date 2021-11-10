@@ -5,6 +5,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import authReducers from "./auth/reducer";
+import companyReducers from "./profile/company/reducer";
 
 const persistConfig = {
   key: "root",
@@ -15,6 +16,7 @@ const persistConfig = {
 
 const rootReducers = combineReducers({
   auth: authReducers,
+  company: companyReducers,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

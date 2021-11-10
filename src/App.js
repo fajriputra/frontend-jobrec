@@ -15,7 +15,7 @@ import { ToastContainer } from "react-toastify";
 import CompanyRoute from "components/Routes/CompanyRoute";
 import PrivateRoute from "components/Routes/PrivateRoute";
 import WorkerRoute from "components/Routes/WorkerRoute";
-import PublicRoute from "components/Routes/PublicRoute";
+// import PublicRoute from "components/Routes/PublicRoute";
 
 function App() {
   return (
