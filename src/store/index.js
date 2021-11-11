@@ -10,7 +10,7 @@ import companyReducers from "./profile/company/reducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "company"],
   blacklist: [],
 };
 
