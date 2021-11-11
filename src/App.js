@@ -44,7 +44,7 @@ function App() {
           />
           <Route path="/" restricted={true} exact component={LandingPage} />
           <CompanyRoute path="/home" exact component={Home} />
-          <CompanyRoute path="/hire" exact component={Hire} />
+          <CompanyRoute path="/hire/:workerUsername" exact component={Hire} />
           <PrivateRoute
             path="/profilePekerja"
             exact

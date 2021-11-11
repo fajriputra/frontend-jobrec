@@ -12,7 +12,6 @@ import call from "../../../assets/images/icons/icon-phone.svg";
 import React, { useEffect, useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { profilePekerja } from "store/profile/actions";
 
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";

@@ -63,17 +63,18 @@ export default function Register(props) {
     e.preventDefault();
     setStatus(statusList.process);
     try {
-      if (
-        !name ||
-        !username ||
-        !email ||
-        !nohp ||
-        !password ||
-        !confirm_password
-      ) {
-        toast.error("Mohon di isi untuk keseluruhan field");
-        return setStatus(statusList.idle);
-      }
+      console.log(name, username, email, nohp, password, confirm_password);
+      // if (
+      //   !name ||
+      //   !username ||
+      //   !email ||
+      //   !nohp ||
+      //   !password ||
+      //   !confirm_password
+      // ) {
+      //   toast.error("Mohon di isi untuk keseluruhan field");
+      //   return setStatus(statusList.idle);
+      // }
 
       if (password !== confirm_password) {
         toast.error("Konfirmasi password tidak sama");
