@@ -14,9 +14,15 @@
   border-radius: 8px;
   position: relative;
   margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .edit__perusahaan--image {
+  width: 200px;
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
