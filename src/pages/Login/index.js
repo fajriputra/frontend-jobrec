@@ -93,7 +93,7 @@ export default function Login(props) {
         toast.success(res.value.data.msg);
 
         setTimeout(() => {
-          history.push("/");
+          history.push("/home");
         }, 2000);
 
         localStorage.setItem("token", res.value.data.data.token);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { ReactComponent as IconPencil } from "assets/images/icons/icon-pencil.svg";
 import { ReactComponent as IconPencilVector } from "assets/images/icons/icon-pencil-vector.svg";
@@ -6,11 +6,15 @@ import { ReactComponent as IconLocation } from "assets/images/icons/icon-locatio
 import { ReactComponent as IconPhone } from "assets/images/icons/icon-phone.svg";
 import { ReactComponent as IconTrashVector } from "assets/images/icons/icon-trash-vector.svg";
 import ProfileImage from "assets/images/opini1.png";
-
+import { profilePekerja } from "store/profile/actions";
+import { connect } from "react-redux";
 import Card from "components/Card";
 import Header from "components/Header";
 import PurpleBackground from "components/PurpleBackground";
 import Image from "components/Image";
+import axios from "helpers/axios";
+import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 import Button from "components/UI/Button";
 import MetaWrapper from "components/MetaWrapper";
@@ -19,8 +23,200 @@ import InputText from "components/UI/Form/InputText";
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";
 
-export default function EditProfileWorker(props) {
+const EditProfileWorker = (props) => {
   useScrollTop();
+  const history = useHistory();
+  const [allSkill, setAllSkill] = useState([]);
+  const [allPengalaman, setAllPengalaman] = useState([]);
+  const [thisWorker, setThisWorker] = useState({});
+  const [formProfile, setformProfile] = useState({});
+  const [allPortfolio, setAllPortfolio] = useState([]);
+  const [formPengalaman, setformPengalaman] = useState({
+    username: props.auth.username,
+  });
+  const [formPortfolio, setformPortfolio] = useState({
+    username: props.auth.username,
+  });
+
+  const [formSkill, setformSkill] = useState({
+    username: props.auth.username,
+  });
+  // useEffect(() => {
+  // getAllPengalaman();
+  // }, [allPengalaman]);
+  const getWorkerByUsername = () => {
+    axios
+      .get(`/worker/get-worker/${props.auth.username}`)
+      .then((res) => {
+        setThisWorker(res.data.data[0]);
+        setformProfile(res.data.data[0]);
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+        setTimeout(() => {
+          history.push("/");
+        }, 2000);
+      });
+  };
+  const getAllSkill = () => {
+    axios
+      .get(`/skill/${props.auth.username}`)
+      .then((res) => {
+        setAllSkill(res.data.data);
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+        setTimeout(() => {
+          history.push("/");
+        }, 2000);
+      });
+  };
+  const getAllPengalaman = () => {
+    axios
+      .get(`/pengalaman/get-worker-exp`)
+      .then((res) => {
+        console.log(res.data.data);
+        setAllPengalaman(res.data.data);
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const getAllPortfolio = () => {
+    axios
+      .get(`/portofolio/${props.auth.username}`)
+      .then((res) => {
+        console.log(res.data.data);
+        setAllPortfolio(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  useEffect(() => {
+    getWorkerByUsername();
+    getAllSkill();
+    getAllPengalaman();
+    getAllPortfolio();
+  }, []);
+  const handleChange = (e) => {
+    console.log(formProfile);
+    const { name, value } = e.target;
+    setformProfile({ ...formProfile, [name]: value });
+  };
+  const handleClickProfile = () => {
+    axios
+      .patch(`/worker/update-worker`, formProfile)
+      .then((res) => {
+        console.log(res);
+        getWorkerByUsername();
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+        setTimeout(() => {
+          history.push("/");
+        }, 2000);
+      });
+  };
+  const handleChangeSkill = (e) => {
+    const { name, value } = e.target;
+    setformSkill({ ...formSkill, [name]: value });
+  };
+  const handleSubmitSkill = (e) => {
+    axios
+      .post(`/skill`, formSkill)
+      .then((res) => {
+        toast.success("Berhasil Menambahkan Skill");
+        getAllSkill();
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+        setTimeout(() => {
+          history.push("/");
+        }, 2000);
+      });
+  };
+  const handleSubmitPortfolio = (e) => {
+    axios
+      .post(`/portofolio`, formPortfolio)
+      .then((res) => {
+        toast.success("Berhasil Menambahkan Portfolio");
+        getAllPortfolio();
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const onImageChange = (event) => {
+    console.log("UPLOAD FILE");
+    if (event.target.files && event.target.files[0]) {
+      setformPortfolio({
+        ...formPortfolio,
+        [event.target.name]: event.target.files[0],
+      });
+    }
+  };
+
+  const handleDeleteSkill = (e) => {
+    console.log(e);
+    axios
+      .delete(`/skill/delete/${e}`)
+      .then((res) => {
+        toast.success("Berhasil Menghapus Skill");
+        getAllSkill();
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+        setTimeout(() => {
+          history.push("/");
+        }, 2000);
+      });
+  };
+  const handleChangePengalaman = (e) => {
+    const { name, value } = e.target;
+    console.log(formPengalaman);
+    setformPengalaman({ ...formPengalaman, [name]: value });
+  };
+  const handleChangePortfolio = (e) => {
+    const { name, value } = e.target;
+    console.log(formPortfolio);
+    setformPortfolio({ ...formPortfolio, [name]: value });
+  };
+  const handleSubmitPengalaman = (e) => {
+    axios
+      .post(`/pengalaman/post-worker-exp`, formPengalaman)
+      .then((res) => {
+        toast.success("Berhasil Menambahkan Pengalaman");
+        getAllPengalaman();
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const handleDeletePengalaman = (e) => {
+    axios
+      .delete(`/pengalaman/delete-worker-exp`)
+      .then((res) => {
+        toast.success("Berhasil Menghapus Pengalaman");
+        setAllPengalaman([]);
+        getAllPengalaman();
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const handleDeletePortfolio = (e) => {
+    axios
+      .delete(`/portofolio/delete/${e}`)
+      .then((res) => {
+        toast.success("Berhasil Menghapus Pengalaman");
+        getAllPortfolio();
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
   return (
     <>
       <Header className="mb-0" />
@@ -38,7 +234,7 @@ export default function EditProfileWorker(props) {
                     imageClass="img-cover rounded-circle"
                   />
 
-                  <p className="username text-center">@babangganteng</p>
+                  <p className="username text-center">@{thisWorker.username}</p>
 
                   <Button className="btn btn__edit__text p-0">
                     <IconPencil
@@ -52,28 +248,42 @@ export default function EditProfileWorker(props) {
 
                 <MetaWrapper
                   className="meta__data--profile"
-                  title="Louis Tomlinson"
+                  title={thisWorker.name}
                   jobs={
                     <div className="text__jobs--wrapper">
                       <div className="text__infodata mb-3">
                         <span className="text__infodata--title mb-1">
-                          Web Developer
-                        </span>
-                        <span className="text__infodata--gray">Freelance</span>
-                      </div>
-                      <div className="text__infodata mb-3">
-                        <span className="text__infodata--gray mb-2">
-                          <IconLocation className="icon location" />
-                          Purwokerto, Jawa Tengah
+                          {thisWorker.jobdesk}
                         </span>
                         <span className="text__infodata--gray">
-                          <IconPhone className="icon phone" />
-                          0812 - 3456 - 789
+                          {thisWorker.type == "fulltime"
+                            ? "Full Time"
+                            : "Freelance"}
                         </span>
+                      </div>
+                      <div className="text__infodata mb-3">
+                        {thisWorker.domisili ? (
+                          <span className="text__infodata--gray mb-2">
+                            <IconLocation className="icon location" />
+                            {thisWorker.domisili}
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                        {thisWorker.nohp ? (
+                          <span className="text__infodata--gray">
+                            <IconPhone className="icon phone" />
+                            {thisWorker.nohp}
+                          </span>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     </div>
                   }
-                  desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum erat orci, mollis nec gravida sed, ornare quis urna. Curabitur eu lacus fringilla, vestibulum risus at."
+                  desc={`${
+                    thisWorker.deskripsi == null ? "" : thisWorker.deskripsi
+                  }`}
                   classTitle="text__title"
                   classDesc="text__desc"
                 />
@@ -97,16 +307,37 @@ export default function EditProfileWorker(props) {
                     <label htmlFor="fullname">Nama Lengkap</label>
                     <InputText
                       placeholder="Masukan nama lengkap"
-                      name="fullname"
+                      name="name"
+                      value={formProfile.name}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="form-group position-relative">
                     <label htmlFor="job">Job Desk</label>
-                    <InputText placeholder="Masukan job desk" name="job" />
+                    <InputText
+                      placeholder="Masukan job desk"
+                      name="jobdesk"
+                      value={formProfile.jobdesk}
+                      onChange={handleChange}
+                    />
                   </div>
                   <div className="form-group position-relative">
                     <label htmlFor="domisili">Domisi</label>
-                    <InputText placeholder="Masukan domisili" name="domisili" />
+                    <InputText
+                      placeholder="Masukan domisili"
+                      name="domisili"
+                      value={formProfile.domisili}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group position-relative">
+                    <label htmlFor="domisili">Nomor Telefon</label>
+                    <InputText
+                      placeholder="Masukan domisili"
+                      name="nohp"
+                      value={formProfile.nohp}
+                      onChange={handleChange}
+                    />
                   </div>
 
                   <div className="form__socialmedia">
@@ -114,21 +345,27 @@ export default function EditProfileWorker(props) {
                       <label htmlFor="instagram">Instagram</label>
                       <InputText
                         placeholder="Masukan username instagram"
-                        name="instagram"
+                        name="url_ig"
+                        value={formProfile.url_ig}
+                        onChange={handleChange}
                       />
                     </div>
                     <div className="form-group position-relative">
                       <label htmlFor="github">Github</label>
                       <InputText
                         placeholder="Masukan username github"
-                        name="github"
+                        name="url_github"
+                        value={formProfile.url_github}
+                        onChange={handleChange}
                       />
                     </div>
                     <div className="form-group position-relative">
                       <label htmlFor="gitlab">Gitlab</label>
                       <InputText
                         placeholder="Masukan username gitlab"
-                        name="gitlab"
+                        name="url_gitlab"
+                        value={formProfile.url_gitlab}
+                        onChange={handleChange}
                       />
                     </div>
                   </div>
@@ -136,14 +373,21 @@ export default function EditProfileWorker(props) {
                   <div className="form-group position-relative d-flex flex-column">
                     <label htmlFor="desc">Deskripsi Singkat</label>
                     <textarea
-                      name="desc"
+                      name="deskripsi"
                       placeholder="Masukan deskripsi disini..."
                       className="form__description"
+                      value={formProfile.deskripsi}
+                      onChange={handleChange}
                     ></textarea>
                   </div>
 
-                  <div className="d-flex justify-content-end">
-                    <Button className="btn__auth save">Simpan</Button>
+                  <div className="d-flex justify-content-end ">
+                    <Button
+                      className="btn__auth save"
+                      onClick={handleClickProfile}
+                    >
+                      Simpan
+                    </Button>
                   </div>
                 </div>
               </Card>
@@ -157,65 +401,37 @@ export default function EditProfileWorker(props) {
                 <div className="content__form skills">
                   <div className="form-group position-relative">
                     <InputText
-                      placeholder="Masukan nama lengkap"
-                      name="fullname"
+                      placeholder="Masukan Nama Skill"
+                      name="nama_skill"
+                      onChange={handleChangeSkill}
                     />
                   </div>
                   <div className="ms-auto">
                     <Button
                       className="btn__auth save skill"
                       style={{ marginBottom: 30 }}
+                      onClick={handleSubmitSkill}
+                      value={formSkill.nama_skill}
                     >
                       Simpan
                     </Button>
                   </div>
                 </div>
                 <div className="wrapper__button">
-                  <Button className="btn btn__skill--added">
-                    Python
-                    <IconPencilVector
-                      width={18}
-                      height={18}
-                      className="ms-5 me-3"
-                    />
-                    <IconTrashVector width={18} height={18} />
-                  </Button>
-                  <Button className="btn btn__skill--added">
-                    Python
-                    <IconPencilVector
-                      width={18}
-                      height={18}
-                      className="ms-5 me-3"
-                    />
-                    <IconTrashVector width={18} height={18} />
-                  </Button>
-                  <Button className="btn btn__skill--added">
-                    Python
-                    <IconPencilVector
-                      width={18}
-                      height={18}
-                      className="ms-5 me-3"
-                    />
-                    <IconTrashVector width={18} height={18} />
-                  </Button>
-                  <Button className="btn btn__skill--added">
-                    Python
-                    <IconPencilVector
-                      width={18}
-                      height={18}
-                      className="ms-5 me-3"
-                    />
-                    <IconTrashVector width={18} height={18} />
-                  </Button>
-                  <Button className="btn btn__skill--added">
-                    Python
-                    <IconPencilVector
-                      width={18}
-                      height={18}
-                      className="ms-5 me-3"
-                    />
-                    <IconTrashVector width={18} height={18} />
-                  </Button>
+                  {allSkill.map((e) => (
+                    <Button
+                      className="btn btn__skill--added"
+                      onClick={() => handleDeleteSkill(e.id)}
+                    >
+                      {e.nama_skill}
+                      <IconTrashVector
+                        width={18}
+                        height={18}
+                        className="ms-5 "
+                      />
+                    </Button>
+                  ))}
+                  {/* {console.log(allSkill)} */}
                 </div>
               </Card>
               <Card className="edit__card--profile">
@@ -231,30 +447,41 @@ export default function EditProfileWorker(props) {
                       <label htmlFor="company">Nama Perusahaan</label>
                       <InputText
                         placeholder="Masukan nama perusahaan"
-                        name="company"
+                        onChange={handleChangePengalaman}
+                        name="nama_perusahaan"
                       />
                     </div>
                     <div className="form-group position-relative">
                       <label htmlFor="position">Posisi</label>
                       <InputText
                         placeholder="Masukan posisi anda"
-                        name="position"
+                        onChange={handleChangePengalaman}
+                        name="posisi"
                       />
                     </div>
                     <div className="form-group position-relative">
                       <label htmlFor="date__in">Tanggal Keluar</label>
-                      <InputText name="date__in" type="date" />
+                      <InputText
+                        onChange={handleChangePengalaman}
+                        name="tgl_masuk"
+                        type="date"
+                      />
                     </div>
                     <div className="form-group position-relative">
                       <label htmlFor="date__out">Tanggal Keluar</label>
-                      <InputText name="date__out" type="date" />
+                      <InputText
+                        onChange={handleChangePengalaman}
+                        name="tgl_keluar"
+                        type="date"
+                      />
                     </div>
                   </div>
 
                   <div className="form-group position-relative d-flex flex-column">
                     <label htmlFor="desc">Deskripsi singkat</label>
                     <textarea
-                      name="desc"
+                      onChange={handleChangePengalaman}
+                      name="deskripsi"
                       placeholder="Deskripsikan pekerjaan anda disini"
                       className="form__description"
                     ></textarea>
@@ -264,7 +491,10 @@ export default function EditProfileWorker(props) {
                     className="w-100"
                     style={{ color: "#E2E5ED", height: 2 }}
                   />
-                  <Button className="btn__auth save experience">
+                  <Button
+                    className="btn__auth save experience"
+                    onClick={handleSubmitPengalaman}
+                  >
                     Tambah pengalaman kerja
                   </Button>
                   <hr
@@ -272,6 +502,26 @@ export default function EditProfileWorker(props) {
                     style={{ color: "#E2E5ED", height: 2 }}
                   />
                 </div>
+                {allPengalaman.map((e) => (
+                  <>
+                    <div className="card card-body mt-5">
+                      <div className="content__form skills">
+                        <div className="form-group position-relative">
+                          {e.nama_perusahaan}
+                        </div>
+                        <div className="ms-auto">
+                          <button
+                            className="btn btn-danger"
+                            style={{ width: "120px" }}
+                            onClick={() => handleDeletePengalaman(e.id)}
+                          >
+                            Hapus
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ))}
               </Card>
               <Card className="edit__card--profile">
                 <div className="content__head">
@@ -285,27 +535,57 @@ export default function EditProfileWorker(props) {
                     <label htmlFor="aplikasi">Nama Aplikasi</label>
                     <InputText
                       placeholder="Masukan nama aplikasi"
-                      name="aplikasi"
+                      name="nama_applikasi"
+                      onChange={handleChangePortfolio}
                     />
                   </div>
                   <div className="form-group position-relative">
                     <label htmlFor="repo">Link Repository</label>
                     <InputText
                       placeholder="Masukan link repository"
-                      name="repo"
+                      name="link_repository"
+                      onChange={handleChangePortfolio}
                     />
                   </div>
                   <div className="form-group position-relative">
                     <label htmlFor="image">Upload Gambar</label>
-                    <InputText type="file" name="image" />
+                    <InputText
+                      type="file"
+                      name="image"
+                      name="image"
+                      onChange={onImageChange}
+                    />
                   </div>
                   <hr
                     className="w-100"
                     style={{ color: "#E2E5ED", height: 2 }}
                   />
-                  <Button className="btn__auth save portfolio mt-4 mt-md-5">
+                  <Button
+                    className="btn__auth save portfolio mt-4 mt-md-5"
+                    onClick={handleSubmitPortfolio}
+                  >
                     Tambah portofolio
                   </Button>
+                  {allPortfolio.map((e) => (
+                    <>
+                      <div className="card card-body mt-5">
+                        <div className="content__form skills">
+                          <div className="form-group position-relative">
+                            {e.nama_applikasi}
+                          </div>
+                          <div className="ms-auto">
+                            <button
+                              className="btn btn-danger"
+                              style={{ width: "120px" }}
+                              onClick={() => handleDeletePortfolio(e.id)}
+                            >
+                              Hapus
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ))}
                 </div>
               </Card>
             </div>
@@ -314,4 +594,15 @@ export default function EditProfileWorker(props) {
       </section>
     </>
   );
-}
+};
+
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+  auth: state.auth,
+});
+
+const mapDispatchToProps = {
+  profilePekerja,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfileWorker);

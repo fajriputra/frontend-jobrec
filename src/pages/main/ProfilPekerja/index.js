@@ -20,8 +20,9 @@ import useScrollTop from "hooks/useScrollTop";
 const WorkerProfile = (props) => {
   useScrollTop();
 
+  console.log(props);
   useEffect(() => {
-    props.profilePekerja(props.profile.username);
+    // props.profilePekerja(props.profile.username);
   }, []);
   return (
     <section className="profilePekerja">
@@ -129,7 +130,7 @@ const WorkerProfile = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  profile: state.profile.pekerja,
+  profile: state.profile,
   auth: state.auth,
 });
 

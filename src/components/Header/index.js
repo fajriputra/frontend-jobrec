@@ -5,7 +5,7 @@ import { ReactComponent as IconMail } from "assets/images/icons/icon-mail.svg";
 import { ReactComponent as IconBell } from "assets/images/icons/icon-bell.svg";
 import { ReactComponent as IconClose } from "assets/images/icons/icon-close.svg";
 import { ReactComponent as IconToggle } from "assets/images/icons/icon-toggler.svg";
-
+import { Link } from "react-router-dom";
 import Button from "components/UI/Button";
 import BrandLogo from "components/BrandLogo";
 import UserProfile from "components/UserProfile";
@@ -24,6 +24,7 @@ export default function Header(props) {
         <div className="container">
           <div className="navbar-brand">
             <BrandLogo />
+            {/* <Link to="/" className="btn btn-light px-md-3 mx-3">Dashboard</Link> */}
           </div>
           <Button
             className="navbar-toggler"
@@ -45,11 +46,13 @@ export default function Header(props) {
                       <IconBell />
                     </Button>
                   </li>
+
                   <li className="nav-item">
-                    <Button className="btn px-md-5">
+                    <Button className="btn mx-3">
                       <IconMail />
                     </Button>
                   </li>
+
                   <UserProfile />
                 </>
               ) : (

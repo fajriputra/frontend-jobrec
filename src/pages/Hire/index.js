@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Header from "components/Header";
-import profile from "../../assets/images/profile-example.png";
 import map from "../../assets/images/icons/icon-location.svg";
 import call from "../../assets/images/icons/icon-phone.svg";
 import Button from "components/UI/Button";
 import Footer from "components/SiteInfo";
 import { toast } from "react-toastify";
 import axios from "helpers/axios";
-import { useSelector } from "react-redux";
+
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";
 
 export default function Hire(props) {
   const history = useHistory();
-  const [thisWorker, setThisWorker] = useState({});
-  const [thisWorkerSkill, setThisWorkerSkill] = useState([]);
-  const pp = useSelector((state) => state.auth);
-
   const [form, setForm] = useState({
     tujuan: "Job",
-    pesan: `Halo, Perkenalkan saya ${thisWorker.name}`,
+    pesan: "",
     workerUsername: props.match.params.workerUsername,
   });
-
+  const [thisWorker, setThisWorker] = useState({});
+  const [thisWorkerSkill, setThisWorkerSkill] = useState([]);
   useScrollTop();
   useEffect(() => {
     getWorkerByUsername();
     getSkillByUsernameWorker();
+    console.log("JALANIN WEB");
   }, []);
 
   const handleChange = (e) => {
@@ -40,10 +37,10 @@ export default function Hire(props) {
     try {
       const res = await axios.post(`/recruiter/hire-worker`, form);
       toast.success(res.data.msg);
-      // console.log(res);
-      // setTimeout(() => {
-      //   // history.push("/");
-      // }, 2000);
+      console.log(res);
+      setTimeout(() => {
+        history.push("/");
+      }, 2000);
     } catch (err) {
       // console.log(err.response);
       err.response.data.msg && toast.error(err.response.data.msg);
@@ -59,7 +56,7 @@ export default function Hire(props) {
         console.log("EROR WORKER");
         err.response.data.msg && toast.error(err.response.data.msg);
         setTimeout(() => {
-          // history.push("/");
+          history.push("/");
         }, 2000);
       });
   };
@@ -74,7 +71,7 @@ export default function Hire(props) {
         console.log(err.response.data);
         err.response.data.msg && toast.error(err.response.data.msg);
         setTimeout(() => {
-          // history.push("/");
+          history.push("/");
         }, 2000);
       });
   };
@@ -86,7 +83,10 @@ export default function Hire(props) {
           <div className="row hire">
             <div className="col-xl-4 col-lg-12 hire__user mt-5 mb-5">
               <div className="hire__user--image">
-                <img src={profile} alt="profile" />
+                <img
+                  src={thisWorker.avatar ? thisWorker.avatar : "/avatar.png"}
+                  alt="profile"
+                />
               </div>
               <div className="hire__user--content">
                 <h2>{thisWorker.name}</h2>
@@ -100,6 +100,7 @@ export default function Hire(props) {
                     <p>{thisWorker.domisili}</p>
                   </div>
                 </div>
+
                 <div className="row">
                   <div className="col vector">
                     <img src={call} alt="call" />
@@ -150,8 +151,7 @@ export default function Hire(props) {
                         rows="8"
                         onChange={handleChange}
                         name="pesan"
-                        value={form.pesan}
-                        // placeholder="Deskripsikan/jelaskan lebih detail"
+                        placeholder="Deskripsikan/jelaskan lebih detail tentang project yang anda tawarkan"
                       ></textarea>
                     </div>
                   </div>
