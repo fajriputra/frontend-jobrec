@@ -11,26 +11,26 @@ import "./index.scss";
 export default function SosialMedia(props) {
   if (props.profilPekerja) {
     return (
-      <div class="profile__user--sosmed">
-        <div class="kkk">
-          <div class=" vector">
+      <div className="profile__user--sosmed">
+        <div className="kkk">
+          <div className=" vector">
             <img src={mail} alt="map" />
-            <p>Louistommo@gmail.com</p>
+            <p>{props.email}</p>
           </div>
 
-          <div class=" vector">
+          <div className=" vector">
             <img src={instagram} alt="map" />
-            <p>@Louist91</p>
+            <p>{props.instagram}</p>
           </div>
 
-          <div class="vector">
+          <div className="vector">
             <img src={github} alt="map" />
-            <p>@Louistommo</p>
+            <p>{props.github}</p>
           </div>
 
-          <div class="vector">
+          <div className="vector">
             <img src={gitlab} alt="map" />
-            <p>@Louistommo91</p>
+            <p>{props.gitlab}</p>
           </div>
         </div>
       </div>
@@ -38,26 +38,26 @@ export default function SosialMedia(props) {
   }
 
   return (
-    <div class="profile__user--sosmed">
-      <div class="kkk">
-        <div class=" vector">
+    <div className="profile__user--sosmed">
+      <div className="kkk">
+        <div className=" vector">
           <img src={mail} alt="map" />
-          <p>martabatjaya@gmail.com</p>
+          <p>{props.email || ""}</p>
         </div>
 
-        <div class=" vector">
+        <div className=" vector">
           <img src={instagram} alt="map" />
-          <p>martabat_jaya</p>
+          <p>{props.url_ig || ""}</p>
         </div>
 
-        <div class="vector">
+        <div className="vector">
           <img src={call} alt="map" />
-          <p>0821-8190-1821</p>
+          <p>{props.nohp || ""}</p>
         </div>
 
-        <div class="vector">
+        <div className="vector">
           <img src={linkin} alt="map" />
-          <p>Martabat Jaya Abadi</p>
+          <p>{props.url_linkedin}</p>
         </div>
       </div>
     </div>

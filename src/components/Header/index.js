@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import { ReactComponent as IconMail } from "assets/images/icons/icon-mail.svg";
 import { ReactComponent as IconBell } from "assets/images/icons/icon-bell.svg";
@@ -14,6 +15,8 @@ import "./index.scss";
 
 export default function Header(props) {
   const { handleClick, click, refClick } = useClickout();
+
+  const { token } = useSelector((state) => state.auth);
 
   return (
     <header className={["header", props.className].join(" ")} ref={refClick}>
@@ -35,32 +38,38 @@ export default function Header(props) {
           </Button>
           <div className={`${!click ? "collapse" : ""} navbar-collapse`}>
             <ul className="navbar-nav ms-auto">
-              <Button
-                className="btn btn__action signin me-md-4"
-                type="link"
-                href="/login"
-              >
-                Masuk
-              </Button>
-              <Button
-                className="btn btn__action signup mx-md-3"
-                type="link"
-                href="/register"
-              >
-                Daftar
-              </Button>
-
-              {/* <li className="nav-item">
-                <Button className="btn">
-                  <IconBell />
-                </Button>
-              </li>
-              <li className="nav-item">
-                <Button className="btn px-md-5">
-                  <IconMail />
-                </Button>
-              </li>
-              <UserProfile /> */}
+              {token ? (
+                <>
+                  <li className="nav-item">
+                    <Button className="btn">
+                      <IconBell />
+                    </Button>
+                  </li>
+                  <li className="nav-item">
+                    <Button className="btn px-md-5">
+                      <IconMail />
+                    </Button>
+                  </li>
+                  <UserProfile />
+                </>
+              ) : (
+                <>
+                  <Button
+                    className="btn btn__action signin me-md-4"
+                    type="link"
+                    href="/login"
+                  >
+                    Masuk
+                  </Button>
+                  <Button
+                    className="btn btn__action signup mx-md-3"
+                    type="link"
+                    href="/register"
+                  >
+                    Daftar
+                  </Button>
+                </>
+              )}
             </ul>
           </div>
         </div>

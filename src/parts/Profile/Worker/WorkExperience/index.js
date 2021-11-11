@@ -3,40 +3,41 @@ import work from "../../../../assets/images/workexperience.png";
 
 import "./index.scss";
 
-export default function WorkExperience(props) {
-  // const urlParams = qs.parse(props.location.search);
+export default function WorkExperience({ data }) {
+  let manipulateDateIn = "";
+  let manipulateDateOut = "";
+  let dateIn = "";
+  let dateOut = "";
+  const dataTanggal = data ? data : [];
+  console.log(dataTanggal.length);
+  if (dataTanggal.length > 0) {
+    manipulateDateIn = dataTanggal[0].tgl_masuk.split("-");
+    dateIn = `${manipulateDateIn[0]}, ${manipulateDateIn[1]}`;
+
+    manipulateDateOut = data[0].tgl_keluar.split("-");
+    dateOut = `${manipulateDateOut[0]}, ${manipulateDateOut[1]}`;
+  }
 
   return (
-    <div class="row work">
-      <div class="row">
-        <div class="col-2 work__image">
-          <img src={work} alt="a" />
-        </div>
-        <div class="col-10 work__desc">
-          <h2>Engineer</h2>
-          <h5>Tokopedia</h5>
-          <h6>July 2019 - January 2020 6 month</h6>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-            odio quis saepe ex, quas quidem quisquam facilis beatae, iure
-            temporibus eligendi numquam necessitatibus perferendis laudantium
-            aut doloribus repudiandae culpa corrupti?
-          </p>
-        </div>
-      </div>
-      <div class="col-2 work__image">
-        <img src={work} alt="" />
-      </div>
-      <div class="col-10 work__desc">
-        <h2>Web Developer</h2>
-        <h5>Tokopedia</h5>
-        <h6>July 2019 - January 2020 6 month</h6>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-          odio quis saepe ex, quas quidem quisquam facilis beatae, iure
-          temporibus eligendi numquam necessitatibus perferendis laudantium aut
-          doloribus repudiandae culpa corrupti?
-        </p>
+    <div className="row work">
+      <div className="row">
+        {!data.length ? (
+          <p className="text-center">Tidak ada pengalaman</p>
+        ) : (
+          data.map((item) => (
+            <div key={item.id}>
+              <div className="col work__image">
+                <img src={work} alt="a" />
+                <div className="col-10 ps-5 work__desc">
+                  <h2>{item.posisi}</h2>
+                  <h5>{item.nama_perusahaan}</h5>
+                  <h6>{`${dateIn} s/d ${dateOut} `}</h6>
+                  <p>{item.deskripsi}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

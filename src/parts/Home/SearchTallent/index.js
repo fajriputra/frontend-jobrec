@@ -49,7 +49,12 @@ export default function SearchTallent(props) {
                       </li>
                       <li className="nav-item">
                         <Button className="btn nav-link">
-                          Sortir berdasarkan Skill
+                          Sortir berdasarkan Skill Terbesar
+                        </Button>
+                      </li>
+                      <li className="nav-item">
+                        <Button className="btn nav-link">
+                          Sortir berdasarkan Skill Terkecil
                         </Button>
                       </li>
                       <li className="nav-item">

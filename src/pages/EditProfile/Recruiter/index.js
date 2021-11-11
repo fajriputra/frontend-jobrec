@@ -34,8 +34,8 @@ export default function EditProfileRecruiter(props) {
                 <div className="edit__perusahaan--desc">
                   <h2>PT. Martabat Jaya Abadi</h2>
                   <h6>Financial</h6>
-                  <div class="row">
-                    <div class="col vector">
+                  <div className="row">
+                    <div className="col vector">
                       <img src={map} alt="map" />
                       <p>Purwokerto, Jawa Tengah</p>
                     </div>
