@@ -18,20 +18,26 @@ export default function SosialMedia(props) {
             <p>{props.email}</p>
           </div>
 
-          <div className=" vector">
-            <img src={instagram} alt="map" />
-            <p>{props.instagram}</p>
-          </div>
+          {props.instagram ? (
+            <div className=" vector">
+              <img src={instagram} alt="map" />
+              <p>{props.instagram}</p>
+            </div>
+          ) : null}
 
-          <div className="vector">
-            <img src={github} alt="map" />
-            <p>{props.github}</p>
-          </div>
+          {props.url_github ? (
+            <div className="vector">
+              <img src={github} alt="map" />
+              <p>{props.github}</p>
+            </div>
+          ) : null}
 
-          <div className="vector">
-            <img src={gitlab} alt="map" />
-            <p>{props.gitlab}</p>
-          </div>
+          {props.url_gitlab ? (
+            <div className="vector">
+              <img src={gitlab} alt="map" />
+              <p>{props.gitlab}</p>
+            </div>
+          ) : null}
         </div>
       </div>
     );

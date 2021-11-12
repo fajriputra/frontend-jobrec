@@ -62,7 +62,7 @@ const WorkerProfile = (props) => {
         <div className="container">
           <div className="row profile">
             <div className="profile__user">
-              <div className="profile__user--image">
+              <div className="profile__user--image ">
                 <img
                   src={
                     worker.data.avatar
@@ -74,20 +74,23 @@ const WorkerProfile = (props) => {
               </div>
               <div className="profile__user--content">
                 <h2>{worker.data.name}</h2>
-                <h6>{worker.data.jobdesk || "--"}</h6>
+                {worker.data.jobdesk ? <h6>{worker.data.jobdesk}</h6> : null}
+
                 <div className="row">
                   <div className="col vector">
                     <img src={map} alt="map" />
-                    <p>{worker.data.domisili || "--"}</p>
+                    {worker.data.domisili ? (
+                      <p>{worker.data.domisili}</p>
+                    ) : null}
                   </div>
                 </div>
                 <div className="row">
                   <div className="col vector">
                     <img src={call} alt="call" />
-                    <p>{worker.data.nohp || "--"}</p>
+                    {worker.data.nohp ? <p>{worker.data.nohp}</p> : null}
                   </div>
                 </div>
-                <p>{worker.data.deskripsi || "--"}</p>
+                {worker.data.deskripsi ? <p>{worker.data.deskripsi}</p> : null}
               </div>
 
               <div className="profile__user--button">
@@ -108,9 +111,9 @@ const WorkerProfile = (props) => {
               <SosialMedia
                 profilPekerja
                 email={worker.data.email}
-                instagram={worker.data.url_ig || "tidak ada"}
-                github={worker.data.url_github || "tidak ada"}
-                gitlab={worker.data.url_gitlab || "tidak ada"}
+                instagram={worker.data.url_ig}
+                github={worker.data.url_github}
+                gitlab={worker.data.url_gitlab}
               />
             </div>
 

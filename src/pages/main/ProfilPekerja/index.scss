@@ -31,6 +31,10 @@ h2 {
   align-items: center;
   margin: 32px 0;
 }
+.profile__user--image img {
+  width: 250px;
+  height: 250px;
+}
 
 .profile__user--content {
   display: flex;
