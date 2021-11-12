@@ -31,7 +31,10 @@ export default function WorkExperience({ data }) {
                 <div className="col-10 ps-5 work__desc">
                   <h2>{item.posisi}</h2>
                   <h5>{item.nama_perusahaan}</h5>
-                  <h6>{`${dateIn} s/d ${dateOut} `}</h6>
+                  <h6>{`${dateIn.replace(",", " -")} s/d ${dateOut.replace(
+                    ",",
+                    " -"
+                  )} `}</h6>
                   <p>{item.deskripsi}</p>
                 </div>
               </div>
