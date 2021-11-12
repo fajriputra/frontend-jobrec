@@ -11,7 +11,7 @@ import workerReducers from "./profile/worker/reducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "worker"],
+  whitelist: ["auth", "worker", "company"],
   blacklist: [],
 };
 
