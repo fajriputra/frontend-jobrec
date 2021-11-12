@@ -5,7 +5,7 @@ import { ReactComponent as IconPencilVector } from "assets/images/icons/icon-pen
 import { ReactComponent as IconLocation } from "assets/images/icons/icon-location.svg";
 import { ReactComponent as IconPhone } from "assets/images/icons/icon-phone.svg";
 import { ReactComponent as IconTrashVector } from "assets/images/icons/icon-trash-vector.svg";
-import ProfileImage from "assets/images/opini1.png";
+// import ProfileImage from "assets/images/opini1.png";
 import { profilePekerja } from "store/profile/actions";
 import { connect } from "react-redux";
 import Card from "components/Card";
@@ -46,9 +46,7 @@ const EditProfileWorker = (props) => {
   const [formSkill, setformSkill] = useState({
     username: props.auth.username,
   });
-  // useEffect(() => {
-  // getAllPengalaman();
-  // }, [allPengalaman]);
+
   const getWorkerByUsername = () => {
     axios
       .get(`/worker/get-worker/${props.auth.username}`)
@@ -60,6 +58,7 @@ const EditProfileWorker = (props) => {
         err.response.data.msg && toast.error(err.response.data.msg);
       });
   };
+
   const getAllSkill = () => {
     axios
       .get(`/skill/${props.auth.username}`)
@@ -74,25 +73,27 @@ const EditProfileWorker = (props) => {
     axios
       .get(`/pengalaman/get-worker-exp`)
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data, "1111111111111111111111111111111");
         setAllPengalaman(res.data.data);
       })
       .catch((err) => {
-        err.response.data.msg && toast.error(err.response.data.msg);
+        err.response.data.msg &&
+          toast.error("Anda belum menambahkan Pengalaman apapun");
       });
   };
   const getAllPortfolio = () => {
     axios
       .get(`/portofolio/${props.auth.username}`)
       .then((res) => {
-        console.log(res.data.data);
         setAllPortfolio(res.data.data);
       })
       .catch((err) => {
         console.log(err.response);
-        err.response.data.msg && toast.error(err.response.data.msg);
+        err.response.data.msg &&
+          toast.error("Anda belum menambahkan Portfolio apapun");
       });
   };
+
   useEffect(() => {
     getWorkerByUsername();
     getAllSkill();
@@ -100,7 +101,7 @@ const EditProfileWorker = (props) => {
     getAllPortfolio();
   }, []);
   const handleChange = (e) => {
-    console.log(formProfile);
+    // console.log(formProfile, "frommmmmmmmmmmmmmmmmmmmmm");
     const { name, value } = e.target;
     setformProfile({ ...formProfile, [name]: value });
   };
@@ -635,6 +636,7 @@ const EditProfileWorker = (props) => {
 const mapStateToProps = (state) => ({
   profile: state.profile,
   auth: state.auth,
+  worker: state.worker,
 });
 
 const mapDispatchToProps = {

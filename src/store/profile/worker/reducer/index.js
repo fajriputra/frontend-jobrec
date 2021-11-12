@@ -22,7 +22,7 @@ const dataWorker = (state = initialState, action) => {
         ...state,
         isError: false,
         isLoading: false,
-        data: action.payload.data.data,
+        data: action.payload.data.data[0],
         msg: action.payload.data.msg,
       };
     }
