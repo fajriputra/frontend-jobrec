@@ -117,7 +117,7 @@ const EditProfileWorker = (props) => {
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
         setTimeout(() => {
-          history.push("/");
+          // history.push("/");
         }, 2000);
       });
   };

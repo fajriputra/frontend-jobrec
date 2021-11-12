@@ -4,6 +4,7 @@ import SosialMedia from "components/SocialMedia";
 import Header from "components/Header";
 import PurpleBackground from "components/PurpleBackground";
 import Footer from "components/SiteInfo";
+import { apiHost } from "config";
 
 import profile from "../../../assets/images/profile-example.png";
 import map from "../../../assets/images/icons/icon-location.svg";
@@ -63,7 +64,11 @@ const WorkerProfile = (props) => {
             <div className="profile__user">
               <div className="profile__user--image">
                 <img
-                  src={worker.data.avatar ? `/$.png` : "gaada"}
+                  src={
+                    worker.data.avatar
+                      ? `${apiHost}/uploads/avatar/${worker.data.avatar}`
+                      : `/avatar.png`
+                  }
                   alt="profile"
                 />
               </div>
