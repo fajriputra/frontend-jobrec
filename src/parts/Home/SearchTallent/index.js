@@ -81,11 +81,11 @@ export default function SearchTallent(props) {
     });
     getAllWorker();
     // history.push(`?page=1&skillName=${namaSkill}`);
-    // history.push(
-    //   `?page=${1}&sort=${paginationHandle.sort}&sortType=${
-    //     paginationHandle.sortType
-    //   }`
-    // );
+    history.push(
+      `?page=${1}&sort=${paginationHandle.sort}&sortType=${
+        paginationHandle.sortType
+      }`
+    );
   };
   const handleSort = (sort, sortType) => {
     setpaginationHandle({ ...paginationHandle, sort, sortType });

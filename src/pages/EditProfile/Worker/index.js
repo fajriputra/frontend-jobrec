@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { ReactComponent as IconPencil } from "assets/images/icons/icon-pencil.svg";
 import { ReactComponent as IconPencilVector } from "assets/images/icons/icon-pencil-vector.svg";
@@ -31,6 +31,11 @@ const EditProfileWorker = (props) => {
   const [thisWorker, setThisWorker] = useState({});
   const [formProfile, setformProfile] = useState({});
   const [allPortfolio, setAllPortfolio] = useState([]);
+  const [image, setImage] = useState(null);
+  const [formImage, setFormImage] = useState({
+    avatar: "",
+  });
+  const inputFile = useRef(null);
   const [formPengalaman, setformPengalaman] = useState({
     username: props.auth.username,
   });
@@ -53,9 +58,6 @@ const EditProfileWorker = (props) => {
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
       });
   };
   const getAllSkill = () => {
@@ -66,9 +68,6 @@ const EditProfileWorker = (props) => {
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
       });
   };
   const getAllPengalaman = () => {
@@ -114,9 +113,6 @@ const EditProfileWorker = (props) => {
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
       });
   };
   const handleChangeSkill = (e) => {
@@ -132,9 +128,6 @@ const EditProfileWorker = (props) => {
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
       });
   };
   const handleSubmitPortfolio = (e) => {
@@ -168,9 +161,6 @@ const EditProfileWorker = (props) => {
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
       });
   };
   const handleChangePengalaman = (e) => {
@@ -217,6 +207,31 @@ const EditProfileWorker = (props) => {
         err.response.data.msg && toast.error(err.response.data.msg);
       });
   };
+  const onButtonClick = () => {
+    // `current` points to the mounted file input element
+    inputFile.current.click();
+  };
+  const handleChangeImage = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const { name, value } = event.target;
+      const formData = new FormData();
+      formData.append("avatar", event.target.files[0]);
+
+      setImage(URL.createObjectURL(event.target.files[0]));
+      console.log(image);
+      setFormImage({ ...formImage, [name]: value });
+
+      axios
+        .patch(`worker/update-avatar`, formData)
+        .then((res) => {
+          toast.success("Berhasil Mengganti Image Profile");
+        })
+        .catch((err) => {
+          err.response.data.msg && toast.error(err.response.data.msg);
+        });
+    }
+  };
+
   return (
     <>
       <Header className="mb-0" />
@@ -228,22 +243,33 @@ const EditProfileWorker = (props) => {
               <Card className="edit__card--profile">
                 <div className="card__image--wrapper d-flex justify-content-center flex-column align-items-center">
                   <Image
-                    srcImage={ProfileImage}
+                    srcImage={image ? image : thisWorker.avatar}
                     altImage="Profile Image"
                     className="edit__profile--image"
                     imageClass="img-cover rounded-circle"
                   />
+                  <Button
+                    className="btn btn__edit__text p-0"
+                    onClick={onButtonClick}
+                  >
+                    <input
+                      type="file"
+                      id="file"
+                      ref={inputFile}
+                      name="avatar"
+                      onChange={handleChangeImage}
+                      style={{ display: "none" }}
+                    />
+
+                    <img
+                      src="/camera.png"
+                      className="rounded-circle"
+                      style={{ width: "50px", marginTop: "-40px" }}
+                      alt=""
+                    />
+                  </Button>
 
                   <p className="username text-center">@{thisWorker.username}</p>
-
-                  <Button className="btn btn__edit__text p-0">
-                    <IconPencil
-                      width={15}
-                      height={15}
-                      className="icon__pencil me-2"
-                    />
-                    Edit
-                  </Button>
                 </div>
 
                 <MetaWrapper
@@ -320,6 +346,18 @@ const EditProfileWorker = (props) => {
                       value={formProfile.jobdesk}
                       onChange={handleChange}
                     />
+                  </div>
+                  <div className="form-group position-relative">
+                    <label htmlFor="job">Type</label>
+                    <select
+                      onChange={handleChange}
+                      class="form-select p-3"
+                      aria-label="Default select example"
+                      name="type"
+                    >
+                      <option value="freelance">Freelance</option>
+                      <option value="fulltime">Full Time</option>
+                    </select>
                   </div>
                   <div className="form-group position-relative">
                     <label htmlFor="domisili">Domisi</label>
@@ -431,7 +469,6 @@ const EditProfileWorker = (props) => {
                       />
                     </Button>
                   ))}
-                  {/* {console.log(allSkill)} */}
                 </div>
               </Card>
               <Card className="edit__card--profile">
@@ -551,7 +588,6 @@ const EditProfileWorker = (props) => {
                     <label htmlFor="image">Upload Gambar</label>
                     <InputText
                       type="file"
-                      name="image"
                       name="image"
                       onChange={onImageChange}
                     />

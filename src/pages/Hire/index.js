@@ -91,15 +91,20 @@ export default function Hire(props) {
               <div className="hire__user--content">
                 <h2>{thisWorker.name}</h2>
                 <h6>
-                  {thisWorker.jobdesk} -{" "}
+                  {thisWorker.jobdesk}{" "}
                   {thisWorker.type == "fulltime" ? "Full Time" : "Freelance"}
                 </h6>
-                <div className="row">
-                  <div className="col vector">
-                    <img src={map} alt="map" />
-                    <p>{thisWorker.domisili}</p>
+
+                {thisWorker.domisili ? (
+                  <div className="row">
+                    <div className="col vector">
+                      <img src={map} alt="map" />
+                      <p>{thisWorker.domisili}</p>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  ""
+                )}
 
                 <div className="row">
                   <div className="col vector">
