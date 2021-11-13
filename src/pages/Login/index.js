@@ -43,9 +43,6 @@ const Login = (props) => {
   const handeShowClick = () => setShowRecruiter(!showRecruiter);
 
   let isAdmin = localStorage.getItem("persist:root");
-  console.log(isAdmin);
-  // isAdmin = JSON.parse(isAdmin).auth;
-  // isAdmin = JSON.parse(isAdmin).username;
 
   useEffect(() => {
     document.title = "Peworld | Login";

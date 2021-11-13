@@ -22,6 +22,8 @@ import InputText from "components/UI/Form/InputText";
 
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";
+const dotenv = require("dotenv");
+dotenv.config();
 
 const EditProfileWorker = (props) => {
   useScrollTop();
@@ -41,6 +43,7 @@ const EditProfileWorker = (props) => {
   });
   const [formPortfolio, setformPortfolio] = useState({
     username: props.auth.username,
+    isEdit: false,
   });
 
   const [formSkill, setformSkill] = useState({
@@ -66,17 +69,20 @@ const EditProfileWorker = (props) => {
         setAllSkill(res.data.data);
       })
       .catch((err) => {
-        err.response.data.msg && toast.error(err.response.data.msg);
+        setAllSkill([]);
+        // err.response.data.msg && toast.error(err.response.data.msg);
       });
   };
   const getAllPengalaman = () => {
+    console.log("MENMANGGIL PENGALAMAN");
     axios
       .get(`/pengalaman/get-worker-exp`)
       .then((res) => {
-        // console.log(res.data.data, "1111111111111111111111111111111");
         setAllPengalaman(res.data.data);
+        toast.error("SUKSUISES apapun");
       })
       .catch((err) => {
+        setAllPortfolio([]);
         err.response.data.msg &&
           toast.error("Anda belum menambahkan Pengalaman apapun");
       });
@@ -88,7 +94,7 @@ const EditProfileWorker = (props) => {
         setAllPortfolio(res.data.data);
       })
       .catch((err) => {
-        console.log(err.response);
+        setAllPortfolio([]);
         err.response.data.msg &&
           toast.error("Anda belum menambahkan Portfolio apapun");
       });
@@ -98,10 +104,10 @@ const EditProfileWorker = (props) => {
     getWorkerByUsername();
     getAllSkill();
     getAllPengalaman();
+
     getAllPortfolio();
   }, []);
   const handleChange = (e) => {
-    // console.log(formProfile, "frommmmmmmmmmmmmmmmmmmmmm");
     const { name, value } = e.target;
     setformProfile({ ...formProfile, [name]: value });
   };
@@ -109,7 +115,8 @@ const EditProfileWorker = (props) => {
     axios
       .patch(`/worker/update-worker`, formProfile)
       .then((res) => {
-        console.log(res);
+        toast.success("Berhasil Mengupdate Data Profile");
+
         getWorkerByUsername();
       })
       .catch((err) => {
@@ -120,30 +127,30 @@ const EditProfileWorker = (props) => {
     const { name, value } = e.target;
     setformSkill({ ...formSkill, [name]: value });
   };
-  const handleSubmitSkill = (e) => {
-    axios
-      .post(`/skill`, formSkill)
-      .then((res) => {
-        toast.success("Berhasil Menambahkan Skill");
-        getAllSkill();
-      })
-      .catch((err) => {
-        err.response.data.msg && toast.error(err.response.data.msg);
-      });
-  };
+
   const handleSubmitPortfolio = (e) => {
+    const formData = new FormData();
+    for (const data in formPortfolio) {
+      formData.append(data, formPortfolio[data]);
+    }
     axios
-      .post(`/portofolio`, formPortfolio)
+      .post(`/portofolio`, formData)
       .then((res) => {
         toast.success("Berhasil Menambahkan Portfolio");
         getAllPortfolio();
+        setformPortfolio({
+          username: props.auth.username,
+          link_repository: "",
+          nama_applikasi: "",
+          isEdit: false,
+        });
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
       });
   };
-  const onImageChange = (event) => {
-    console.log("UPLOAD FILE");
+
+  const handleChangeImagePortfolio = (event) => {
     if (event.target.files && event.target.files[0]) {
       setformPortfolio({
         ...formPortfolio,
@@ -153,7 +160,6 @@ const EditProfileWorker = (props) => {
   };
 
   const handleDeleteSkill = (e) => {
-    console.log(e);
     axios
       .delete(`/skill/delete/${e}`)
       .then((res) => {
@@ -166,12 +172,10 @@ const EditProfileWorker = (props) => {
   };
   const handleChangePengalaman = (e) => {
     const { name, value } = e.target;
-    console.log(formPengalaman);
     setformPengalaman({ ...formPengalaman, [name]: value });
   };
   const handleChangePortfolio = (e) => {
     const { name, value } = e.target;
-    console.log(formPortfolio);
     setformPortfolio({ ...formPortfolio, [name]: value });
   };
   const handleSubmitPengalaman = (e) => {
@@ -179,7 +183,17 @@ const EditProfileWorker = (props) => {
       .post(`/pengalaman/post-worker-exp`, formPengalaman)
       .then((res) => {
         toast.success("Berhasil Menambahkan Pengalaman");
-        getAllPengalaman();
+        setTimeout(() => {
+          getAllPengalaman();
+        }, 1000);
+        // setformPengalaman({
+        //   nama_perusahaan: "",
+        //   posisi: "",
+        //   tgl_keluar: "",
+        //   tgl_masuk: "",
+        //   username: props.auth.username,
+        //   deskripsi: "",
+        // });
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
@@ -187,10 +201,10 @@ const EditProfileWorker = (props) => {
   };
   const handleDeletePengalaman = (e) => {
     axios
-      .delete(`/pengalaman/delete-worker-exp`)
+      .delete(`/pengalaman/delete-worker-exp/${e}`)
       .then((res) => {
         toast.success("Berhasil Menghapus Pengalaman");
-        setAllPengalaman([]);
+        // setAllPengalaman([]);
         getAllPengalaman();
       })
       .catch((err) => {
@@ -201,7 +215,7 @@ const EditProfileWorker = (props) => {
     axios
       .delete(`/portofolio/delete/${e}`)
       .then((res) => {
-        toast.success("Berhasil Menghapus Pengalaman");
+        toast.success("Berhasil Menghapus Portfolio");
         getAllPortfolio();
       })
       .catch((err) => {
@@ -219,7 +233,6 @@ const EditProfileWorker = (props) => {
       formData.append("avatar", event.target.files[0]);
 
       setImage(URL.createObjectURL(event.target.files[0]));
-      console.log(image);
       setFormImage({ ...formImage, [name]: value });
 
       axios
@@ -233,6 +246,64 @@ const EditProfileWorker = (props) => {
     }
   };
 
+  const handleSubmitSkill = (e) => {
+    axios
+      .post(`/skill`, formSkill)
+      .then((res) => {
+        toast.success("Berhasil Menambahkan Skill");
+        getAllSkill();
+        setformSkill({
+          nama_skill: "",
+          id: "",
+          username: thisWorker.username,
+          isEdit: false,
+        });
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const handleClickEditSKill = (id, nama) => {
+    setformSkill({ ...formSkill, isEdit: true, id, nama_skill: nama });
+  };
+  const handleSubmitEditSkill = () => {
+    axios
+      .patch(`/skill/update/${formSkill.id}`, formSkill)
+      .then((res) => {
+        toast.success("Berhasil Mengupdate Skill");
+        getAllSkill();
+        setformSkill({
+          nama_skill: "",
+          id: "",
+          username: thisWorker.username,
+          isEdit: false,
+        });
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const handleClickEditPortfolio = (data) => {
+    setformPortfolio({ ...data, isEdit: true });
+  };
+  const handleEditPortfolio = () => {
+    axios
+      .patch(`/portofolio/update/${formPortfolio.id}`, formPortfolio)
+      .then((res) => {
+        toast.success("Berhasil Mengubah Portfolio");
+        getAllPortfolio();
+        setformPortfolio({
+          username: props.auth.username,
+          link_repository: "",
+          nama_applikasi: "",
+
+          isEdit: false,
+        });
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
   return (
     <>
       <Header className="mb-0" />
@@ -244,7 +315,11 @@ const EditProfileWorker = (props) => {
               <Card className="edit__card--profile">
                 <div className="card__image--wrapper d-flex justify-content-center flex-column align-items-center">
                   <Image
-                    srcImage={image ? image : thisWorker.avatar}
+                    srcImage={
+                      image
+                        ? image
+                        : `${process.env.REACT_APP_HOST}/uploads/avatar/${thisWorker.avatar}`
+                    }
                     altImage="Profile Image"
                     className="edit__profile--image"
                     imageClass="img-cover rounded-circle"
@@ -255,6 +330,7 @@ const EditProfileWorker = (props) => {
                   >
                     <input
                       type="file"
+                      accept="image/png, image/gif, image/jpeg"
                       id="file"
                       ref={inputFile}
                       name="avatar"
@@ -442,32 +518,48 @@ const EditProfileWorker = (props) => {
                     <InputText
                       placeholder="Masukan Nama Skill"
                       name="nama_skill"
+                      value={formSkill.nama_skill}
                       onChange={handleChangeSkill}
                     />
                   </div>
                   <div className="ms-auto">
-                    <Button
-                      className="btn__auth save skill"
-                      style={{ marginBottom: 30 }}
-                      onClick={handleSubmitSkill}
-                      value={formSkill.nama_skill}
-                    >
-                      Simpan
-                    </Button>
+                    {formSkill.isEdit ? (
+                      <Button
+                        className="btn__auth save skill"
+                        style={{ marginBottom: 30 }}
+                        onClick={handleSubmitEditSkill}
+                        value={formSkill.nama_skill}
+                      >
+                        Update
+                      </Button>
+                    ) : (
+                      <Button
+                        className="btn__auth save skill"
+                        style={{ marginBottom: 30 }}
+                        onClick={handleSubmitSkill}
+                        value={formSkill.nama_skill}
+                      >
+                        Tambah
+                      </Button>
+                    )}
                   </div>
                 </div>
                 <div className="wrapper__button">
                   {allSkill.map((e) => (
-                    <Button
-                      className="btn btn__skill--added"
-                      onClick={() => handleDeleteSkill(e.id)}
-                    >
+                    <Button className="btn btn__skill--added">
                       {e.nama_skill}
-                      <IconTrashVector
-                        width={18}
-                        height={18}
-                        className="ms-5 "
-                      />
+                      <Button
+                        className="ms-5 btn btn-success btn-sm"
+                        onClick={() => handleClickEditSKill(e.id, e.nama_skill)}
+                      >
+                        <IconPencil width={18} height={18} />
+                      </Button>
+                      <Button
+                        className="btn btn-danger ms-2 btn-sm"
+                        onClick={() => handleDeleteSkill(e.id)}
+                      >
+                        <IconTrashVector width={18} height={18} />
+                      </Button>
                     </Button>
                   ))}
                 </div>
@@ -487,6 +579,7 @@ const EditProfileWorker = (props) => {
                         placeholder="Masukan nama perusahaan"
                         onChange={handleChangePengalaman}
                         name="nama_perusahaan"
+                        value={formPengalaman.nama_perusahaan}
                       />
                     </div>
                     <div className="form-group position-relative">
@@ -495,6 +588,7 @@ const EditProfileWorker = (props) => {
                         placeholder="Masukan posisi anda"
                         onChange={handleChangePengalaman}
                         name="posisi"
+                        value={formPengalaman.posisi}
                       />
                     </div>
                     <div className="form-group position-relative">
@@ -503,6 +597,7 @@ const EditProfileWorker = (props) => {
                         onChange={handleChangePengalaman}
                         name="tgl_masuk"
                         type="date"
+                        value={formPengalaman.tgl_masuk}
                       />
                     </div>
                     <div className="form-group position-relative">
@@ -511,6 +606,7 @@ const EditProfileWorker = (props) => {
                         onChange={handleChangePengalaman}
                         name="tgl_keluar"
                         type="date"
+                        value={formPengalaman.tgl_keluar}
                       />
                     </div>
                   </div>
@@ -522,6 +618,7 @@ const EditProfileWorker = (props) => {
                       name="deskripsi"
                       placeholder="Deskripsikan pekerjaan anda disini"
                       className="form__description"
+                      value={formPengalaman.deskripsi}
                     ></textarea>
                   </div>
 
@@ -575,6 +672,7 @@ const EditProfileWorker = (props) => {
                       placeholder="Masukan nama aplikasi"
                       name="nama_applikasi"
                       onChange={handleChangePortfolio}
+                      value={formPortfolio.nama_applikasi}
                     />
                   </div>
                   <div className="form-group position-relative">
@@ -583,6 +681,7 @@ const EditProfileWorker = (props) => {
                       placeholder="Masukan link repository"
                       name="link_repository"
                       onChange={handleChangePortfolio}
+                      value={formPortfolio.link_repository}
                     />
                   </div>
                   <div className="form-group position-relative">
@@ -590,19 +689,28 @@ const EditProfileWorker = (props) => {
                     <InputText
                       type="file"
                       name="image"
-                      onChange={onImageChange}
+                      onChange={handleChangeImagePortfolio}
                     />
                   </div>
                   <hr
                     className="w-100"
                     style={{ color: "#E2E5ED", height: 2 }}
                   />
-                  <Button
-                    className="btn__auth save portfolio mt-4 mt-md-5"
-                    onClick={handleSubmitPortfolio}
-                  >
-                    Tambah portofolio
-                  </Button>
+                  {formPortfolio.isEdit ? (
+                    <Button
+                      className="btn__auth save portfolio mt-4 mt-md-5"
+                      onClick={handleEditPortfolio}
+                    >
+                      Edit Portofolio
+                    </Button>
+                  ) : (
+                    <Button
+                      className="btn__auth save portfolio mt-4 mt-md-5"
+                      onClick={handleSubmitPortfolio}
+                    >
+                      Tambah Portofolio
+                    </Button>
+                  )}
                   {allPortfolio.map((e) => (
                     <>
                       <div className="card card-body mt-5">
@@ -611,13 +719,24 @@ const EditProfileWorker = (props) => {
                             {e.nama_applikasi}
                           </div>
                           <div className="ms-auto">
-                            <button
-                              className="btn btn-danger"
-                              style={{ width: "120px" }}
-                              onClick={() => handleDeletePortfolio(e.id)}
-                            >
-                              Hapus
-                            </button>
+                            <div class="row">
+                              <div className="col-6">
+                                <button
+                                  className="btn btn-success"
+                                  onClick={() => handleClickEditPortfolio(e)}
+                                >
+                                  <IconPencil width={18} height={18} />
+                                </button>
+                              </div>
+                              <div className="col-6">
+                                <button
+                                  className="btn btn-danger"
+                                  onClick={() => handleDeletePortfolio(e.id)}
+                                >
+                                  <IconTrashVector width={18} height={18} />
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

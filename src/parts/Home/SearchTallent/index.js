@@ -42,7 +42,6 @@ export default function SearchTallent(props) {
   }, []);
 
   useEffect(() => {
-    console.log(paginationHandle.skillName);
     getAllWorker();
   }, [paginationHandle.skillName]);
 
@@ -52,9 +51,6 @@ export default function SearchTallent(props) {
         `/worker/?page=${paginationHandle.page}&skillName=${paginationHandle.skillName}&sort=${paginationHandle.sort}&sortType=${paginationHandle.sortType}`
       )
       .then((res) => {
-        console.log(
-          `/worker/?page=${paginationHandle.page}&skillName=${paginationHandle.skillName}&sort=${paginationHandle.sort}&sortType=${paginationHandle.sortType}`
-        );
         setAllWorker(res.data.data);
         setPagination(res.data.pagination);
       })

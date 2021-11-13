@@ -24,9 +24,7 @@ export default function UserProfile(props) {
 
   useEffect(() => {
     dispatch(getDataWorker(dataLogin))
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => {})
       .catch();
   }, []);
 

@@ -25,11 +25,9 @@ export default function Hire(props) {
   useEffect(() => {
     getWorkerByUsername();
     getSkillByUsernameWorker();
-    console.log("JALANIN WEB");
   }, []);
 
   const handleChange = (e) => {
-    console.log(form);
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
@@ -38,12 +36,10 @@ export default function Hire(props) {
     try {
       const res = await axios.post(`/recruiter/hire-worker`, form);
       toast.success(res.data.msg);
-      console.log(res);
       setTimeout(() => {
         history.push("/");
       }, 2000);
     } catch (err) {
-      // console.log(err.response);
       err.response.data.msg && toast.error(err.response.data.msg);
     }
   };
@@ -54,7 +50,6 @@ export default function Hire(props) {
         setThisWorker(res.data.data[0]);
       })
       .catch((err) => {
-        console.log("EROR WORKER");
         err.response.data.msg && toast.error(err.response.data.msg);
         setTimeout(() => {
           history.push("/");
@@ -68,8 +63,6 @@ export default function Hire(props) {
         setThisWorkerSkill(res.data.data);
       })
       .catch((err) => {
-        console.log("EROR WORKER Skill");
-        console.log(err.response.data);
         err.response.data.msg && toast.error(err.response.data.msg);
         setTimeout(() => {
           history.push("/");
