@@ -23,8 +23,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://tickez.netlify.app/">
-    <img src="https://github.com/HariisV/Ticketing-Frontend/blob/main/assets/img/logo-sm.svg" alt="Logo" width="80" height="80">
   </a>
   <h3 align="center">Booking Your Movie !</h3>
 </div>
