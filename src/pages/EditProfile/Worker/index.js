@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 
-import { ReactComponent as IconPencil } from "assets/images/icons/icon-pencil.svg";
-import { ReactComponent as IconPencilVector } from "assets/images/icons/icon-pencil-vector.svg";
 import { ReactComponent as IconLocation } from "assets/images/icons/icon-location.svg";
 import { ReactComponent as IconPhone } from "assets/images/icons/icon-phone.svg";
 import { ReactComponent as IconTrashVector } from "assets/images/icons/icon-trash-vector.svg";
-// import ProfileImage from "assets/images/opini1.png";
+
 import { profilePekerja } from "store/profile/actions";
 import { connect } from "react-redux";
 import Card from "components/Card";
@@ -73,7 +71,6 @@ const EditProfileWorker = (props) => {
     axios
       .get(`/pengalaman/get-worker-exp`)
       .then((res) => {
-        // console.log(res.data.data, "1111111111111111111111111111111");
         setAllPengalaman(res.data.data);
       })
       .catch((err) => {
@@ -101,7 +98,6 @@ const EditProfileWorker = (props) => {
     getAllPortfolio();
   }, []);
   const handleChange = (e) => {
-    // console.log(formProfile, "frommmmmmmmmmmmmmmmmmmmmm");
     const { name, value } = e.target;
     setformProfile({ ...formProfile, [name]: value });
   };
@@ -209,7 +205,6 @@ const EditProfileWorker = (props) => {
       });
   };
   const onButtonClick = () => {
-    // `current` points to the mounted file input element
     inputFile.current.click();
   };
   const handleChangeImage = (event) => {
