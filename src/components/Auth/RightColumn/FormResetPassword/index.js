@@ -44,14 +44,6 @@ export default function FormResetPassword(props) {
         />
       </div>
 
-      <div className="form-group position-relative ">
-        <label htmlFor="email">Email</label>
-        <select class="form-select p-3" name="type" onChange={props.onChange}>
-          <option value="worker">Woker</option>
-          <option value="recruiter">Recruiter</option>
-        </select>
-      </div>
-
       <Button className="btn__auth" type="submit">
         Send password reset email
       </Button>

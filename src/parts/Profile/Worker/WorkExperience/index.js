@@ -9,7 +9,6 @@ export default function WorkExperience({ data }) {
   let dateIn = "";
   let dateOut = "";
   const dataTanggal = data ? data : [];
-  console.log(dataTanggal.length);
   if (dataTanggal.length > 0) {
     manipulateDateIn = dataTanggal[0].tgl_masuk.split("-");
     dateIn = `${manipulateDateIn[0]}, ${manipulateDateIn[1]}`;

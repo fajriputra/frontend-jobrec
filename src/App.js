@@ -28,12 +28,7 @@ function App() {
             exact
             component={Register}
           />
-          <PublicRoute
-            path="/login"
-            restricted={true}
-            exact
-            component={Login}
-          />
+          <Route path="/login" restricted={true} exact component={Login} />
           <PublicRoute
             path="/reset-password"
             restricted={true}

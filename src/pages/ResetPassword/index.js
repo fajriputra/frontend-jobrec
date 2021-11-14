@@ -12,7 +12,6 @@ import useScrollTop from "hooks/useScrollTop";
 export default function ResetPassword(props) {
   const [form, setForm] = useState({
     email: "",
-    type: "worker",
   });
   useScrollTop();
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function ResetPassword(props) {
     e.preventDefault();
     try {
       const res = await axios.get(
-        `/auth/forgot-password-process?email=${form.email}&tipe=${form.type}`
+        `/auth/forgot-password-process?email=${form.email}`
       );
       toast.success(res.data.msg);
     } catch (err) {

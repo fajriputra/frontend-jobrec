@@ -69,6 +69,7 @@ const WorkerProfile = (props) => {
                       ? `${apiHost}/uploads/avatar/${worker.data.avatar}`
                       : `/avatar.png`
                   }
+                  className="rounded-circle"
                   alt="profile"
                 />
               </div>
