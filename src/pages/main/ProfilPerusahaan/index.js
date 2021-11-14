@@ -49,7 +49,7 @@ const ProfileCompany = (props) => {
                   src={
                     data.avatar
                       ? `${apiHost}/uploads/recruiter/${data.avatar}`
-                      : null
+                      : "avatar.png"
                   }
                   alt="profile"
                 />

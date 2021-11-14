@@ -13,56 +13,57 @@ import "./index.scss";
 import { apiHost } from "config";
 
 export default function UserProfile(props) {
-	const { handleClick, click, refClick } = useClickout();
-	const { data } = useSelector((state) => state.worker);
+  const { handleClick, click, refClick } = useClickout();
+  const { data } = useSelector((state) => state.worker);
+  const terserah = useSelector((state) => state.company);
 
-	console.log(refClick);
+  const dispatch = useDispatch();
 
-	const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getDataWorker(data.username));
+  }, []);
 
-	useEffect(() => {
-		dispatch(getDataWorker(data.username));
-	}, []);
+  const handleLogout = async () => {
+    await axios.post("/auth/logout");
+    localStorage.clear();
+    window.location.href = "/";
+  };
 
-	const handleLogout = async () => {
-		await axios.post("/auth/logout");
-		localStorage.clear();
-		window.location.href = "/";
-	};
+  return (
+    <li className="drop_nav" onClick={handleClick} ref={refClick}>
+      <Image
+        className="user__profile mb-0"
+        srcImage={
+          data.avatar
+            ? `${apiHost}/uploads/avatar/${data.avatar}`
+            : terserah.data.avatar
+            ? `${apiHost}/uploads/recruiter/${terserah.data.avatar}`
+            : "/avatar.png"
+        }
+        altImage="Image Profile"
+        imageClass="img-cover rounded-circle"
+      />
 
-	return (
-		<li className="drop_nav" onClick={handleClick} ref={refClick}>
-			<Image
-				className="user__profile mb-0"
-				srcImage={
-					data.avatar
-						? `${apiHost}/uploads/avatar/${data.avatar}`
-						: "/avatar.png"
-				}
-				altImage="Image Profile"
-				imageClass="img-cover rounded-circle"
-			/>
+      <ul className={click ? "dropdown clicked" : "dropdown m-0 p-0"}>
+        <li className="nav-item">
+          <Button
+            className="btn nav-link"
+            type="link"
+            href={data.username ? "/profilePekerja" : "/profilePerusahaan"}
+          >
+            Profile
+          </Button>
+        </li>
+        <li className="nav-item">
+          <Button className="btn nav-link" onClick={handleLogout}>
+            Logout
+          </Button>
+        </li>
+      </ul>
 
-			<ul className={click ? "dropdown clicked" : "dropdown m-0 p-0"}>
-				<li className="nav-item">
-					<Button
-						className="btn nav-link"
-						type="link"
-						href={data.username ? "/profilePekerja" : "/profilePerusahaan"}
-					>
-						Profile
-					</Button>
-				</li>
-				<li className="nav-item">
-					<Button className="btn nav-link" onClick={handleLogout}>
-						Logout
-					</Button>
-				</li>
-			</ul>
-
-			<IconPolygon
-				className={click ? "arrow clicked ms-2" : "arrow not-clicked ms-2"}
-			/>
-		</li>
-	);
+      <IconPolygon
+        className={click ? "arrow clicked ms-2" : "arrow not-clicked ms-2"}
+      />
+    </li>
+  );
 }
