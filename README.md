@@ -34,7 +34,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://tickez.netlify.app)
 
 Setelah Sebelumnya Membuat API Backend, Maka Project ini adalah Front END Nya, Dibangun Menggunakan HTML, CSS, Javascript Menggunakan Framework Bootstrap. Front End sudah dibuat dengan responsiv.
 
