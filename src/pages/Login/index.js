@@ -71,11 +71,11 @@ const Login = (props) => {
 		dispatch(userLoginWorker(form))
 			.then((res) => {
 				dispatch(getDataWorker(res.value.data.data.username));
-				localStorage.setItem("token", res.value.data.data.token);
-				toast.success(res.value.data.msg);
 				setTimeout(() => {
 					history.push("/");
 				}, 2000);
+				localStorage.setItem("token", res.value.data.data.token);
+				toast.success(res.value.data.msg);
 			})
 			.catch((err) => {
 				err.response.data.msg && toast.error(err.response.data.msg);

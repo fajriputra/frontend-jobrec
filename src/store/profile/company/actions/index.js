@@ -11,7 +11,6 @@ export const profilePerusahaan = (id) => {
 };
 
 export const editPerusahaan = (data) => {
-  // console.log(data, "fhsjdfhjs");
   return {
     type: EDIT_PERUSAHAAN,
     payload: axios.patch(`/recruiter/update-profile/`, data),

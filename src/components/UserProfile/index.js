@@ -3,7 +3,6 @@ import axios from "helpers/axios";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ReactComponent as IconPolygon } from "assets/images/icons/icon-polygon.svg";
-import ProfileImage from "assets/images/profile-img.png";
 import { getDataWorker } from "store/profile/worker/action";
 
 import Button from "components/UI/Button";
@@ -17,6 +16,8 @@ export default function UserProfile(props) {
 	const { handleClick, click, refClick } = useClickout();
 	const { data } = useSelector((state) => state.worker);
 
+	console.log(refClick);
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -26,7 +27,6 @@ export default function UserProfile(props) {
 	const handleLogout = async () => {
 		await axios.post("/auth/logout");
 		localStorage.clear();
-
 		window.location.href = "/";
 	};
 

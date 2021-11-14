@@ -63,6 +63,7 @@ const WorkerProfile = (props) => {
 									}
 									className="rounded-circle"
 									alt="profile"
+									style={{ objectFit: "cover" }}
 								/>
 							</div>
 							<div className="profile__user--content">

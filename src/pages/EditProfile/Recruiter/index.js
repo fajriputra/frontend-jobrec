@@ -41,7 +41,7 @@ const EditProfileRecruiter = (props) => {
   const [form, setForm] = useState(inisialState);
 
   const [dataShow, setDataShow] = useState(inisialState);
-
+  console.log(dataShow);
   const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch(profilePerusahaan(props.auth.userId))
@@ -63,21 +63,8 @@ const EditProfileRecruiter = (props) => {
     axios
       .get(`/recruiter/${props.auth.userId}`)
       .then((res) => {
-        console.log(res.data.data[0]);
         setForm(res.data.data[0]);
         setDataShow(res.data.data[0]);
-        // setForm({
-        //   nama_lengkap: res.data.data[0].nama_lengkap,
-        //   nama_perusahaan: res.data.data[0].nama_perusahaan,
-        //   bidang: res.data.data[0].bidang,
-        //   domisili: res.data.data[0].domisili,
-        //   deskripsi: res.data.data[0].deskripsi,
-        //   email: res.data.data[0].email,
-        //   url_ig: res.data.data[0].url_ig,
-        //   nohp: res.data.data[0].nohp,
-        //   url_linkedin: res.data.data[0].url_linkedin,
-        //   image: res.data.data[0].avatar,
-        // });
       })
       .catch((err) => {
         console.log(err);
@@ -122,18 +109,20 @@ const EditProfileRecruiter = (props) => {
 
   const editImage = (e) => {
     const uploaded = e.target.files[0];
+    console.log("ada IMAGEAK OASDKO ASKDO SAKO", uploaded);
     if (uploaded) {
       const formData = new FormData();
       formData.append("avatar", uploaded);
       setDataShow(formData);
-      // getCompany();
-      // dispatch(editPerusahaanImage(formData))
-      //   .then((res) => {
-      //     dispatch(profilePerusahaan(props.auth.userId));
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      getCompany();
+      dispatch(editPerusahaanImage(formData))
+        .then((res) => {
+          dispatch(profilePerusahaan(props.auth.userId));
+        })
+        .catch((err) => {
+          // console.log(err.response.data.msg);
+          toast.error(err.response.data.msg);
+        });
     }
   };
 
@@ -154,8 +143,9 @@ const EditProfileRecruiter = (props) => {
                     src={
                       dataShow.avatar
                         ? `${apiHost}/uploads/recruiter/${dataShow.avatar}`
-                        : null
+                        : "avatar.png"
                     }
+                    // src={dataShow.avatar}
                     alt="profile"
                   />
                 </div>
