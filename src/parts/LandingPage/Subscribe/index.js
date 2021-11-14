@@ -15,7 +15,7 @@ export default function Subscribe(props) {
         <Card className="subscribe__card">
           <div className="subscribe__card--content">
             <h2 className="content__text">
-              Lorem ipsum <span>dolor sit amet</span>
+              Ayo <span>Daftar Sekarang</span>
             </h2>
             <Button
               className="btn btn__started white"

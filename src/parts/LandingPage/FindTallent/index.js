@@ -35,7 +35,7 @@ export default function FindTallent(props) {
                       <IconCheck width={10} height={10} />
                     </div>
                     <span className="list__text--span">
-                      Lorem ipsum dolor sit amet.
+                      Penggunaan Yang Mudah.
                     </span>
                   </div>
                   <div className="list">
@@ -43,7 +43,7 @@ export default function FindTallent(props) {
                       <IconCheck width={10} height={10} />
                     </div>
                     <span className="list__text--span">
-                      Lorem ipsum dolor sit amet.
+                      Adanya Interaksi dengan Recruiter.
                     </span>
                   </div>
                   <div className="list">
@@ -51,7 +51,7 @@ export default function FindTallent(props) {
                       <IconCheck width={10} height={10} />
                     </div>
                     <span className="list__text--span">
-                      Lorem ipsum dolor sit amet.
+                      Recruiter mudah menemukan anda.
                     </span>
                   </div>
                   <div className="list">
@@ -59,7 +59,7 @@ export default function FindTallent(props) {
                       <IconCheck width={10} height={10} />
                     </div>
                     <span className="list__text--span">
-                      Lorem ipsum dolor sit amet.
+                      Memiliki koneksi yang luas.
                     </span>
                   </div>
                 </div>

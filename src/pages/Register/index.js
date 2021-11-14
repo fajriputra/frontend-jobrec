@@ -20,7 +20,7 @@ const initialState = {
   password: "",
   confirm_password: "",
   companyName: "",
-  filed: "",
+  field: "",
 };
 
 const statusList = {
@@ -37,7 +37,20 @@ export default function Register(props) {
   const [status, setStatus] = useState(statusList.idle);
   const [showRecruiter, setShowRecruiter] = useState(false);
 
-  const handeShowClick = () => setShowRecruiter(!showRecruiter);
+  const handeShowClick = () => {
+    setForm({
+      name: "",
+      username: "",
+      email: "",
+      nohp: "",
+      password: "",
+      confirm_password: "",
+      companyName: "",
+      field: "",
+    });
+    setShowRecruiter(!showRecruiter);
+  };
+  // const handeShowClick = () => setShowRecruiter(!showRecruiter);
 
   const {
     name,
@@ -47,7 +60,7 @@ export default function Register(props) {
     password,
     confirm_password,
     companyName,
-    filed,
+    field,
   } = form;
 
   useEffect(() => {
@@ -117,6 +130,7 @@ export default function Register(props) {
       });
     }
     setStatus(statusList.success);
+    // console.log(form);
   };
 
   const handleSubmitRecruiter = async (e) => {
@@ -124,64 +138,62 @@ export default function Register(props) {
 
     setStatus(statusList.process);
     try {
-      if (
-        !name ||
-        !username ||
-        !email ||
-        !nohp ||
-        !password ||
-        !confirm_password ||
-        !companyName ||
-        !filed
-      ) {
-        toast.error("Mohon di isi untuk keseluruhan field");
-        return setStatus(statusList.idle);
-      }
+      // if (
+      //   !name ||
+      //   !username ||
+      //   !email ||
+      //   !nohp ||
+      //   !password ||
+      //   !confirm_password ||
+      //   !companyName ||
+      //   !filed
+      // ) {
+      //   toast.error("Mohon di isi untuk keseluruhan field");
+      //   return setStatus(statusList.idle);
+      // }
 
-      if (password !== confirm_password) {
-        toast.error("Konfirmasi password tidak sama");
-        return setStatus(statusList.idle);
-      }
+      // if (password !== confirm_password) {
+      //   toast.error("Konfirmasi password tidak sama");
+      //   return setStatus(statusList.idle);
+      // }
 
-      if (password.length < 6 && confirm_password.length < 6) {
-        toast.error("Password minimal 6 karakter");
-        return setStatus(statusList.idle);
-      }
+      // if (password.length < 6 && confirm_password.length < 6) {
+      //   toast.error("Password minimal 6 karakter");
+      //   return setStatus(statusList.idle);
+      // }
 
       const res = await axios.post("/auth/register-recruiter", {
         name,
-        username,
+        companyName,
+        field,
         email,
-        nohp,
         password,
         confirm_password,
-        companyName,
-        filed,
+        nohp,
       });
 
       setForm({
         name: "",
-        username: "",
+        companyName: "",
+        field: "",
         email: "",
-        nohp: "",
         password: "",
         confirm_password: "",
-        companyName: "",
-        filed: "",
+        nohp: "",
       });
 
       toast.success(res.data.msg);
     } catch (err) {
       err.response.data.msg && toast.error(err.response.data.msg);
+
       setForm({
         name: "",
-        username: "",
+        companyName: "",
+        field: "",
         email: "",
-        nohp: "",
         password: "",
         confirm_password: "",
-        companyName: "",
-        filed: "",
+        nohp: "",
       });
     }
     setStatus(statusList.success);
@@ -198,7 +210,7 @@ export default function Register(props) {
           <div className="col-md-5 col-lg-5 p-0">
             <RightColumn
               greeting={showRecruiter ? "Halo, Recruiter!" : "Halo, Pekerja!"}
-              subTitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor."
+              subTitle="Silahkan Buat Akun Untuk Terlebih Dahulu"
             >
               {showRecruiter ? (
                 <FormRecruiter
@@ -207,7 +219,7 @@ export default function Register(props) {
                   valueName={form.name}
                   valueEmail={form.email}
                   valueCompany={form.companyName}
-                  valueBidang={form.filed}
+                  valueBidang={form.field}
                   valueNohp={form.nohp}
                   valuePassword={form.password}
                   valueConfirmPassword={form.confirm_password}

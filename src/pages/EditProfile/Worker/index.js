@@ -65,10 +65,10 @@ const EditProfileWorker = (props) => {
         setAllSkill(res.data.data);
       })
       .catch((err) => {
-        err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
+        // err.response.data.msg && toast.error(err.response.data.msg);
+        // // setTimeout(() => {
+        // //   history.push("/");
+        // // }, 2000);
       });
   };
   const getAllPengalaman = () => {
@@ -109,14 +109,11 @@ const EditProfileWorker = (props) => {
     axios
       .patch(`/worker/update-worker`, formProfile)
       .then((res) => {
-        console.log(res);
+        toast.success("Berhasil Update Data");
         getWorkerByUsername();
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
       });
   };
   const handleChangeSkill = (e) => {
@@ -132,9 +129,9 @@ const EditProfileWorker = (props) => {
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
+        // setTimeout(() => {
+        //   history.push("/");
+        // }, 2000);
       });
   };
   const handleSubmitPortfolio = (e) => {
@@ -173,9 +170,10 @@ const EditProfileWorker = (props) => {
         }, 2000);
       });
   };
+
   const handleChangePengalaman = (e) => {
     const { name, value } = e.target;
-    console.log(formPengalaman);
+    console.log(formPengalaman, "pengalaman&&&&&&&&&&&");
     setformPengalaman({ ...formPengalaman, [name]: value });
   };
   const handleChangePortfolio = (e) => {

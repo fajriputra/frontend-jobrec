@@ -19,8 +19,7 @@ export default function Hero(props) {
                   Talenta terbaik negeri untuk perubahan revolusi 4.0
                 </h1>
                 <p className="content__heading--subtitle">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-                  euismod ipsum et dui rhoncus auctor.
+                  Dapatkan pekerjaan terbaik anda.
                 </p>
 
                 <Button

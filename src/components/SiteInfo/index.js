@@ -18,8 +18,7 @@ export default function SiteInfo(props) {
             imageClass="img-cover"
           />
           <p className="siteinfo__content--text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod
-            ipsum et dui rhoncus auctor.
+            Mari Tingkatkan Sumber Daya Manusia.
           </p>
         </div>
 

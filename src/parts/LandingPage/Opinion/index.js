@@ -38,7 +38,7 @@ export default function Opinion(props) {
                   classTitle="meta__wrapper--title text-truncate"
                   jobs="Web Developer"
                   classJobs="meta__wrapper--jobs text-truncate"
-                  desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                  desc="Its easy to build connection "
                   classDesc="meta__wrapper--desc"
                 />
               </Card>
@@ -56,7 +56,7 @@ export default function Opinion(props) {
                   classTitle="meta__wrapper--title text-truncate"
                   jobs="Web Developer"
                   classJobs="meta__wrapper--jobs text-truncate"
-                  desc="Lorem ipsum dolor sit amet, consectetur "
+                  desc="Jobs alwasy update "
                   classDesc="meta__wrapper--desc"
                 />
               </Card>
@@ -74,7 +74,7 @@ export default function Opinion(props) {
                   classTitle="meta__wrapper--title text-truncate"
                   jobs="Web Developer"
                   classJobs="meta__wrapper--jobs text-truncate"
-                  desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor."
+                  desc="Its easy to find talent"
                   classDesc="meta__wrapper--desc"
                 />
               </Card>

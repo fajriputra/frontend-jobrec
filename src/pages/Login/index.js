@@ -125,7 +125,7 @@ const Login = (props) => {
           <div className="col-md-5 col-lg-5 p-0">
             <RightColumn
               greeting={showRecruiter ? "Halo, Recruiter!" : "Halo, Pekerja!"}
-              subTitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor."
+              subTitle="Silahkan Login"
             >
               {showRecruiter ? (
                 <FormRecruiter

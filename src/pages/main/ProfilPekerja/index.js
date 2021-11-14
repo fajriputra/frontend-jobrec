@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";
 import axios from "helpers/axios";
+import { useHistory } from "react-router-dom";
 
 const WorkerProfile = (props) => {
   let dataLogin = localStorage.getItem("persist:root");
@@ -42,6 +43,11 @@ const WorkerProfile = (props) => {
     }
   }, []);
 
+  let history = useHistory();
+
+  const handleRouteSwitch = () => {
+    history.push("/edit-profile-worker");
+  };
   return (
     <section className="profilePekerja">
       <Header className="mb-0" />
@@ -73,7 +79,7 @@ const WorkerProfile = (props) => {
               </div>
 
               <div className="profile__user--button">
-                <button>Hire</button>
+                <button onClick={handleRouteSwitch}>Edit Profile</button>
               </div>
               <div className="profile__skill">
                 <h2>Skill</h2>
