@@ -1,19 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
-
+import { useHistory, Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { ReactComponent as IconPencil } from "assets/images/icons/icon-pencil.svg";
 import { ReactComponent as IconLocation } from "assets/images/icons/icon-location.svg";
 import { ReactComponent as IconPhone } from "assets/images/icons/icon-phone.svg";
 import { ReactComponent as IconTrashVector } from "assets/images/icons/icon-trash-vector.svg";
-import { ReactComponent as IconPencil } from "assets/images/icons/icon-pencil.svg";
-
-import { profilePekerja } from "store/profile/actions";
-import { connect } from "react-redux";
 import Card from "components/Card";
 import Header from "components/Header";
 import PurpleBackground from "components/PurpleBackground";
 import Image from "components/Image";
 import axios from "helpers/axios";
 import { toast } from "react-toastify";
-import { useHistory } from "react-router-dom";
+import { apiHost } from "config";
 
 import Button from "components/UI/Button";
 import MetaWrapper from "components/MetaWrapper";
@@ -21,8 +19,6 @@ import InputText from "components/UI/Form/InputText";
 
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";
-const dotenv = require("dotenv");
-dotenv.config();
 
 const EditProfileWorker = (props) => {
   useScrollTop();
@@ -39,6 +35,7 @@ const EditProfileWorker = (props) => {
   const inputFile = useRef(null);
   const [formPengalaman, setformPengalaman] = useState({
     username: props.auth.username,
+    isEdit: false,
   });
   const [formPortfolio, setformPortfolio] = useState({
     username: props.auth.username,
@@ -48,6 +45,8 @@ const EditProfileWorker = (props) => {
   const [formSkill, setformSkill] = useState({
     username: props.auth.username,
   });
+  const [isChangePassword, setIsChangePassword] = useState(false);
+  const [formPassword, setFormPassword] = useState({});
 
   const getWorkerByUsername = () => {
     axios
@@ -73,14 +72,14 @@ const EditProfileWorker = (props) => {
       });
   };
   const getAllPengalaman = () => {
-    console.log("MENMANGGIL PENGALAMAN");
     axios
       .get(`/pengalaman/get-worker-exp`)
       .then((res) => {
         setAllPengalaman(res.data.data);
       })
       .catch((err) => {
-        setAllPortfolio([]);
+        setAllPengalaman([]);
+
         err.response.data.msg &&
           toast.error("Anda belum menambahkan Pengalaman apapun");
       });
@@ -181,17 +180,15 @@ const EditProfileWorker = (props) => {
       .post(`/pengalaman/post-worker-exp`, formPengalaman)
       .then((res) => {
         toast.success("Berhasil Menambahkan Pengalaman");
-        setTimeout(() => {
-          getAllPengalaman();
-        }, 1000);
-        // setformPengalaman({
-        //   nama_perusahaan: "",
-        //   posisi: "",
-        //   tgl_keluar: "",
-        //   tgl_masuk: "",
-        //   username: props.auth.username,
-        //   deskripsi: "",
-        // });
+        getAllPengalaman();
+        setformPengalaman({
+          nama_perusahaan: "",
+          posisi: "",
+          tgl_keluar: "",
+          tgl_masuk: "",
+          username: props.auth.username,
+          deskripsi: "",
+        });
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
@@ -301,6 +298,63 @@ const EditProfileWorker = (props) => {
         err.response.data.msg && toast.error(err.response.data.msg);
       });
   };
+  const handleChangePassword = (e) => {
+    const { name, value } = e.target;
+    setFormPassword({ ...formPassword, [name]: value });
+  };
+  const handleSubmitPassword = () => {
+    if (formPassword.password.length < 6) {
+      toast.error("Password Minimal 6 Karakter");
+    } else if (formPassword.password !== formPassword.confirm_password) {
+      toast.error("Password & Confrim Password Tidak Boleh Berbeda");
+    } else {
+      axios
+        .patch(`/worker/update-password-worker`, formPassword)
+        .then((res) => {
+          toast.success("Berhasil Mengubah Password");
+          setFormPassword({
+            password: "",
+            confirm_password: "",
+          });
+        })
+        .catch((err) => {
+          err.response.data.msg && toast.error(err.response.data.msg);
+        });
+    }
+  };
+  const handleClickEditPengalaman = (data) => {
+    setformPengalaman({
+      ...data,
+      tgl_keluar: new Date(data.tgl_keluar).toISOString().slice(0, 10),
+      tgl_masuk: new Date(data.tgl_masuk).toISOString().slice(0, 10),
+      isEdit: true,
+      username: props.auth.username,
+    });
+  };
+  const handleSubmitEditPengalaman = () => {
+    axios
+      .patch(
+        `/pengalaman/update-wroker-exp/${formPengalaman.id}`,
+        formPengalaman
+      )
+      .then((res) => {
+        toast.success("Berhasil Mengubah Pengalaman");
+        getAllPengalaman();
+        setformPengalaman({
+          nama_perusahaan: "",
+          posisi: "",
+          tgl_keluar: "",
+          tgl_masuk: "",
+          deskripsi: "",
+
+          isEdit: false,
+          username: props.auth.username,
+        });
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
   return (
     <>
       <Header className="mb-0" />
@@ -390,347 +444,349 @@ const EditProfileWorker = (props) => {
               </Card>
 
               <div className="d-flex flex-column" style={{ marginBottom: 50 }}>
-                <Button className="btn btn__password">Ubah Password</Button>
-                <Button className="btn btn__back">Kembali</Button>
+                {isChangePassword ? (
+                  <Button
+                    className="btn btn__password"
+                    onClick={() => setIsChangePassword(false)}
+                  >
+                    Ubah Profile
+                  </Button>
+                ) : (
+                  <Button
+                    className="btn btn__password"
+                    onClick={() => setIsChangePassword(true)}
+                  >
+                    Ubah Password
+                  </Button>
+                )}
+                <Link to="/profilePekerja" className="btn btn__back">
+                  Kembali
+                </Link>
               </div>
             </div>
-            <div className="col-12 col-md-8 col-lg-8">
-              <Card className="edit__card--profile">
-                <div className="content__head">
-                  <h5 className="content__head--heading">Data diri</h5>
-                </div>
-
-                <div className="line w-100"></div>
-
-                <div className="content__form">
-                  <div className="form-group position-relative">
-                    <label htmlFor="fullname">Nama Lengkap</label>
-                    <InputText
-                      placeholder="Masukan nama lengkap"
-                      name="name"
-                      value={formProfile.name}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="job">Job Desk</label>
-                    <InputText
-                      placeholder="Masukan job desk"
-                      name="jobdesk"
-                      value={formProfile.jobdesk}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="job">Type</label>
-                    <select
-                      onChange={handleChange}
-                      class="form-select p-3"
-                      aria-label="Default select example"
-                      name="type"
-                    >
-                      <option value="freelance">Freelance</option>
-                      <option value="fulltime">Full Time</option>
-                    </select>
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="domisili">Domisi</label>
-                    <InputText
-                      placeholder="Masukan domisili"
-                      name="domisili"
-                      value={formProfile.domisili}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="domisili">Nomor Telefon</label>
-                    <InputText
-                      placeholder="Masukan domisili"
-                      name="nohp"
-                      value={formProfile.nohp}
-                      onChange={handleChange}
-                    />
+            {/* !isChangePassword */}
+            {isChangePassword ? (
+              <div className="col-12 col-md-8 col-lg-8">
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Change Password</h5>
                   </div>
 
-                  <div className="form__socialmedia">
+                  <div className="line w-100"></div>
+
+                  <div className="content__form">
                     <div className="form-group position-relative">
-                      <label htmlFor="instagram">Instagram</label>
-                      <InputText
-                        placeholder="Masukan username instagram"
-                        name="url_ig"
-                        value={formProfile.url_ig}
-                        onChange={handleChange}
+                      <label htmlFor="tt">Password</label>
+                      <input
+                        className="form-control p-2"
+                        type="password"
+                        name="password"
+                        value={formPassword.password}
+                        onChange={handleChangePassword}
                       />
                     </div>
                     <div className="form-group position-relative">
-                      <label htmlFor="github">Github</label>
-                      <InputText
-                        placeholder="Masukan username github"
-                        name="url_github"
-                        value={formProfile.url_github}
-                        onChange={handleChange}
+                      <label htmlFor="job">Confirm Password</label>
+                      <input
+                        className="form-control p-2"
+                        type="password"
+                        name="confirm_password"
+                        value={formPassword.confirm_password}
+                        onChange={handleChangePassword}
                       />
                     </div>
-                    <div className="form-group position-relative">
-                      <label htmlFor="gitlab">Gitlab</label>
-                      <InputText
-                        placeholder="Masukan username gitlab"
-                        name="url_gitlab"
-                        value={formProfile.url_gitlab}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
 
-                  <div className="form-group position-relative d-flex flex-column">
-                    <label htmlFor="desc">Deskripsi Singkat</label>
-                    <textarea
-                      name="deskripsi"
-                      placeholder="Masukan deskripsi disini..."
-                      className="form__description"
-                      value={formProfile.deskripsi}
-                      onChange={handleChange}
-                    ></textarea>
-                  </div>
-
-                  <div className="d-flex justify-content-end ">
-                    <Button
-                      className="btn__auth save"
-                      onClick={handleClickProfile}
-                    >
-                      Simpan
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-              <Card className="edit__card--profile">
-                <div className="content__head">
-                  <h5 className="content__head--heading">Skill</h5>
-                </div>
-
-                <div className="line w-100"></div>
-
-                <div className="content__form skills">
-                  <div className="form-group position-relative">
-                    <InputText
-                      placeholder="Masukan Nama Skill"
-                      name="nama_skill"
-                      value={formSkill.nama_skill}
-                      onChange={handleChangeSkill}
-                    />
-                  </div>
-                  <div className="ms-auto">
-                    {formSkill.isEdit ? (
+                    <div className="d-flex justify-content-end ">
                       <Button
-                        className="btn__auth save skill"
-                        style={{ marginBottom: 30 }}
-                        onClick={handleSubmitEditSkill}
-                        value={formSkill.nama_skill}
+                        className="btn__auth save"
+                        onClick={
+                          formPassword.password == null
+                            ? () => toast.error("Password Tidak Boleh Kosong")
+                            : handleSubmitPassword
+                        }
                       >
-                        Update
+                        Simpan Password
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            ) : (
+              // EDIT PROFILE
+              <div className="col-12 col-md-8 col-lg-8">
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Data diri</h5>
+                  </div>
+
+                  <div className="line w-100"></div>
+
+                  <div className="content__form">
+                    <div className="form-group position-relative">
+                      <label htmlFor="fullname">Nama Lengkap</label>
+                      <InputText
+                        placeholder="Masukan nama lengkap"
+                        name="name"
+                        value={formProfile.name}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="job">Job Desk</label>
+                      <InputText
+                        placeholder="Masukan job desk"
+                        name="jobdesk"
+                        value={formProfile.jobdesk}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="job">Type</label>
+                      <select
+                        onChange={handleChange}
+                        class="form-select p-3"
+                        aria-label="Default select example"
+                        name="type"
+                      >
+                        <option value="freelance">Freelance</option>
+                        <option value="fulltime">Full Time</option>
+                      </select>
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="domisili">Domisi</label>
+                      <InputText
+                        placeholder="Masukan domisili"
+                        name="domisili"
+                        value={formProfile.domisili}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="domisili">Nomor Telefon</label>
+                      <InputText
+                        placeholder="Masukan domisili"
+                        name="nohp"
+                        value={formProfile.nohp}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div className="form__socialmedia">
+                      <div className="form-group position-relative">
+                        <label htmlFor="instagram">Instagram</label>
+                        <InputText
+                          placeholder="Masukan username instagram"
+                          name="url_ig"
+                          value={formProfile.url_ig}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="github">Github</label>
+                        <InputText
+                          placeholder="Masukan username github"
+                          name="url_github"
+                          value={formProfile.url_github}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="gitlab">Gitlab</label>
+                        <InputText
+                          placeholder="Masukan username gitlab"
+                          name="url_gitlab"
+                          value={formProfile.url_gitlab}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group position-relative d-flex flex-column">
+                      <label htmlFor="desc">Deskripsi Singkat</label>
+                      <textarea
+                        name="deskripsi"
+                        placeholder="Masukan deskripsi disini..."
+                        className="form__description"
+                        value={formProfile.deskripsi}
+                        onChange={handleChange}
+                      ></textarea>
+                    </div>
+
+                    <div className="d-flex justify-content-end ">
+                      <Button
+                        className="btn__auth save"
+                        onClick={handleClickProfile}
+                      >
+                        Simpan
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Skill</h5>
+                  </div>
+
+                  <div className="line w-100"></div>
+
+                  <div className="content__form skills">
+                    <div className="form-group position-relative">
+                      <InputText
+                        placeholder="Masukan Nama Skill"
+                        name="nama_skill"
+                        value={formSkill.nama_skill}
+                        onChange={handleChangeSkill}
+                      />
+                    </div>
+                    <div className="ms-auto">
+                      {formSkill.isEdit ? (
+                        <Button
+                          className="btn__auth save skill"
+                          style={{ marginBottom: 30 }}
+                          onClick={handleSubmitEditSkill}
+                          value={formSkill.nama_skill}
+                        >
+                          Update
+                        </Button>
+                      ) : (
+                        <Button
+                          className="btn__auth save skill"
+                          style={{ marginBottom: 30 }}
+                          onClick={handleSubmitSkill}
+                          value={formSkill.nama_skill}
+                        >
+                          Tambah
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="wrapper__button">
+                    {allSkill.map((e) => (
+                      <Button className="btn btn__skill--added">
+                        {e.nama_skill}
+                        <Button
+                          className="ms-5 btn btn-success btn-sm"
+                          onClick={() =>
+                            handleClickEditSKill(e.id, e.nama_skill)
+                          }
+                        >
+                          <IconPencil width={18} height={18} />
+                        </Button>
+                        <Button
+                          className="btn btn-danger ms-2 btn-sm"
+                          onClick={() => handleDeleteSkill(e.id)}
+                        >
+                          <IconTrashVector width={18} height={18} />
+                        </Button>
+                      </Button>
+                    ))}
+                  </div>
+                </Card>
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Pengalaman kerja</h5>
+                  </div>
+
+                  <div className="line w-100"></div>
+
+                  <div className="content__form">
+                    <div className="form__experience">
+                      <div className="form-group position-relative">
+                        <label htmlFor="company">Nama Perusahaan</label>
+                        <InputText
+                          placeholder="Masukan nama perusahaan"
+                          onChange={handleChangePengalaman}
+                          name="nama_perusahaan"
+                          value={formPengalaman.nama_perusahaan}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="position">Posisi</label>
+                        <InputText
+                          placeholder="Masukan posisi anda"
+                          onChange={handleChangePengalaman}
+                          name="posisi"
+                          value={formPengalaman.posisi}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="date__in">Tanggal Keluar</label>
+                        <InputText
+                          onChange={handleChangePengalaman}
+                          name="tgl_masuk"
+                          type="date"
+                          value={formPengalaman.tgl_masuk}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="date__out">Tanggal Keluar</label>
+                        <InputText
+                          onChange={handleChangePengalaman}
+                          name="tgl_keluar"
+                          type="date"
+                          value={formPengalaman.tgl_keluar}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group position-relative d-flex flex-column">
+                      <label htmlFor="desc">Deskripsi singkat</label>
+                      <textarea
+                        onChange={handleChangePengalaman}
+                        name="deskripsi"
+                        placeholder="Deskripsikan pekerjaan anda disini"
+                        className="form__description"
+                        value={formPengalaman.deskripsi}
+                      ></textarea>
+                    </div>
+
+                    <hr
+                      className="w-100"
+                      style={{ color: "#E2E5ED", height: 2 }}
+                    />
+                    {formPengalaman.isEdit ? (
+                      <Button
+                        className="btn__auth save experience"
+                        onClick={handleSubmitEditPengalaman}
+                      >
+                        Edit pengalaman kerja
                       </Button>
                     ) : (
                       <Button
-                        className="btn__auth save skill"
-                        style={{ marginBottom: 30 }}
-                        onClick={handleSubmitSkill}
-                        value={formSkill.nama_skill}
+                        className="btn__auth save experience"
+                        onClick={handleSubmitPengalaman}
                       >
-                        Tambah
+                        Tambah pengalaman kerja
                       </Button>
                     )}
-                  </div>
-                </div>
-                <div className="wrapper__button">
-                  {allSkill.map((e) => (
-                    <Button className="btn btn__skill--added">
-                      {e.nama_skill}
-                      <Button
-                        className="ms-5 btn btn-success btn-sm"
-                        onClick={() => handleClickEditSKill(e.id, e.nama_skill)}
-                      >
-                        <IconPencil width={18} height={18} />
-                      </Button>
-                      <Button
-                        className="btn btn-danger ms-2 btn-sm"
-                        onClick={() => handleDeleteSkill(e.id)}
-                      >
-                        <IconTrashVector width={18} height={18} />
-                      </Button>
-                    </Button>
-                  ))}
-                </div>
-              </Card>
-              <Card className="edit__card--profile">
-                <div className="content__head">
-                  <h5 className="content__head--heading">Pengalaman kerja</h5>
-                </div>
-
-                <div className="line w-100"></div>
-
-                <div className="content__form">
-                  <div className="form__experience">
-                    <div className="form-group position-relative">
-                      <label htmlFor="company">Nama Perusahaan</label>
-                      <InputText
-                        placeholder="Masukan nama perusahaan"
-                        onChange={handleChangePengalaman}
-                        name="nama_perusahaan"
-                        value={formPengalaman.nama_perusahaan}
-                      />
-                    </div>
-                    <div className="form-group position-relative">
-                      <label htmlFor="position">Posisi</label>
-                      <InputText
-                        placeholder="Masukan posisi anda"
-                        onChange={handleChangePengalaman}
-                        name="posisi"
-                        value={formPengalaman.posisi}
-                      />
-                    </div>
-                    <div className="form-group position-relative">
-                      <label htmlFor="date__in">Tanggal Keluar</label>
-                      <InputText
-                        onChange={handleChangePengalaman}
-                        name="tgl_masuk"
-                        type="date"
-                        value={formPengalaman.tgl_masuk}
-                      />
-                    </div>
-                    <div className="form-group position-relative">
-                      <label htmlFor="date__out">Tanggal Keluar</label>
-                      <InputText
-                        onChange={handleChangePengalaman}
-                        name="tgl_keluar"
-                        type="date"
-                        value={formPengalaman.tgl_keluar}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group position-relative d-flex flex-column">
-                    <label htmlFor="desc">Deskripsi singkat</label>
-                    <textarea
-                      onChange={handleChangePengalaman}
-                      name="deskripsi"
-                      placeholder="Deskripsikan pekerjaan anda disini"
-                      className="form__description"
-                      value={formPengalaman.deskripsi}
-                    ></textarea>
-                  </div>
-
-                  <hr
-                    className="w-100"
-                    style={{ color: "#E2E5ED", height: 2 }}
-                  />
-                  <Button
-                    className="btn__auth save experience"
-                    onClick={handleSubmitPengalaman}
-                  >
-                    Tambah pengalaman kerja
-                  </Button>
-                  <hr
-                    className="w-100"
-                    style={{ color: "#E2E5ED", height: 2 }}
-                  />
-                </div>
-                {allPengalaman.map((e) => (
-                  <>
-                    <div className="card card-body mt-5">
-                      <div className="content__form skills">
-                        <div className="form-group position-relative">
-                          {e.nama_perusahaan}
-                        </div>
-                        <div className="ms-auto">
-                          <button
-                            className="btn btn-danger"
-                            style={{ width: "120px" }}
-                            onClick={() => handleDeletePengalaman(e.id)}
-                          >
-                            Hapus
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ))}
-              </Card>
-              <Card className="edit__card--profile">
-                <div className="content__head">
-                  <h5 className="content__head--heading">Portofolio</h5>
-                </div>
-
-                <div className="line w-100"></div>
-
-                <div className="content__form">
-                  <div className="form-group position-relative">
-                    <label htmlFor="aplikasi">Nama Aplikasi</label>
-                    <InputText
-                      placeholder="Masukan nama aplikasi"
-                      name="nama_applikasi"
-                      onChange={handleChangePortfolio}
-                      value={formPortfolio.nama_applikasi}
+                    <hr
+                      className="w-100"
+                      style={{ color: "#E2E5ED", height: 2 }}
                     />
                   </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="repo">Link Repository</label>
-                    <InputText
-                      placeholder="Masukan link repository"
-                      name="link_repository"
-                      onChange={handleChangePortfolio}
-                      value={formPortfolio.link_repository}
-                    />
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="image">Upload Gambar</label>
-                    <InputText
-                      type="file"
-                      name="image"
-                      onChange={handleChangeImagePortfolio}
-                    />
-                  </div>
-                  <hr
-                    className="w-100"
-                    style={{ color: "#E2E5ED", height: 2 }}
-                  />
-                  {formPortfolio.isEdit ? (
-                    <Button
-                      className="btn__auth save portfolio mt-4 mt-md-5"
-                      onClick={handleEditPortfolio}
-                    >
-                      Edit Portofolio
-                    </Button>
-                  ) : (
-                    <Button
-                      className="btn__auth save portfolio mt-4 mt-md-5"
-                      onClick={handleSubmitPortfolio}
-                    >
-                      Tambah Portofolio
-                    </Button>
-                  )}
-                  {allPortfolio.map((e) => (
+                  {allPengalaman.map((e) => (
                     <>
                       <div className="card card-body mt-5">
                         <div className="content__form skills">
                           <div className="form-group position-relative">
-                            {e.nama_applikasi}
+                            {e.nama_perusahaan}
                           </div>
                           <div className="ms-auto">
                             <div class="row">
                               <div className="col-6">
                                 <button
                                   className="btn btn-success"
-                                  onClick={() => handleClickEditPortfolio(e)}
+                                  onClick={() => handleClickEditPengalaman(e)}
                                 >
-                                  <IconPencil width={18} height={18} />
+                                  Edit
                                 </button>
                               </div>
                               <div className="col-6">
                                 <button
                                   className="btn btn-danger"
-                                  onClick={() => handleDeletePortfolio(e.id)}
+                                  onClick={() => handleDeletePengalaman(e.id)}
                                 >
-                                  <IconTrashVector width={18} height={18} />
+                                  Hapus
                                 </button>
                               </div>
                             </div>
@@ -739,9 +795,95 @@ const EditProfileWorker = (props) => {
                       </div>
                     </>
                   ))}
-                </div>
-              </Card>
-            </div>
+                </Card>
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Portofolio</h5>
+                  </div>
+
+                  <div className="line w-100"></div>
+
+                  <div className="content__form">
+                    <div className="form-group position-relative">
+                      <label htmlFor="aplikasi">Nama Aplikasi</label>
+                      <InputText
+                        placeholder="Masukan nama aplikasi"
+                        name="nama_applikasi"
+                        onChange={handleChangePortfolio}
+                        value={formPortfolio.nama_applikasi}
+                      />
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="repo">Link Repository</label>
+                      <InputText
+                        placeholder="Masukan link repository"
+                        name="link_repository"
+                        onChange={handleChangePortfolio}
+                        value={formPortfolio.link_repository}
+                      />
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="image">Upload Gambar</label>
+                      <InputText
+                        type="file"
+                        name="image"
+                        onChange={handleChangeImagePortfolio}
+                      />
+                    </div>
+                    <hr
+                      className="w-100"
+                      style={{ color: "#E2E5ED", height: 2 }}
+                    />
+                    {formPortfolio.isEdit ? (
+                      <Button
+                        className="btn__auth save portfolio mt-4 mt-md-5"
+                        onClick={handleEditPortfolio}
+                      >
+                        Edit Portofolio
+                      </Button>
+                    ) : (
+                      <Button
+                        className="btn__auth save portfolio mt-4 mt-md-5"
+                        onClick={handleSubmitPortfolio}
+                      >
+                        Tambah Portofolio
+                      </Button>
+                    )}
+                    {allPortfolio.map((e) => (
+                      <>
+                        <div className="card card-body mt-5">
+                          <div className="content__form skills">
+                            <div className="form-group position-relative">
+                              {e.nama_applikasi}
+                            </div>
+                            <div className="ms-auto">
+                              <div class="row">
+                                <div className="col-6">
+                                  <button
+                                    className="btn btn-success"
+                                    onClick={() => handleClickEditPortfolio(e)}
+                                  >
+                                    <IconPencil width={18} height={18} />
+                                  </button>
+                                </div>
+                                <div className="col-6">
+                                  <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleDeletePortfolio(e.id)}
+                                  >
+                                    <IconTrashVector width={18} height={18} />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ))}
+                  </div>
+                </Card>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -755,8 +897,4 @@ const mapStateToProps = (state) => ({
   worker: state.worker,
 });
 
-const mapDispatchToProps = {
-  profilePekerja,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfileWorker);
+export default connect(mapStateToProps, null)(EditProfileWorker);

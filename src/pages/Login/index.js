@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useSelector, connect } from "react-redux";
 
 import LeftColumn from "components/Auth/LeftColumn";
 import RightColumn from "components/Auth/RightColumn";
@@ -14,6 +13,7 @@ import useScrollTop from "hooks/useScrollTop";
 import { userLoginRecruiter, userLoginWorker } from "store/auth/actions";
 import { toast } from "react-toastify";
 import { getDataWorker } from "store/profile/worker/action";
+import { profilePerusahaan } from "store/profile/company/actions";
 
 const initialState = {
   email: "",
@@ -33,20 +33,23 @@ const Login = (props) => {
   const [form, setForm] = useState(initialState);
   const [showRecruiter, setShowRecruiter] = useState(false);
   const [status, setStatus] = useState(statusList.idle);
-  const auth = useSelector((state) => state.auth);
 
   const { email, password } = form;
 
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handeShowClick = () => setShowRecruiter(!showRecruiter);
+  const token = localStorage.getItem("token");
 
-  let isAdmin = localStorage.getItem("persist:root");
+  const handeShowClick = () => setShowRecruiter(!showRecruiter);
 
   useEffect(() => {
     document.title = "Peworld | Login";
-  });
+
+    if (token) {
+      history.push("/");
+    }
+  }, [history, token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,12 +71,11 @@ const Login = (props) => {
     dispatch(userLoginWorker(form))
       .then((res) => {
         dispatch(getDataWorker(res.value.data.data.username));
-        toast.success(res.value.data.msg);
         setTimeout(() => {
           history.push("/");
         }, 2000);
         localStorage.setItem("token", res.value.data.data.token);
-        console.log(res.value.data.data.token);
+        toast.success(res.value.data.msg);
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
@@ -95,13 +97,13 @@ const Login = (props) => {
     }
     dispatch(userLoginRecruiter(form))
       .then((res) => {
+        dispatch(profilePerusahaan(res.value.data.data.userId));
         toast.success(res.value.data.msg);
 
+        localStorage.setItem("token", res.value.data.data.token);
         setTimeout(() => {
           history.push("/home");
         }, 2000);
-
-        localStorage.setItem("token", res.value.data.data.token);
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
@@ -167,8 +169,8 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
+// const mapStateToProps = (state) => ({
+// 	auth: state.auth,
+// });
 
-export default connect(mapStateToProps)(Login);
+export default Login;
