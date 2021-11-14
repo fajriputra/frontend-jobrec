@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { ReactComponent as IconLocation } from "assets/images/icons/icon-location.svg";
 import { ReactComponent as IconPhone } from "assets/images/icons/icon-phone.svg";
 import { ReactComponent as IconTrashVector } from "assets/images/icons/icon-trash-vector.svg";
+import { ReactComponent as IconPencil } from "assets/images/icons/icon-pencil.svg";
 
 import { profilePekerja } from "store/profile/actions";
 import { connect } from "react-redux";
