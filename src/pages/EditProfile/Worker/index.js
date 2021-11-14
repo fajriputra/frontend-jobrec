@@ -79,7 +79,6 @@ const EditProfileWorker = (props) => {
       .get(`/pengalaman/get-worker-exp`)
       .then((res) => {
         setAllPengalaman(res.data.data);
-        toast.error("SUKSUISES apapun");
       })
       .catch((err) => {
         setAllPortfolio([]);

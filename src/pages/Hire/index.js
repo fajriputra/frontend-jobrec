@@ -50,6 +50,7 @@ export default function Hire(props) {
         setThisWorker(res.data.data[0]);
       })
       .catch((err) => {
+        console.log("EROR WORKER");
         err.response.data.msg && toast.error(err.response.data.msg);
         setTimeout(() => {
           history.push("/");
