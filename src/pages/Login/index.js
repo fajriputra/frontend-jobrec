@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useSelector, connect } from "react-redux";
 
 import LeftColumn from "components/Auth/LeftColumn";
 import RightColumn from "components/Auth/RightColumn";
@@ -14,161 +13,164 @@ import useScrollTop from "hooks/useScrollTop";
 import { userLoginRecruiter, userLoginWorker } from "store/auth/actions";
 import { toast } from "react-toastify";
 import { getDataWorker } from "store/profile/worker/action";
+import { profilePerusahaan } from "store/profile/company/actions";
 
 const initialState = {
-  email: "",
-  password: "",
+	email: "",
+	password: "",
 };
 
 const statusList = {
-  idle: "idle",
-  process: "process",
-  success: "success",
-  error: "error",
+	idle: "idle",
+	process: "process",
+	success: "success",
+	error: "error",
 };
 
 const Login = (props) => {
-  useScrollTop();
+	useScrollTop();
 
-  const [form, setForm] = useState(initialState);
-  const [showRecruiter, setShowRecruiter] = useState(false);
-  const [status, setStatus] = useState(statusList.idle);
-  const auth = useSelector((state) => state.auth);
+	const [form, setForm] = useState(initialState);
+	const [showRecruiter, setShowRecruiter] = useState(false);
+	const [status, setStatus] = useState(statusList.idle);
 
-  const { email, password } = form;
+	const { email, password } = form;
 
-  const dispatch = useDispatch();
-  const history = useHistory();
+	const dispatch = useDispatch();
+	const history = useHistory();
 
-  const handeShowClick = () => setShowRecruiter(!showRecruiter);
+	const token = localStorage.getItem("token");
 
-  let isAdmin = localStorage.getItem("persist:root");
+	const handeShowClick = () => setShowRecruiter(!showRecruiter);
 
-  useEffect(() => {
-    document.title = "Peworld | Login";
-  });
+	useEffect(() => {
+		document.title = "Peworld | Login";
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+		if (token) {
+			history.push("/");
+		}
+	}, [history, token]);
 
-  const handleSubmitWorker = (e) => {
-    e.preventDefault();
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setForm({ ...form, [name]: value });
+	};
 
-    if (!email || !password) {
-      toast.error("Mohon di isi untuk keseluruhan field");
-      return setStatus(statusList.idle);
-    }
+	const handleSubmitWorker = (e) => {
+		e.preventDefault();
 
-    if (password.length < 6) {
-      toast.error("Password minimal 6 karakter");
-      return setStatus(statusList.idle);
-    }
-    dispatch(userLoginWorker(form))
-      .then((res) => {
-        dispatch(getDataWorker(res.value.data.data.username));
-        toast.success(res.value.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
-        localStorage.setItem("token", res.value.data.data.token);
-        console.log(res.value.data.data.token);
-      })
-      .catch((err) => {
-        err.response.data.msg && toast.error(err.response.data.msg);
-        setForm({ email: "", password: "" });
-      });
-  };
+		if (!email || !password) {
+			toast.error("Mohon di isi untuk keseluruhan field");
+			return setStatus(statusList.idle);
+		}
 
-  const handleSubmitRecruiter = (e) => {
-    e.preventDefault();
+		if (password.length < 6) {
+			toast.error("Password minimal 6 karakter");
+			return setStatus(statusList.idle);
+		}
+		dispatch(userLoginWorker(form))
+			.then((res) => {
+				dispatch(getDataWorker(res.value.data.data.username));
+				setTimeout(() => {
+					history.push("/");
+				}, 2000);
+				localStorage.setItem("token", res.value.data.data.token);
+				toast.success(res.value.data.msg);
+			})
+			.catch((err) => {
+				err.response.data.msg && toast.error(err.response.data.msg);
+				setForm({ email: "", password: "" });
+			});
+	};
 
-    if (!email || !password) {
-      toast.error("Mohon di isi untuk keseluruhan field");
-      return setStatus(statusList.idle);
-    }
+	const handleSubmitRecruiter = (e) => {
+		e.preventDefault();
 
-    if (password.length < 6) {
-      toast.error("Password minimal 6 karakter");
-      return setStatus(statusList.idle);
-    }
-    dispatch(userLoginRecruiter(form))
-      .then((res) => {
-        toast.success(res.value.data.msg);
+		if (!email || !password) {
+			toast.error("Mohon di isi untuk keseluruhan field");
+			return setStatus(statusList.idle);
+		}
 
-        setTimeout(() => {
-          history.push("/home");
-        }, 2000);
+		if (password.length < 6) {
+			toast.error("Password minimal 6 karakter");
+			return setStatus(statusList.idle);
+		}
+		dispatch(userLoginRecruiter(form))
+			.then((res) => {
+				dispatch(profilePerusahaan(res.value.data.data.userId));
+				toast.success(res.value.data.msg);
 
-        localStorage.setItem("token", res.value.data.data.token);
-      })
-      .catch((err) => {
-        err.response.data.msg && toast.error(err.response.data.msg);
-        setForm({ email: "", password: "" });
-      });
-  };
+				localStorage.setItem("token", res.value.data.data.token);
+				setTimeout(() => {
+					history.push("/home");
+				}, 2000);
+			})
+			.catch((err) => {
+				err.response.data.msg && toast.error(err.response.data.msg);
+				setForm({ email: "", password: "" });
+			});
+	};
 
-  return (
-    <section className="login">
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-7 col-lg-7">
-            <LeftColumn />
-          </div>
+	return (
+		<section className="login">
+			<div className="container-fluid">
+				<div className="row">
+					<div className="col-md-7 col-lg-7">
+						<LeftColumn />
+					</div>
 
-          <div className="col-md-5 col-lg-5 p-0">
-            <RightColumn
-              greeting={showRecruiter ? "Halo, Recruiter!" : "Halo, Pekerja!"}
-              subTitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor."
-            >
-              {showRecruiter ? (
-                <FormRecruiter
-                  onSubmit={handleSubmitRecruiter}
-                  isLoggedin
-                  classForgot="forgot__password"
-                  classBtnForgot="btn btn__auth--link"
-                  onChange={handleChange}
-                  valueEmail={form.email}
-                  valuePassword={form.password}
-                />
-              ) : (
-                <FormWorker
-                  onSubmit={handleSubmitWorker}
-                  isLoggedin
-                  classForgot="forgot__password"
-                  classBtnForgot="btn btn__auth--link"
-                  onChange={handleChange}
-                  valueEmail={form.email}
-                  valuePassword={form.password}
-                />
-              )}
+					<div className="col-md-5 col-lg-5 p-0">
+						<RightColumn
+							greeting={showRecruiter ? "Halo, Recruiter!" : "Halo, Pekerja!"}
+							subTitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor."
+						>
+							{showRecruiter ? (
+								<FormRecruiter
+									onSubmit={handleSubmitRecruiter}
+									isLoggedin
+									classForgot="forgot__password"
+									classBtnForgot="btn btn__auth--link"
+									onChange={handleChange}
+									valueEmail={form.email}
+									valuePassword={form.password}
+								/>
+							) : (
+								<FormWorker
+									onSubmit={handleSubmitWorker}
+									isLoggedin
+									classForgot="forgot__password"
+									classBtnForgot="btn btn__auth--link"
+									onChange={handleChange}
+									valueEmail={form.email}
+									valuePassword={form.password}
+								/>
+							)}
 
-              <hr />
-              <Button
-                className="btn__auth text__only mb-4"
-                onClick={handeShowClick}
-              >
-                Masuk Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}?
-              </Button>
+							<hr />
+							<Button
+								className="btn__auth text__only mb-4"
+								onClick={handeShowClick}
+							>
+								Masuk Sebagai {showRecruiter ? "Pekerja" : "Recruiter"}?
+							</Button>
 
-              <Button
-                className="btn btn__auth--link"
-                type="link"
-                href="/register"
-              >
-                Anda belum punya akun? <span>Daftar disini</span>
-              </Button>
-            </RightColumn>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+							<Button
+								className="btn btn__auth--link"
+								type="link"
+								href="/register"
+							>
+								Anda belum punya akun? <span>Daftar disini</span>
+							</Button>
+						</RightColumn>
+					</div>
+				</div>
+			</div>
+		</section>
+	);
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
+// const mapStateToProps = (state) => ({
+// 	auth: state.auth,
+// });
 
-export default connect(mapStateToProps)(Login);
+export default Login;

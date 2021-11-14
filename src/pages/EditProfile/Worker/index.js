@@ -1,20 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
-
+import { useHistory, Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { ReactComponent as IconPencil } from "assets/images/icons/icon-pencil.svg";
-import { ReactComponent as IconPencilVector } from "assets/images/icons/icon-pencil-vector.svg";
 import { ReactComponent as IconLocation } from "assets/images/icons/icon-location.svg";
 import { ReactComponent as IconPhone } from "assets/images/icons/icon-phone.svg";
 import { ReactComponent as IconTrashVector } from "assets/images/icons/icon-trash-vector.svg";
-// import ProfileImage from "assets/images/opini1.png";
-import { profilePekerja } from "store/profile/actions";
-import { connect } from "react-redux";
 import Card from "components/Card";
 import Header from "components/Header";
 import PurpleBackground from "components/PurpleBackground";
 import Image from "components/Image";
 import axios from "helpers/axios";
 import { toast } from "react-toastify";
-import { useHistory, Link } from "react-router-dom";
+import { apiHost } from "config";
 
 import Button from "components/UI/Button";
 import MetaWrapper from "components/MetaWrapper";
@@ -22,8 +19,6 @@ import InputText from "components/UI/Form/InputText";
 
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";
-const dotenv = require("dotenv");
-dotenv.config();
 
 const EditProfileWorker = (props) => {
   useScrollTop();
@@ -903,8 +898,4 @@ const mapStateToProps = (state) => ({
   worker: state.worker,
 });
 
-const mapDispatchToProps = {
-  profilePekerja,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfileWorker);
+export default connect(mapStateToProps, null)(EditProfileWorker);
