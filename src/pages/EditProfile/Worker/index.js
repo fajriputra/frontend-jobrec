@@ -14,7 +14,7 @@ import PurpleBackground from "components/PurpleBackground";
 import Image from "components/Image";
 import axios from "helpers/axios";
 import { toast } from "react-toastify";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 import Button from "components/UI/Button";
 import MetaWrapper from "components/MetaWrapper";
@@ -40,6 +40,7 @@ const EditProfileWorker = (props) => {
   const inputFile = useRef(null);
   const [formPengalaman, setformPengalaman] = useState({
     username: props.auth.username,
+    isEdit: false,
   });
   const [formPortfolio, setformPortfolio] = useState({
     username: props.auth.username,
@@ -76,14 +77,14 @@ const EditProfileWorker = (props) => {
       });
   };
   const getAllPengalaman = () => {
-    console.log("MENMANGGIL PENGALAMAN");
     axios
       .get(`/pengalaman/get-worker-exp`)
       .then((res) => {
         setAllPengalaman(res.data.data);
       })
       .catch((err) => {
-        setAllPortfolio([]);
+        setAllPengalaman([]);
+
         err.response.data.msg &&
           toast.error("Anda belum menambahkan Pengalaman apapun");
       });
@@ -184,9 +185,7 @@ const EditProfileWorker = (props) => {
       .post(`/pengalaman/post-worker-exp`, formPengalaman)
       .then((res) => {
         toast.success("Berhasil Menambahkan Pengalaman");
-        setTimeout(() => {
-          getAllPengalaman();
-        }, 1000);
+        getAllPengalaman();
         setformPengalaman({
           nama_perusahaan: "",
           posisi: "",
@@ -306,8 +305,6 @@ const EditProfileWorker = (props) => {
       });
   };
   const handleChangePassword = (e) => {
-    // setFormPassword
-    console.log(formPassword);
     const { name, value } = e.target;
     setFormPassword({ ...formPassword, [name]: value });
   };
@@ -331,7 +328,39 @@ const EditProfileWorker = (props) => {
         });
     }
   };
+  const handleClickEditPengalaman = (data) => {
+    setformPengalaman({
+      ...data,
+      tgl_keluar: new Date(data.tgl_keluar).toISOString().slice(0, 10),
+      tgl_masuk: new Date(data.tgl_masuk).toISOString().slice(0, 10),
+      isEdit: true,
+      username: props.auth.username,
+    });
+  };
+  const handleSubmitEditPengalaman = () => {
+    axios
+      .patch(
+        `/pengalaman/update-wroker-exp/${formPengalaman.id}`,
+        formPengalaman
+      )
+      .then((res) => {
+        toast.success("Berhasil Mengubah Pengalaman");
+        getAllPengalaman();
+        setformPengalaman({
+          nama_perusahaan: "",
+          posisi: "",
+          tgl_keluar: "",
+          tgl_masuk: "",
+          deskripsi: "",
 
+          isEdit: false,
+          username: props.auth.username,
+        });
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
   return (
     <>
       <Header className="mb-0" />
@@ -436,7 +465,9 @@ const EditProfileWorker = (props) => {
                     Ubah Password
                   </Button>
                 )}
-                <Button className="btn btn__back">Kembali</Button>
+                <Link to="/profilePekerja" className="btn btn__back">
+                  Kembali
+                </Link>
               </div>
             </div>
             {/* !isChangePassword */}
@@ -719,12 +750,21 @@ const EditProfileWorker = (props) => {
                       className="w-100"
                       style={{ color: "#E2E5ED", height: 2 }}
                     />
-                    <Button
-                      className="btn__auth save experience"
-                      onClick={handleSubmitPengalaman}
-                    >
-                      Tambah pengalaman kerja
-                    </Button>
+                    {formPengalaman.isEdit ? (
+                      <Button
+                        className="btn__auth save experience"
+                        onClick={handleSubmitEditPengalaman}
+                      >
+                        Edit pengalaman kerja
+                      </Button>
+                    ) : (
+                      <Button
+                        className="btn__auth save experience"
+                        onClick={handleSubmitPengalaman}
+                      >
+                        Tambah pengalaman kerja
+                      </Button>
+                    )}
                     <hr
                       className="w-100"
                       style={{ color: "#E2E5ED", height: 2 }}
@@ -738,13 +778,24 @@ const EditProfileWorker = (props) => {
                             {e.nama_perusahaan}
                           </div>
                           <div className="ms-auto">
-                            <button
-                              className="btn btn-danger"
-                              style={{ width: "120px" }}
-                              onClick={() => handleDeletePengalaman(e.id)}
-                            >
-                              Hapus
-                            </button>
+                            <div class="row">
+                              <div className="col-6">
+                                <button
+                                  className="btn btn-success"
+                                  onClick={() => handleClickEditPengalaman(e)}
+                                >
+                                  Edit
+                                </button>
+                              </div>
+                              <div className="col-6">
+                                <button
+                                  className="btn btn-danger"
+                                  onClick={() => handleDeletePengalaman(e.id)}
+                                >
+                                  Hapus
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
