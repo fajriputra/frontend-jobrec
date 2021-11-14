@@ -56,10 +56,8 @@ Website Front End ini dibangun dengan Teknologi Berikut
 
 ### Installation
 
-1. Clone Atau Download Repo ini
-   ```sh
-   git clone https://github.com/HariisV/Ticketing-Frontend.git
-   ```
+1. Clone Atau Download Repo ini:
+ https://github.com/fajriputra/frontend-jobrec.git
 2. Extrak File Tersebut
 3. Langsung Jalankan (Klik File index.html Atau Open With Live Server)
 
