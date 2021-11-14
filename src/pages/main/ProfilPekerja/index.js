@@ -25,6 +25,7 @@ const WorkerProfile = (props) => {
   dataLogin = JSON.parse(dataLogin).auth;
   dataLogin = JSON.parse(dataLogin).username;
   useScrollTop();
+  console.log(dataLogin);
 
   const [skill, setSkill] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
@@ -49,7 +50,7 @@ const WorkerProfile = (props) => {
         setExperience(c.data.data);
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log(error.response);
       });
   }, []);
 
