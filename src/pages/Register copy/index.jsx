@@ -8,8 +8,6 @@ import "./index.scss";
 import Button from "components/UI/Button";
 
 const Register = (props) => {
-  // const urlParams = qs.parse(props.location.search);
-  console.log(props);
   return (
     <section className="register">
       <div className="container-fluid">

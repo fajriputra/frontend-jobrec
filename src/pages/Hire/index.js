@@ -7,6 +7,7 @@ import Button from "components/UI/Button";
 import Footer from "components/SiteInfo";
 import { toast } from "react-toastify";
 import axios from "helpers/axios";
+import { apiHost } from "config";
 
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";
@@ -24,11 +25,9 @@ export default function Hire(props) {
   useEffect(() => {
     getWorkerByUsername();
     getSkillByUsernameWorker();
-    console.log("JALANIN WEB");
   }, []);
 
   const handleChange = (e) => {
-    console.log(form);
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
@@ -37,12 +36,10 @@ export default function Hire(props) {
     try {
       const res = await axios.post(`/recruiter/hire-worker`, form);
       toast.success(res.data.msg);
-      console.log(res);
       setTimeout(() => {
         history.push("/");
       }, 2000);
     } catch (err) {
-      // console.log(err.response);
       err.response.data.msg && toast.error(err.response.data.msg);
     }
   };
@@ -67,8 +64,6 @@ export default function Hire(props) {
         setThisWorkerSkill(res.data.data);
       })
       .catch((err) => {
-        console.log("EROR WORKER Skill");
-        console.log(err.response.data);
         err.response.data.msg && toast.error(err.response.data.msg);
         setTimeout(() => {
           history.push("/");
@@ -84,22 +79,31 @@ export default function Hire(props) {
             <div className="col-xl-4 col-lg-12 hire__user mt-5 mb-5">
               <div className="hire__user--image">
                 <img
-                  src={thisWorker.avatar ? thisWorker.avatar : "/avatar.png"}
+                  src={
+                    thisWorker.avatar
+                      ? `${apiHost}/uploads/avatar/${thisWorker.avatar}`
+                      : "/avatar.png"
+                  }
                   alt="profile"
                 />
               </div>
               <div className="hire__user--content">
                 <h2>{thisWorker.name}</h2>
                 <h6>
-                  {thisWorker.jobdesk} -{" "}
+                  {thisWorker.jobdesk}{" "}
                   {thisWorker.type == "fulltime" ? "Full Time" : "Freelance"}
                 </h6>
-                <div className="row">
-                  <div className="col vector">
-                    <img src={map} alt="map" />
-                    <p>{thisWorker.domisili}</p>
+
+                {thisWorker.domisili ? (
+                  <div className="row">
+                    <div className="col vector">
+                      <img src={map} alt="map" />
+                      <p>{thisWorker.domisili}</p>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  ""
+                )}
 
                 <div className="row">
                   <div className="col vector">

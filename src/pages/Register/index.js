@@ -20,7 +20,7 @@ const initialState = {
   password: "",
   confirm_password: "",
   companyName: "",
-  field: "",
+  bidang: "",
 };
 
 const statusList = {
@@ -46,7 +46,7 @@ export default function Register(props) {
       password: "",
       confirm_password: "",
       companyName: "",
-      field: "",
+      bidang: "",
     });
     setShowRecruiter(!showRecruiter);
   };
@@ -60,7 +60,7 @@ export default function Register(props) {
     password,
     confirm_password,
     companyName,
-    field,
+    bidang,
   } = form;
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function Register(props) {
       //   !password ||
       //   !confirm_password
       // ) {
-      //   toast.error("Mohon di isi untuk keseluruhan field");
+      //   toast.error("Mohon di isi untuk keseluruhan bidang");
       //   return setStatus(statusList.idle);
       // }
 
@@ -148,7 +148,7 @@ export default function Register(props) {
       //   !companyName ||
       //   !filed
       // ) {
-      //   toast.error("Mohon di isi untuk keseluruhan field");
+      //   toast.error("Mohon di isi untuk keseluruhan bidang");
       //   return setStatus(statusList.idle);
       // }
 
@@ -165,31 +165,40 @@ export default function Register(props) {
       const res = await axios.post("/auth/register-recruiter", {
         name,
         companyName,
-        field,
+        bidang,
         email,
         password,
         confirm_password,
         nohp,
       });
 
+      console.log(
+        name,
+        companyName,
+        bidang,
+        email,
+        password,
+        confirm_password,
+        nohp
+      );
+
+      toast.success(res.data.msg);
       setForm({
         name: "",
         companyName: "",
-        field: "",
+        bidang: "",
         email: "",
         password: "",
         confirm_password: "",
         nohp: "",
       });
-
-      toast.success(res.data.msg);
     } catch (err) {
       err.response.data.msg && toast.error(err.response.data.msg);
 
       setForm({
         name: "",
         companyName: "",
-        field: "",
+        bidang: "",
         email: "",
         password: "",
         confirm_password: "",
@@ -219,7 +228,7 @@ export default function Register(props) {
                   valueName={form.name}
                   valueEmail={form.email}
                   valueCompany={form.companyName}
-                  valueBidang={form.field}
+                  valueBidang={form.bidang}
                   valueNohp={form.nohp}
                   valuePassword={form.password}
                   valueConfirmPassword={form.confirm_password}

@@ -77,11 +77,11 @@ export default function FormRecruiter(props) {
         />
       </div>
       <div className="form-group position-relative">
-        <label htmlFor="filed">Bidang Perusahaan</label>
+        <label htmlFor="bidang">Bidang Perusahaan</label>
         <InputText
           onChange={props.onChange}
           placeholder="Bidang perusahaan anda"
-          name="filed"
+          name="bidang"
           defaultValue={props.valueBidang}
         />
       </div>

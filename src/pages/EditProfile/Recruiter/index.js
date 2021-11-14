@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Header from "components/Header";
 import pencil from "../../../assets/images/icons/icon-pencil-gray.svg";
 import map from "../../../assets/images/icons/icon-location.svg";
@@ -7,16 +7,22 @@ import Footer from "components/SiteInfo";
 
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
-import { profilePerusahaan } from "store/profile/company/actions";
+import {
+  editPerusahaanImage,
+  profilePerusahaan,
+} from "store/profile/company/actions";
 import { editPerusahaan } from "store/profile/company/actions";
 import { apiHost } from "config";
+import { toast } from "react-toastify";
 
 import "./index.scss";
+import { useHistory } from "react-router-dom";
 import useScrollTop from "hooks/useScrollTop";
+import axios from "helpers/axios";
 
 const inisialState = {
-  nama: "",
-  perusahaan: "",
+  nama_lengkap: "",
+  nama_perusahaan: "",
   bidang: "",
   domisili: "",
   deskripsi: "",
@@ -24,43 +30,102 @@ const inisialState = {
   url_ig: "",
   nohp: "",
   url_linkedin: "",
+  image: null,
 };
 
 const EditProfileRecruiter = (props) => {
   useScrollTop();
   const { data } = props.company;
 
-  const [detail, setDetail] = useState(data);
+  const target = useRef(null);
   const [form, setForm] = useState(inisialState);
 
+  const [dataShow, setDataShow] = useState(inisialState);
+  console.log(dataShow);
   const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(profilePerusahaan(props.auth.userId))
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch();
+  // }, []);
+
   useEffect(() => {
-    dispatch(profilePerusahaan(props.auth.userId))
-      .then((res) => {
-        console.log(res);
-      })
-      .catch();
+    getCompany();
   }, []);
 
   useEffect(() => {
     profilePerusahaan(props.auth.userId);
   }, [props.auth]);
-  const editCompany = (e) => {
-    e.preventDefault();
-    dispatch(editPerusahaan(form))
+
+  const getCompany = () => {
+    axios
+      .get(`/recruiter/${props.auth.userId}`)
       .then((res) => {
-        // alert("data berhasil di ubah");
-        dispatch(profilePerusahaan(props.auth.userId));
+        setForm(res.data.data[0]);
+        setDataShow(res.data.data[0]);
       })
       .catch((err) => {
         console.log(err);
       });
-    setForm(inisialState);
+  };
+
+  const editCompany = (e) => {
+    e.preventDefault();
+    // const formData = new FormData();
+    // for (const data in form) {
+    //   formData.append(data, form[data]);
+    // }
+    // console.log(formData);
+    // const formData = new FormData();
+    // for (const data in form) {
+    //   formData.append(data, form[data]);
+    // }
+    // for (const data of formData.entries()) {
+    //   console.log(data[0] + ", " + data[1]);
+    // }
+    dispatch(editPerusahaan(form))
+      .then((res) => {
+        toast.success(res.value.data.msg);
+        // dispatch(profilePerusahaan(props.auth.userId));
+        getCompany();
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+    // setForm(inisialState);
   };
 
   const onChangeInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  let history = useHistory();
+
+  const goCompany = () => {
+    history.push("/profilePerusahaan");
+  };
+
+  const editImage = (e) => {
+    const uploaded = e.target.files[0];
+    console.log("ada IMAGEAK OASDKO ASKDO SAKO", uploaded);
+    if (uploaded) {
+      const formData = new FormData();
+      formData.append("avatar", uploaded);
+      setDataShow(formData);
+      getCompany();
+      dispatch(editPerusahaanImage(formData))
+        .then((res) => {
+          dispatch(profilePerusahaan(props.auth.userId));
+        })
+        .catch((err) => {
+          // console.log(err.response.data.msg);
+          toast.error(err.response.data.msg);
+        });
+    }
+  };
+
   return (
     <section className="position-relative editProfileRecruiter">
       <Header className="mb-0" />
@@ -76,32 +141,40 @@ const EditProfileRecruiter = (props) => {
                   <img
                     className="rounded-circle img-cover"
                     src={
-                      data.avatar
-                        ? `${apiHost}/uploads/recruiter/${data.avatar}`
-                        : null
+                      dataShow.avatar
+                        ? `${apiHost}/uploads/recruiter/${dataShow.avatar}`
+                        : "avatar.png"
                     }
+                    // src={dataShow.avatar}
                     alt="profile"
                   />
                 </div>
                 <div className="edit__perusahaan--input">
                   <img src={pencil} alt="profile" />
-                  <button>Edit</button>
+                  <button onClick={() => target.current.click()}>Edit</button>
+                  <input
+                    style={{ display: "none" }}
+                    type="file"
+                    ref={target}
+                    name="image"
+                    onChange={editImage}
+                  ></input>
                 </div>
                 <div className="edit__perusahaan--desc">
-                  <h2>{data.nama_perusahaan || ""}</h2>
-                  <h6>{data.bidang || ""}</h6>
+                  <h2>{dataShow.nama_perusahaan || ""}</h2>
+                  <h6>{dataShow.bidang || ""}</h6>
                   <div className="row">
                     <div className="col vector">
                       <img src={map} alt="map" />
-                      <p>{data.domisili || ""}</p>
+                      <p>{dataShow.domisili || ""}</p>
                     </div>
                   </div>
-                  <p>{data.deskripsi || ""}</p>
+                  <p>{dataShow.deskripsi || ""}</p>
                 </div>
               </div>
               <div className="edit__perusahaan--button">
                 <button onClick={editCompany}>Simpan</button>
-                <button>Batal</button>
+                <button onClick={goCompany}>Kembali</button>
               </div>
             </div>
             <div className="col-xl-8 col-lg-12 edit__perusahaan-desc">

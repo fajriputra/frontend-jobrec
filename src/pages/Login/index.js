@@ -43,9 +43,6 @@ const Login = (props) => {
   const handeShowClick = () => setShowRecruiter(!showRecruiter);
 
   let isAdmin = localStorage.getItem("persist:root");
-  console.log(isAdmin);
-  // isAdmin = JSON.parse(isAdmin).auth;
-  // isAdmin = JSON.parse(isAdmin).username;
 
   useEffect(() => {
     document.title = "Peworld | Login";
@@ -70,15 +67,13 @@ const Login = (props) => {
     }
     dispatch(userLoginWorker(form))
       .then((res) => {
-        dispatch(getDataWorker(isAdmin));
-
+        dispatch(getDataWorker(res.value.data.data.username));
         toast.success(res.value.data.msg);
-
         setTimeout(() => {
           history.push("/");
         }, 2000);
-
         localStorage.setItem("token", res.value.data.data.token);
+        console.log(res.value.data.data.token);
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);

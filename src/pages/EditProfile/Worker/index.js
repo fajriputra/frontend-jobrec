@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { ReactComponent as IconPencil } from "assets/images/icons/icon-pencil.svg";
 import { ReactComponent as IconPencilVector } from "assets/images/icons/icon-pencil-vector.svg";
 import { ReactComponent as IconLocation } from "assets/images/icons/icon-location.svg";
 import { ReactComponent as IconPhone } from "assets/images/icons/icon-phone.svg";
 import { ReactComponent as IconTrashVector } from "assets/images/icons/icon-trash-vector.svg";
-import ProfileImage from "assets/images/opini1.png";
+// import ProfileImage from "assets/images/opini1.png";
 import { profilePekerja } from "store/profile/actions";
 import { connect } from "react-redux";
 import Card from "components/Card";
@@ -22,6 +22,8 @@ import InputText from "components/UI/Form/InputText";
 
 import "./index.scss";
 import useScrollTop from "hooks/useScrollTop";
+const dotenv = require("dotenv");
+dotenv.config();
 
 const EditProfileWorker = (props) => {
   useScrollTop();
@@ -31,19 +33,25 @@ const EditProfileWorker = (props) => {
   const [thisWorker, setThisWorker] = useState({});
   const [formProfile, setformProfile] = useState({});
   const [allPortfolio, setAllPortfolio] = useState([]);
+  const [image, setImage] = useState(null);
+  const [formImage, setFormImage] = useState({
+    avatar: "",
+  });
+  const inputFile = useRef(null);
   const [formPengalaman, setformPengalaman] = useState({
     username: props.auth.username,
   });
   const [formPortfolio, setformPortfolio] = useState({
     username: props.auth.username,
+    isEdit: false,
   });
 
   const [formSkill, setformSkill] = useState({
     username: props.auth.username,
   });
-  // useEffect(() => {
-  // getAllPengalaman();
-  // }, [allPengalaman]);
+  const [isChangePassword, setIsChangePassword] = useState(false);
+  const [formPassword, setFormPassword] = useState({});
+
   const getWorkerByUsername = () => {
     axios
       .get(`/worker/get-worker/${props.auth.username}`)
@@ -53,11 +61,9 @@ const EditProfileWorker = (props) => {
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
       });
   };
+
   const getAllSkill = () => {
     axios
       .get(`/skill/${props.auth.username}`)
@@ -65,43 +71,44 @@ const EditProfileWorker = (props) => {
         setAllSkill(res.data.data);
       })
       .catch((err) => {
+        setAllSkill([]);
         // err.response.data.msg && toast.error(err.response.data.msg);
-        // // setTimeout(() => {
-        // //   history.push("/");
-        // // }, 2000);
       });
   };
   const getAllPengalaman = () => {
+    console.log("MENMANGGIL PENGALAMAN");
     axios
       .get(`/pengalaman/get-worker-exp`)
       .then((res) => {
-        console.log(res.data.data);
         setAllPengalaman(res.data.data);
       })
       .catch((err) => {
-        err.response.data.msg && toast.error(err.response.data.msg);
+        setAllPortfolio([]);
+        err.response.data.msg &&
+          toast.error("Anda belum menambahkan Pengalaman apapun");
       });
   };
   const getAllPortfolio = () => {
     axios
       .get(`/portofolio/${props.auth.username}`)
       .then((res) => {
-        console.log(res.data.data);
         setAllPortfolio(res.data.data);
       })
       .catch((err) => {
-        console.log(err.response);
-        err.response.data.msg && toast.error(err.response.data.msg);
+        setAllPortfolio([]);
+        err.response.data.msg &&
+          toast.error("Anda belum menambahkan Portfolio apapun");
       });
   };
+
   useEffect(() => {
     getWorkerByUsername();
     getAllSkill();
     getAllPengalaman();
+
     getAllPortfolio();
   }, []);
   const handleChange = (e) => {
-    console.log(formProfile);
     const { name, value } = e.target;
     setformProfile({ ...formProfile, [name]: value });
   };
@@ -109,7 +116,8 @@ const EditProfileWorker = (props) => {
     axios
       .patch(`/worker/update-worker`, formProfile)
       .then((res) => {
-        toast.success("Berhasil Update Data");
+        toast.success("Berhasil Mengupdate Data Profile");
+
         getWorkerByUsername();
       })
       .catch((err) => {
@@ -120,33 +128,29 @@ const EditProfileWorker = (props) => {
     const { name, value } = e.target;
     setformSkill({ ...formSkill, [name]: value });
   };
-  const handleSubmitSkill = (e) => {
-    axios
-      .post(`/skill`, formSkill)
-      .then((res) => {
-        toast.success("Berhasil Menambahkan Skill");
-        getAllSkill();
-      })
-      .catch((err) => {
-        err.response.data.msg && toast.error(err.response.data.msg);
-        // setTimeout(() => {
-        //   history.push("/");
-        // }, 2000);
-      });
-  };
   const handleSubmitPortfolio = (e) => {
+    const formData = new FormData();
+    for (const data in formPortfolio) {
+      formData.append(data, formPortfolio[data]);
+    }
     axios
-      .post(`/portofolio`, formPortfolio)
+      .post(`/portofolio`, formData)
       .then((res) => {
         toast.success("Berhasil Menambahkan Portfolio");
         getAllPortfolio();
+        setformPortfolio({
+          username: props.auth.username,
+          link_repository: "",
+          nama_applikasi: "",
+          isEdit: false,
+        });
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
       });
   };
-  const onImageChange = (event) => {
-    console.log("UPLOAD FILE");
+
+  const handleChangeImagePortfolio = (event) => {
     if (event.target.files && event.target.files[0]) {
       setformPortfolio({
         ...formPortfolio,
@@ -156,7 +160,6 @@ const EditProfileWorker = (props) => {
   };
 
   const handleDeleteSkill = (e) => {
-    console.log(e);
     axios
       .delete(`/skill/delete/${e}`)
       .then((res) => {
@@ -165,9 +168,6 @@ const EditProfileWorker = (props) => {
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
-        setTimeout(() => {
-          history.push("/");
-        }, 2000);
       });
   };
 
@@ -178,7 +178,6 @@ const EditProfileWorker = (props) => {
   };
   const handleChangePortfolio = (e) => {
     const { name, value } = e.target;
-    console.log(formPortfolio);
     setformPortfolio({ ...formPortfolio, [name]: value });
   };
   const handleSubmitPengalaman = (e) => {
@@ -186,7 +185,17 @@ const EditProfileWorker = (props) => {
       .post(`/pengalaman/post-worker-exp`, formPengalaman)
       .then((res) => {
         toast.success("Berhasil Menambahkan Pengalaman");
-        getAllPengalaman();
+        setTimeout(() => {
+          getAllPengalaman();
+        }, 1000);
+        setformPengalaman({
+          nama_perusahaan: "",
+          posisi: "",
+          tgl_keluar: "",
+          tgl_masuk: "",
+          username: props.auth.username,
+          deskripsi: "",
+        });
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
@@ -194,10 +203,10 @@ const EditProfileWorker = (props) => {
   };
   const handleDeletePengalaman = (e) => {
     axios
-      .delete(`/pengalaman/delete-worker-exp`)
+      .delete(`/pengalaman/delete-worker-exp/${e}`)
       .then((res) => {
         toast.success("Berhasil Menghapus Pengalaman");
-        setAllPengalaman([]);
+        // setAllPengalaman([]);
         getAllPengalaman();
       })
       .catch((err) => {
@@ -208,13 +217,122 @@ const EditProfileWorker = (props) => {
     axios
       .delete(`/portofolio/delete/${e}`)
       .then((res) => {
-        toast.success("Berhasil Menghapus Pengalaman");
+        toast.success("Berhasil Menghapus Portfolio");
         getAllPortfolio();
       })
       .catch((err) => {
         err.response.data.msg && toast.error(err.response.data.msg);
       });
   };
+  const onButtonClick = () => {
+    // `current` points to the mounted file input element
+    inputFile.current.click();
+  };
+  const handleChangeImage = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const { name, value } = event.target;
+      const formData = new FormData();
+      formData.append("avatar", event.target.files[0]);
+
+      setImage(URL.createObjectURL(event.target.files[0]));
+      setFormImage({ ...formImage, [name]: value });
+
+      axios
+        .patch(`worker/update-avatar`, formData)
+        .then((res) => {
+          toast.success("Berhasil Mengganti Image Profile");
+        })
+        .catch((err) => {
+          err.response.data.msg && toast.error(err.response.data.msg);
+        });
+    }
+  };
+
+  const handleSubmitSkill = (e) => {
+    axios
+      .post(`/skill`, formSkill)
+      .then((res) => {
+        toast.success("Berhasil Menambahkan Skill");
+        getAllSkill();
+        setformSkill({
+          nama_skill: "",
+          id: "",
+          username: thisWorker.username,
+          isEdit: false,
+        });
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const handleClickEditSKill = (id, nama) => {
+    setformSkill({ ...formSkill, isEdit: true, id, nama_skill: nama });
+  };
+  const handleSubmitEditSkill = () => {
+    axios
+      .patch(`/skill/update/${formSkill.id}`, formSkill)
+      .then((res) => {
+        toast.success("Berhasil Mengupdate Skill");
+        getAllSkill();
+        setformSkill({
+          nama_skill: "",
+          id: "",
+          username: thisWorker.username,
+          isEdit: false,
+        });
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const handleClickEditPortfolio = (data) => {
+    setformPortfolio({ ...data, isEdit: true });
+  };
+  const handleEditPortfolio = () => {
+    axios
+      .patch(`/portofolio/update/${formPortfolio.id}`, formPortfolio)
+      .then((res) => {
+        toast.success("Berhasil Mengubah Portfolio");
+        getAllPortfolio();
+        setformPortfolio({
+          username: props.auth.username,
+          link_repository: "",
+          nama_applikasi: "",
+
+          isEdit: false,
+        });
+      })
+      .catch((err) => {
+        err.response.data.msg && toast.error(err.response.data.msg);
+      });
+  };
+  const handleChangePassword = (e) => {
+    // setFormPassword
+    console.log(formPassword);
+    const { name, value } = e.target;
+    setFormPassword({ ...formPassword, [name]: value });
+  };
+  const handleSubmitPassword = () => {
+    if (formPassword.password.length < 6) {
+      toast.error("Password Minimal 6 Karakter");
+    } else if (formPassword.password !== formPassword.confirm_password) {
+      toast.error("Password & Confrim Password Tidak Boleh Berbeda");
+    } else {
+      axios
+        .patch(`/worker/update-password-worker`, formPassword)
+        .then((res) => {
+          toast.success("Berhasil Mengubah Password");
+          setFormPassword({
+            password: "",
+            confirm_password: "",
+          });
+        })
+        .catch((err) => {
+          err.response.data.msg && toast.error(err.response.data.msg);
+        });
+    }
+  };
+
   return (
     <>
       <Header className="mb-0" />
@@ -226,22 +344,38 @@ const EditProfileWorker = (props) => {
               <Card className="edit__card--profile">
                 <div className="card__image--wrapper d-flex justify-content-center flex-column align-items-center">
                   <Image
-                    srcImage={ProfileImage}
+                    srcImage={
+                      image
+                        ? image
+                        : `${process.env.REACT_APP_HOST}/uploads/avatar/${thisWorker.avatar}`
+                    }
                     altImage="Profile Image"
                     className="edit__profile--image"
                     imageClass="img-cover rounded-circle"
                   />
+                  <Button
+                    className="btn btn__edit__text p-0"
+                    onClick={onButtonClick}
+                  >
+                    <input
+                      type="file"
+                      accept="image/png, image/gif, image/jpeg"
+                      id="file"
+                      ref={inputFile}
+                      name="avatar"
+                      onChange={handleChangeImage}
+                      style={{ display: "none" }}
+                    />
+
+                    <img
+                      src="/camera.png"
+                      className="rounded-circle"
+                      style={{ width: "50px", marginTop: "-40px" }}
+                      alt=""
+                    />
+                  </Button>
 
                   <p className="username text-center">@{thisWorker.username}</p>
-
-                  <Button className="btn btn__edit__text p-0">
-                    <IconPencil
-                      width={15}
-                      height={15}
-                      className="icon__pencil me-2"
-                    />
-                    Edit
-                  </Button>
                 </div>
 
                 <MetaWrapper
@@ -288,294 +422,327 @@ const EditProfileWorker = (props) => {
               </Card>
 
               <div className="d-flex flex-column" style={{ marginBottom: 50 }}>
-                <Button className="btn btn__password">Ubah Password</Button>
+                {isChangePassword ? (
+                  <Button
+                    className="btn btn__password"
+                    onClick={() => setIsChangePassword(false)}
+                  >
+                    Ubah Profile
+                  </Button>
+                ) : (
+                  <Button
+                    className="btn btn__password"
+                    onClick={() => setIsChangePassword(true)}
+                  >
+                    Ubah Password
+                  </Button>
+                )}
                 <Button className="btn btn__back">Kembali</Button>
               </div>
             </div>
-            <div className="col-12 col-md-8 col-lg-8">
-              <Card className="edit__card--profile">
-                <div className="content__head">
-                  <h5 className="content__head--heading">Data diri</h5>
-                </div>
-
-                <div className="line w-100"></div>
-
-                <div className="content__form">
-                  <div className="form-group position-relative">
-                    <label htmlFor="fullname">Nama Lengkap</label>
-                    <InputText
-                      placeholder="Masukan nama lengkap"
-                      name="name"
-                      value={formProfile.name}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="job">Job Desk</label>
-                    <InputText
-                      placeholder="Masukan job desk"
-                      name="jobdesk"
-                      value={formProfile.jobdesk}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="domisili">Domisi</label>
-                    <InputText
-                      placeholder="Masukan domisili"
-                      name="domisili"
-                      value={formProfile.domisili}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="domisili">Nomor Telefon</label>
-                    <InputText
-                      placeholder="Masukan domisili"
-                      name="nohp"
-                      value={formProfile.nohp}
-                      onChange={handleChange}
-                    />
+            {/* !isChangePassword */}
+            {isChangePassword ? (
+              <div className="col-12 col-md-8 col-lg-8">
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Change Password</h5>
                   </div>
 
-                  <div className="form__socialmedia">
+                  <div className="line w-100"></div>
+
+                  <div className="content__form">
                     <div className="form-group position-relative">
-                      <label htmlFor="instagram">Instagram</label>
+                      <label htmlFor="tt">Password</label>
+                      <input
+                        className="form-control p-2"
+                        type="password"
+                        name="password"
+                        value={formPassword.password}
+                        onChange={handleChangePassword}
+                      />
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="job">Confirm Password</label>
+                      <input
+                        className="form-control p-2"
+                        type="password"
+                        name="confirm_password"
+                        value={formPassword.confirm_password}
+                        onChange={handleChangePassword}
+                      />
+                    </div>
+
+                    <div className="d-flex justify-content-end ">
+                      <Button
+                        className="btn__auth save"
+                        onClick={
+                          formPassword.password == null
+                            ? () => toast.error("Password Tidak Boleh Kosong")
+                            : handleSubmitPassword
+                        }
+                      >
+                        Simpan Password
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            ) : (
+              // EDIT PROFILE
+              <div className="col-12 col-md-8 col-lg-8">
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Data diri</h5>
+                  </div>
+
+                  <div className="line w-100"></div>
+
+                  <div className="content__form">
+                    <div className="form-group position-relative">
+                      <label htmlFor="fullname">Nama Lengkap</label>
                       <InputText
-                        placeholder="Masukan username instagram"
-                        name="url_ig"
-                        value={formProfile.url_ig}
+                        placeholder="Masukan nama lengkap"
+                        name="name"
+                        value={formProfile.name}
                         onChange={handleChange}
                       />
                     </div>
                     <div className="form-group position-relative">
-                      <label htmlFor="github">Github</label>
+                      <label htmlFor="job">Job Desk</label>
                       <InputText
-                        placeholder="Masukan username github"
-                        name="url_github"
-                        value={formProfile.url_github}
+                        placeholder="Masukan job desk"
+                        name="jobdesk"
+                        value={formProfile.jobdesk}
                         onChange={handleChange}
                       />
                     </div>
                     <div className="form-group position-relative">
-                      <label htmlFor="gitlab">Gitlab</label>
+                      <label htmlFor="job">Type</label>
+                      <select
+                        onChange={handleChange}
+                        class="form-select p-3"
+                        aria-label="Default select example"
+                        name="type"
+                      >
+                        <option value="freelance">Freelance</option>
+                        <option value="fulltime">Full Time</option>
+                      </select>
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="domisili">Domisi</label>
                       <InputText
-                        placeholder="Masukan username gitlab"
-                        name="url_gitlab"
-                        value={formProfile.url_gitlab}
+                        placeholder="Masukan domisili"
+                        name="domisili"
+                        value={formProfile.domisili}
                         onChange={handleChange}
                       />
                     </div>
-                  </div>
-
-                  <div className="form-group position-relative d-flex flex-column">
-                    <label htmlFor="desc">Deskripsi Singkat</label>
-                    <textarea
-                      name="deskripsi"
-                      placeholder="Masukan deskripsi disini..."
-                      className="form__description"
-                      value={formProfile.deskripsi}
-                      onChange={handleChange}
-                    ></textarea>
-                  </div>
-
-                  <div className="d-flex justify-content-end ">
-                    <Button
-                      className="btn__auth save"
-                      onClick={handleClickProfile}
-                    >
-                      Simpan
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-              <Card className="edit__card--profile">
-                <div className="content__head">
-                  <h5 className="content__head--heading">Skill</h5>
-                </div>
-
-                <div className="line w-100"></div>
-
-                <div className="content__form skills">
-                  <div className="form-group position-relative">
-                    <InputText
-                      placeholder="Masukan Nama Skill"
-                      name="nama_skill"
-                      onChange={handleChangeSkill}
-                    />
-                  </div>
-                  <div className="ms-auto">
-                    <Button
-                      className="btn__auth save skill"
-                      style={{ marginBottom: 30 }}
-                      onClick={handleSubmitSkill}
-                      value={formSkill.nama_skill}
-                    >
-                      Simpan
-                    </Button>
-                  </div>
-                </div>
-                <div className="wrapper__button">
-                  {allSkill.map((e) => (
-                    <Button
-                      className="btn btn__skill--added"
-                      onClick={() => handleDeleteSkill(e.id)}
-                    >
-                      {e.nama_skill}
-                      <IconTrashVector
-                        width={18}
-                        height={18}
-                        className="ms-5 "
-                      />
-                    </Button>
-                  ))}
-                  {/* {console.log(allSkill)} */}
-                </div>
-              </Card>
-              <Card className="edit__card--profile">
-                <div className="content__head">
-                  <h5 className="content__head--heading">Pengalaman kerja</h5>
-                </div>
-
-                <div className="line w-100"></div>
-
-                <div className="content__form">
-                  <div className="form__experience">
                     <div className="form-group position-relative">
-                      <label htmlFor="company">Nama Perusahaan</label>
+                      <label htmlFor="domisili">Nomor Telefon</label>
                       <InputText
-                        placeholder="Masukan nama perusahaan"
-                        onChange={handleChangePengalaman}
-                        name="nama_perusahaan"
+                        placeholder="Masukan domisili"
+                        name="nohp"
+                        value={formProfile.nohp}
+                        onChange={handleChange}
                       />
                     </div>
-                    <div className="form-group position-relative">
-                      <label htmlFor="position">Posisi</label>
-                      <InputText
-                        placeholder="Masukan posisi anda"
-                        onChange={handleChangePengalaman}
-                        name="posisi"
-                      />
-                    </div>
-                    <div className="form-group position-relative">
-                      <label htmlFor="date__in">Tanggal Keluar</label>
-                      <InputText
-                        onChange={handleChangePengalaman}
-                        name="tgl_masuk"
-                        type="date"
-                      />
-                    </div>
-                    <div className="form-group position-relative">
-                      <label htmlFor="date__out">Tanggal Keluar</label>
-                      <InputText
-                        onChange={handleChangePengalaman}
-                        name="tgl_keluar"
-                        type="date"
-                      />
-                    </div>
-                  </div>
 
-                  <div className="form-group position-relative d-flex flex-column">
-                    <label htmlFor="desc">Deskripsi singkat</label>
-                    <textarea
-                      onChange={handleChangePengalaman}
-                      name="deskripsi"
-                      placeholder="Deskripsikan pekerjaan anda disini"
-                      className="form__description"
-                    ></textarea>
-                  </div>
-
-                  <hr
-                    className="w-100"
-                    style={{ color: "#E2E5ED", height: 2 }}
-                  />
-                  <Button
-                    className="btn__auth save experience"
-                    onClick={handleSubmitPengalaman}
-                  >
-                    Tambah pengalaman kerja
-                  </Button>
-                  <hr
-                    className="w-100"
-                    style={{ color: "#E2E5ED", height: 2 }}
-                  />
-                </div>
-                {allPengalaman.map((e) => (
-                  <>
-                    <div className="card card-body mt-5">
-                      <div className="content__form skills">
-                        <div className="form-group position-relative">
-                          {e.nama_perusahaan}
-                        </div>
-                        <div className="ms-auto">
-                          <button
-                            className="btn btn-danger"
-                            style={{ width: "120px" }}
-                            onClick={() => handleDeletePengalaman(e.id)}
-                          >
-                            Hapus
-                          </button>
-                        </div>
+                    <div className="form__socialmedia">
+                      <div className="form-group position-relative">
+                        <label htmlFor="instagram">Instagram</label>
+                        <InputText
+                          placeholder="Masukan username instagram"
+                          name="url_ig"
+                          value={formProfile.url_ig}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="github">Github</label>
+                        <InputText
+                          placeholder="Masukan username github"
+                          name="url_github"
+                          value={formProfile.url_github}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="gitlab">Gitlab</label>
+                        <InputText
+                          placeholder="Masukan username gitlab"
+                          name="url_gitlab"
+                          value={formProfile.url_gitlab}
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
-                  </>
-                ))}
-              </Card>
-              <Card className="edit__card--profile">
-                <div className="content__head">
-                  <h5 className="content__head--heading">Portofolio</h5>
-                </div>
 
-                <div className="line w-100"></div>
+                    <div className="form-group position-relative d-flex flex-column">
+                      <label htmlFor="desc">Deskripsi Singkat</label>
+                      <textarea
+                        name="deskripsi"
+                        placeholder="Masukan deskripsi disini..."
+                        className="form__description"
+                        value={formProfile.deskripsi}
+                        onChange={handleChange}
+                      ></textarea>
+                    </div>
 
-                <div className="content__form">
-                  <div className="form-group position-relative">
-                    <label htmlFor="aplikasi">Nama Aplikasi</label>
-                    <InputText
-                      placeholder="Masukan nama aplikasi"
-                      name="nama_applikasi"
-                      onChange={handleChangePortfolio}
+                    <div className="d-flex justify-content-end ">
+                      <Button
+                        className="btn__auth save"
+                        onClick={handleClickProfile}
+                      >
+                        Simpan
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Skill</h5>
+                  </div>
+
+                  <div className="line w-100"></div>
+
+                  <div className="content__form skills">
+                    <div className="form-group position-relative">
+                      <InputText
+                        placeholder="Masukan Nama Skill"
+                        name="nama_skill"
+                        value={formSkill.nama_skill}
+                        onChange={handleChangeSkill}
+                      />
+                    </div>
+                    <div className="ms-auto">
+                      {formSkill.isEdit ? (
+                        <Button
+                          className="btn__auth save skill"
+                          style={{ marginBottom: 30 }}
+                          onClick={handleSubmitEditSkill}
+                          value={formSkill.nama_skill}
+                        >
+                          Update
+                        </Button>
+                      ) : (
+                        <Button
+                          className="btn__auth save skill"
+                          style={{ marginBottom: 30 }}
+                          onClick={handleSubmitSkill}
+                          value={formSkill.nama_skill}
+                        >
+                          Tambah
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="wrapper__button">
+                    {allSkill.map((e) => (
+                      <Button className="btn btn__skill--added">
+                        {e.nama_skill}
+                        <Button
+                          className="ms-5 btn btn-success btn-sm"
+                          onClick={() =>
+                            handleClickEditSKill(e.id, e.nama_skill)
+                          }
+                        >
+                          <IconPencil width={18} height={18} />
+                        </Button>
+                        <Button
+                          className="btn btn-danger ms-2 btn-sm"
+                          onClick={() => handleDeleteSkill(e.id)}
+                        >
+                          <IconTrashVector width={18} height={18} />
+                        </Button>
+                      </Button>
+                    ))}
+                  </div>
+                </Card>
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Pengalaman kerja</h5>
+                  </div>
+
+                  <div className="line w-100"></div>
+
+                  <div className="content__form">
+                    <div className="form__experience">
+                      <div className="form-group position-relative">
+                        <label htmlFor="company">Nama Perusahaan</label>
+                        <InputText
+                          placeholder="Masukan nama perusahaan"
+                          onChange={handleChangePengalaman}
+                          name="nama_perusahaan"
+                          value={formPengalaman.nama_perusahaan}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="position">Posisi</label>
+                        <InputText
+                          placeholder="Masukan posisi anda"
+                          onChange={handleChangePengalaman}
+                          name="posisi"
+                          value={formPengalaman.posisi}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="date__in">Tanggal Keluar</label>
+                        <InputText
+                          onChange={handleChangePengalaman}
+                          name="tgl_masuk"
+                          type="date"
+                          value={formPengalaman.tgl_masuk}
+                        />
+                      </div>
+                      <div className="form-group position-relative">
+                        <label htmlFor="date__out">Tanggal Keluar</label>
+                        <InputText
+                          onChange={handleChangePengalaman}
+                          name="tgl_keluar"
+                          type="date"
+                          value={formPengalaman.tgl_keluar}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group position-relative d-flex flex-column">
+                      <label htmlFor="desc">Deskripsi singkat</label>
+                      <textarea
+                        onChange={handleChangePengalaman}
+                        name="deskripsi"
+                        placeholder="Deskripsikan pekerjaan anda disini"
+                        className="form__description"
+                        value={formPengalaman.deskripsi}
+                      ></textarea>
+                    </div>
+
+                    <hr
+                      className="w-100"
+                      style={{ color: "#E2E5ED", height: 2 }}
+                    />
+                    <Button
+                      className="btn__auth save experience"
+                      onClick={handleSubmitPengalaman}
+                    >
+                      Tambah pengalaman kerja
+                    </Button>
+                    <hr
+                      className="w-100"
+                      style={{ color: "#E2E5ED", height: 2 }}
                     />
                   </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="repo">Link Repository</label>
-                    <InputText
-                      placeholder="Masukan link repository"
-                      name="link_repository"
-                      onChange={handleChangePortfolio}
-                    />
-                  </div>
-                  <div className="form-group position-relative">
-                    <label htmlFor="image">Upload Gambar</label>
-                    <InputText
-                      type="file"
-                      name="image"
-                      name="image"
-                      onChange={onImageChange}
-                    />
-                  </div>
-                  <hr
-                    className="w-100"
-                    style={{ color: "#E2E5ED", height: 2 }}
-                  />
-                  <Button
-                    className="btn__auth save portfolio mt-4 mt-md-5"
-                    onClick={handleSubmitPortfolio}
-                  >
-                    Tambah portofolio
-                  </Button>
-                  {allPortfolio.map((e) => (
+                  {allPengalaman.map((e) => (
                     <>
                       <div className="card card-body mt-5">
                         <div className="content__form skills">
                           <div className="form-group position-relative">
-                            {e.nama_applikasi}
+                            {e.nama_perusahaan}
                           </div>
                           <div className="ms-auto">
                             <button
                               className="btn btn-danger"
                               style={{ width: "120px" }}
-                              onClick={() => handleDeletePortfolio(e.id)}
+                              onClick={() => handleDeletePengalaman(e.id)}
                             >
                               Hapus
                             </button>
@@ -584,9 +751,95 @@ const EditProfileWorker = (props) => {
                       </div>
                     </>
                   ))}
-                </div>
-              </Card>
-            </div>
+                </Card>
+                <Card className="edit__card--profile">
+                  <div className="content__head">
+                    <h5 className="content__head--heading">Portofolio</h5>
+                  </div>
+
+                  <div className="line w-100"></div>
+
+                  <div className="content__form">
+                    <div className="form-group position-relative">
+                      <label htmlFor="aplikasi">Nama Aplikasi</label>
+                      <InputText
+                        placeholder="Masukan nama aplikasi"
+                        name="nama_applikasi"
+                        onChange={handleChangePortfolio}
+                        value={formPortfolio.nama_applikasi}
+                      />
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="repo">Link Repository</label>
+                      <InputText
+                        placeholder="Masukan link repository"
+                        name="link_repository"
+                        onChange={handleChangePortfolio}
+                        value={formPortfolio.link_repository}
+                      />
+                    </div>
+                    <div className="form-group position-relative">
+                      <label htmlFor="image">Upload Gambar</label>
+                      <InputText
+                        type="file"
+                        name="image"
+                        onChange={handleChangeImagePortfolio}
+                      />
+                    </div>
+                    <hr
+                      className="w-100"
+                      style={{ color: "#E2E5ED", height: 2 }}
+                    />
+                    {formPortfolio.isEdit ? (
+                      <Button
+                        className="btn__auth save portfolio mt-4 mt-md-5"
+                        onClick={handleEditPortfolio}
+                      >
+                        Edit Portofolio
+                      </Button>
+                    ) : (
+                      <Button
+                        className="btn__auth save portfolio mt-4 mt-md-5"
+                        onClick={handleSubmitPortfolio}
+                      >
+                        Tambah Portofolio
+                      </Button>
+                    )}
+                    {allPortfolio.map((e) => (
+                      <>
+                        <div className="card card-body mt-5">
+                          <div className="content__form skills">
+                            <div className="form-group position-relative">
+                              {e.nama_applikasi}
+                            </div>
+                            <div className="ms-auto">
+                              <div class="row">
+                                <div className="col-6">
+                                  <button
+                                    className="btn btn-success"
+                                    onClick={() => handleClickEditPortfolio(e)}
+                                  >
+                                    <IconPencil width={18} height={18} />
+                                  </button>
+                                </div>
+                                <div className="col-6">
+                                  <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleDeletePortfolio(e.id)}
+                                  >
+                                    <IconTrashVector width={18} height={18} />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ))}
+                  </div>
+                </Card>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -597,6 +850,7 @@ const EditProfileWorker = (props) => {
 const mapStateToProps = (state) => ({
   profile: state.profile,
   auth: state.auth,
+  worker: state.worker,
 });
 
 const mapDispatchToProps = {

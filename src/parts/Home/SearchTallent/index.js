@@ -14,6 +14,7 @@ import Image from "components/Image";
 import Pagination from "react-paginate";
 import { toast } from "react-toastify";
 import axios from "helpers/axios";
+import { apiHost } from "config";
 
 import useClickout from "hooks/useClickout";
 
@@ -41,7 +42,6 @@ export default function SearchTallent(props) {
   }, []);
 
   useEffect(() => {
-    console.log(paginationHandle.skillName);
     getAllWorker();
   }, [paginationHandle.skillName]);
 
@@ -51,9 +51,6 @@ export default function SearchTallent(props) {
         `/worker/?page=${paginationHandle.page}&skillName=${paginationHandle.skillName}&sort=${paginationHandle.sort}&sortType=${paginationHandle.sortType}`
       )
       .then((res) => {
-        console.log(
-          `/worker/?page=${paginationHandle.page}&skillName=${paginationHandle.skillName}&sort=${paginationHandle.sort}&sortType=${paginationHandle.sortType}`
-        );
         setAllWorker(res.data.data);
         setPagination(res.data.pagination);
       })
@@ -81,11 +78,11 @@ export default function SearchTallent(props) {
     });
     getAllWorker();
     // history.push(`?page=1&skillName=${namaSkill}`);
-    // history.push(
-    //   `?page=${1}&sort=${paginationHandle.sort}&sortType=${
-    //     paginationHandle.sortType
-    //   }`
-    // );
+    history.push(
+      `?page=${1}&sort=${paginationHandle.sort}&sortType=${
+        paginationHandle.sortType
+      }`
+    );
   };
   const handleSort = (sort, sortType) => {
     setpaginationHandle({ ...paginationHandle, sort, sortType });
@@ -193,7 +190,11 @@ export default function SearchTallent(props) {
               <div className="card__content--profile">
                 <div className="profile__data--wrapper">
                   <Image
-                    srcImage={element.avatar ? element.avatar : "/avatar.png"}
+                    srcImage={
+                      element.avatar
+                        ? `${apiHost}/uploads/avatar/${element.avatar}`
+                        : "/avatar.png"
+                    }
                     className="profile__image"
                     altImage="Profile Image"
                     imageClass="img-cover rounded-circle"
