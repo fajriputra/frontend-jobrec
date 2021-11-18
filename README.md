@@ -73,6 +73,14 @@ Website Front End ini dibangun dengan Teknologi Berikut
 - [x] Integrated Backed 
 - [x] Upload To Github
 
+<!-- ROADMAP -->
+## Deploy
+
+- [x] Front End : https://jobrec.netlify.app/
+- [x] Back  End : https://jobrec.herokuapp.com/
+- [x] Database  : Amazon Web Services 
+
+
 ## License
 
 Distributed under the MIT License.
