@@ -73,12 +73,20 @@ Website Front End ini dibangun dengan Teknologi Berikut
 - [x] Integrated Backed 
 - [x] Upload To Github
 
-<!-- ROADMAP -->
+
+## Daftar Anggota
+
+- [Haris Wahyudi](https://github.com/HariisV) Project Manager,  Sebagai FullStack
+- [Fikri Nadzif](https://github.com/LepakBoy)  Sebagai BackEnd
+- [Wafi Pandega](https://github.com/wafidega) Sebagai BackEnd
+- [Moh. Syahrul Aziz Imastara](https://github.com/AzizImastara) Sebagai frontEnd
+- [Fajri Putra Pratama](https://github.com/fajriputra) Sebagai frontEnd
+
 ## Deploy
 
-- [x] Front End : https://jobrec.netlify.app/
-- [x] Back  End : https://jobrec.herokuapp.com/
-- [x] Database  : Amazon Web Services 
+- [x] Front End : [Netlify](https://jobrec.netlify.app/)
+- [x] Back End : [Heroku](https://jobrec.herokuapp.com/)
+- [x] Database : Amazon Web Services
 
 
 ## License
