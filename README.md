@@ -84,8 +84,8 @@ Website Front End ini dibangun dengan Teknologi Berikut
 
 ## Deploy
 
-- [x] Front End : [Netlify](https://jobrec.netlify.app/)
-- [x] Back End : [Heroku](https://jobrec.herokuapp.com/)
+- [x] Front End : [Netlify](https://search-jobrect.netlify.app/) | Github [Jobreact Front End](https://github.com/fajriputra/frontend-jobrec)
+- [x] Back End : [Heroku](https://jobrect-be.herokuapp.com) | Github [Jobreact Back End](https://github.com/LepakBoy/jobrec-backend)
 - [x] Database : Amazon Web Services
 
 
